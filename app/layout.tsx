@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Geist, Geist_Mono } from "next/font/google";
 import { site } from "@/lib/site";
 import { Sidebar } from "@/components/sidebar";
+import { ThemeScript } from "@/components/theme-toggle";
+import { cn } from "@/lib/utils";
 import "./globals.css";
+
+const geistSans = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -14,13 +20,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ko" className="h-full antialiased">
+    <html
+      lang="ko"
+      className={cn(
+        "h-full font-sans antialiased",
+        geistSans.variable,
+        geistMono.variable,
+      )}
+      suppressHydrationWarning
+    >
+      <head>
+        <ThemeScript />
+      </head>
       <body className="min-h-full">
         <Sidebar />
         <div className="lg:pl-60">
           <div className="mx-auto w-full max-w-[42rem] px-6 py-12 lg:py-16">
             <main>{children}</main>
-            <footer className="mt-20 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-neutral-200 pt-6 text-[0.8rem] text-neutral-400 dark:border-neutral-800">
+            <footer className="mt-20 flex flex-wrap items-center gap-x-4 gap-y-2 border-t pt-6 text-[0.8rem] text-neutral-400">
               <span>
                 © {new Date().getFullYear()} {site.author}
               </span>

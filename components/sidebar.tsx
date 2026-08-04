@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { site } from "@/lib/site";
 import { SearchDialog } from "@/components/search-dialog";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const NAV = [
   { href: "/posts", label: "글" },
@@ -63,7 +64,7 @@ export function Sidebar() {
           <kbd className="font-mono text-[0.72rem] text-neutral-400">⌘K</kbd>
         </button>
 
-        <div className="mt-auto hidden text-[0.8rem] text-neutral-400 lg:block">
+        <div className="mt-auto hidden items-center gap-2 text-[0.8rem] text-neutral-400 lg:flex">
           <a
             href={site.github}
             target="_blank"
@@ -72,13 +73,16 @@ export function Sidebar() {
           >
             GitHub
           </a>
-          <span className="mx-2">·</span>
+          <span>·</span>
           <a
             href="/rss.xml"
             className="transition-colors hover:text-neutral-600 dark:hover:text-neutral-300"
           >
             RSS
           </a>
+          <span className="ml-auto">
+            <ThemeToggle />
+          </span>
         </div>
       </aside>
 

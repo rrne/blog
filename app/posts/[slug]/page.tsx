@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote-client/rsc";
 import { getPost, getPosts, getSeriesNeighbors } from "@/lib/posts";
 import { mdxOptions } from "@/lib/mdx";
+import { Badge } from "@/components/ui/badge";
 
 export function generateStaticParams() {
   return getPosts().map((post) => ({ slug: post.slug }));
@@ -97,12 +98,9 @@ export default async function PostPage({ params }: PageProps<"/posts/[slug]">) {
       {post.tags.length > 0 && (
         <footer className="mt-10 flex flex-wrap gap-2">
           {post.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full border border-neutral-200 px-2.5 py-0.5 text-[0.76rem] text-neutral-500 dark:border-neutral-800"
-            >
+            <Badge key={tag} variant="secondary" className="font-normal">
               {tag}
-            </span>
+            </Badge>
           ))}
         </footer>
       )}
