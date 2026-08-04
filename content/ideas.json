@@ -1,0 +1,68 @@
+{
+  "$comment": "글감 백로그. score는 포폴 가치(1-10). status: queued | drafting | drafted | published | parked",
+  "ideas": [
+    {
+      "id": "dup-reservation-single-payment",
+      "title": "단일 결제로 예약이 2건 생겼다",
+      "angle": "결제-예약 정합성은 UNIQUE 제약 하나로 끝나지 않는다. 유령 레코드가 남아 알림은 발송되고 앱에는 결제내역이 없던 사례.",
+      "score": 10,
+      "status": "queued",
+      "sensitivity": "high",
+      "notes": "실제 예약번호·회원명 반드시 제거. 플랫폼명 익명화."
+    },
+    {
+      "id": "silent-failure-and-gates",
+      "title": "노출 조건이 4중 AND였다 — 하나 빠지면 에러 없이 사라진다",
+      "angle": "조용한 실패가 예외보다 나쁜 이유. 운영자가 '왜 안 보이냐'고 묻는 버그의 구조적 원인과 자가진단 API로의 해결.",
+      "score": 10,
+      "status": "queued",
+      "sensitivity": "medium",
+      "notes": "게이트 구조는 일반화 가능. 지점명·필드명 익명화."
+    },
+    {
+      "id": "misdiagnosis-anatomy",
+      "title": "근본 원인은 없는 컬럼이었다",
+      "angle": "모두가 테이블명 오타라고 믿었던 알림 누락. 그럴듯한 가설이 어떻게 틀리는지에 대한 해부.",
+      "score": 9,
+      "status": "queued",
+      "sensitivity": "medium",
+      "notes": "컬럼명·템플릿코드 익명화."
+    },
+    {
+      "id": "measurement-beats-code-reading",
+      "title": "코드로 의심한 3건이 실측에서 전부 0건이었다",
+      "angle": "정적 분석의 한계. 고치기 전에 재현·집계를 먼저 하면 공수의 대부분이 사라진다.",
+      "score": 9,
+      "status": "queued",
+      "sensitivity": "medium",
+      "notes": "prod 수치는 자리수만 유지하거나 비율로 환산."
+    },
+    {
+      "id": "ai-maintenance-guardrails",
+      "title": "AI에 유지보수를 위임하며 그은 선",
+      "angle": "상태 변경은 API 경로로만, 정산 도메인은 자동화 금지. 실제로 운영해보고 정한 가드레일.",
+      "score": 9,
+      "status": "queued",
+      "sensitivity": "low",
+      "notes": "방법론 위주라 민감도 낮음. 우선 작성 후보."
+    },
+    {
+      "id": "verify-before-scoping",
+      "title": "수정 규모를 추정하기 전에 통과해야 하는 3개의 게이트",
+      "angle": "필드는 이름 말고 실값을 SELECT, 이미 고쳐졌는지 git log로 확인, 분포를 집계한 뒤 공수 산정.",
+      "score": 8,
+      "status": "drafting",
+      "sensitivity": "low",
+      "notes": "방법론 위주. 오판 사례는 익명화."
+    },
+    {
+      "id": "draft-only-automation",
+      "title": "이 블로그는 초안까지만 자동화했다",
+      "angle": "발행을 사람이 쥐고 있는 이유, draft 플래그를 이중 안전장치로 쓰는 구조.",
+      "score": 7,
+      "status": "published",
+      "sensitivity": "none",
+      "notes": "hello.mdx로 발행됨."
+    }
+  ]
+}

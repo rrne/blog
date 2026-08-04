@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # 사내 고유명사가 남아있으면 여기서 머지가 막힌다
+      - name: 민감정보 검사
+        run: node scripts/sanitize-check.mjs
+
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build
