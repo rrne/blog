@@ -15,12 +15,15 @@ export type PostMeta = {
   readingMinutes: number
   series: string | null
   seriesOrder: number
+  seriesDescription: string
 }
 
 export type Post = PostMeta & { content: string }
 
 export type Series = {
   name: string
+  /** 시리즈 소개. 어느 글에든 seriesDescription을 적으면 그 값을 쓴다 */
+  description: string
   posts: PostMeta[]
   /** 시리즈의 첫 글 발행일 — 시리즈 목록 정렬에 쓴다 */
   startedAt: string
@@ -35,6 +38,7 @@ type Frontmatter = {
   draft?: boolean
   series?: string
   seriesOrder?: number
+  seriesDescription?: string
 }
 
 function readPostFile(fileName: string): Post {
@@ -56,6 +60,7 @@ function readPostFile(fileName: string): Post {
     readingMinutes: Math.max(1, Math.round(readingTime(content).minutes)),
     series: fm.series ?? null,
     seriesOrder: fm.seriesOrder ?? 0,
+    seriesDescription: fm.seriesDescription ?? '',
     content,
   }
 }
@@ -71,6 +76,7 @@ function toMeta(post: Post): PostMeta {
     readingMinutes: post.readingMinutes,
     series: post.series,
     seriesOrder: post.seriesOrder,
+    seriesDescription: post.seriesDescription,
   }
 }
 
@@ -109,16 +115,18 @@ export function getSeriesList(): Series[] {
 
   return [...grouped.entries()]
     .map(([name, posts]) => {
+      // 1편부터 읽히도록 날짜 오름차순. 같은 날 발행된 편은 seriesOrder로 가린다
       const ordered = [...posts].sort((a, b) =>
-        a.seriesOrder !== b.seriesOrder
-          ? a.seriesOrder - b.seriesOrder
-          : a.date < b.date
+        a.date !== b.date
+          ? a.date < b.date
             ? -1
-            : 1,
+            : 1
+          : a.seriesOrder - b.seriesOrder,
       )
       const dates = posts.map((p) => p.date).sort()
       return {
         name,
+        description: posts.find((p) => p.seriesDescription)?.seriesDescription ?? '',
         posts: ordered,
         startedAt: dates[0],
         updatedAt: dates[dates.length - 1],

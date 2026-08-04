@@ -12,9 +12,11 @@ export default function PostsPage() {
 
   return (
     <div>
-      <header className="pb-8">
-        <h1 className="text-[1.2rem] font-semibold tracking-tight">모든 글</h1>
-        <p className="mt-1.5 text-[0.85rem] text-neutral-500">{posts.length}편</p>
+      <header className="pb-6">
+        <h1 className="text-[1.2rem] font-semibold tracking-tight">모든 노트</h1>
+        <p className="mt-1.5 font-mono text-[0.8rem] text-neutral-400">
+          {posts.length}편
+        </p>
       </header>
 
       {posts.length > 0 ? (
