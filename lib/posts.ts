@@ -13,9 +13,19 @@ export type PostMeta = {
   tags: string[]
   draft: boolean
   readingMinutes: number
+  series: string | null
+  seriesOrder: number
 }
 
 export type Post = PostMeta & { content: string }
+
+export type Series = {
+  name: string
+  posts: PostMeta[]
+  /** 시리즈의 첫 글 발행일 — 시리즈 목록 정렬에 쓴다 */
+  startedAt: string
+  updatedAt: string
+}
 
 type Frontmatter = {
   title?: string
@@ -23,6 +33,8 @@ type Frontmatter = {
   date?: string
   tags?: string[]
   draft?: boolean
+  series?: string
+  seriesOrder?: number
 }
 
 function readPostFile(fileName: string): Post {
@@ -42,7 +54,23 @@ function readPostFile(fileName: string): Post {
     tags: fm.tags ?? [],
     draft: fm.draft ?? false,
     readingMinutes: Math.max(1, Math.round(readingTime(content).minutes)),
+    series: fm.series ?? null,
+    seriesOrder: fm.seriesOrder ?? 0,
     content,
+  }
+}
+
+function toMeta(post: Post): PostMeta {
+  return {
+    slug: post.slug,
+    title: post.title,
+    description: post.description,
+    date: post.date,
+    tags: post.tags,
+    draft: post.draft,
+    readingMinutes: post.readingMinutes,
+    series: post.series,
+    seriesOrder: post.seriesOrder,
   }
 }
 
@@ -61,21 +89,64 @@ function isVisible(post: Post): boolean {
 }
 
 export function getPosts(): PostMeta[] {
-  return allPosts()
-    .filter(isVisible)
-    .map((post) => ({
-      slug: post.slug,
-      title: post.title,
-      description: post.description,
-      date: post.date,
-      tags: post.tags,
-      draft: post.draft,
-      readingMinutes: post.readingMinutes,
-    }))
+  return allPosts().filter(isVisible).map(toMeta)
 }
 
 export function getPost(slug: string): Post | null {
   return allPosts().find((p) => p.slug === slug && isVisible(p)) ?? null
+}
+
+/** 시리즈는 별도 데이터가 아니라 frontmatter에서 파생시킨다 (동기화 어긋남 방지) */
+export function getSeriesList(): Series[] {
+  const grouped = new Map<string, PostMeta[]>()
+
+  for (const post of getPosts()) {
+    if (!post.series) continue
+    const list = grouped.get(post.series) ?? []
+    list.push(post)
+    grouped.set(post.series, list)
+  }
+
+  return [...grouped.entries()]
+    .map(([name, posts]) => {
+      const ordered = [...posts].sort((a, b) =>
+        a.seriesOrder !== b.seriesOrder
+          ? a.seriesOrder - b.seriesOrder
+          : a.date < b.date
+            ? -1
+            : 1,
+      )
+      const dates = posts.map((p) => p.date).sort()
+      return {
+        name,
+        posts: ordered,
+        startedAt: dates[0],
+        updatedAt: dates[dates.length - 1],
+      }
+    })
+    .sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1))
+}
+
+export function getSeries(name: string): Series | null {
+  return getSeriesList().find((s) => s.name === name) ?? null
+}
+
+/** 같은 시리즈 안에서의 이전/다음 글 */
+export function getSeriesNeighbors(post: PostMeta): {
+  series: Series | null
+  prev: PostMeta | null
+  next: PostMeta | null
+} {
+  if (!post.series) return { series: null, prev: null, next: null }
+  const series = getSeries(post.series)
+  if (!series) return { series: null, prev: null, next: null }
+
+  const i = series.posts.findIndex((p) => p.slug === post.slug)
+  return {
+    series,
+    prev: i > 0 ? series.posts[i - 1] : null,
+    next: i >= 0 && i < series.posts.length - 1 ? series.posts[i + 1] : null,
+  }
 }
 
 export function getAllTags(): { tag: string; count: number }[] {

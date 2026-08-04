@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { site } from "@/lib/site";
+import { Sidebar } from "@/components/sidebar";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,32 +14,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ko" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">
-        <div className="mx-auto flex min-h-dvh w-full max-w-[44rem] flex-col px-6">
-          <header className="flex items-baseline justify-between py-10">
-            <Link href="/" className="text-[0.95rem] font-medium tracking-tight">
-              {site.author}
-            </Link>
-            <nav className="flex gap-5 text-[0.85rem] text-neutral-500">
-              <Link href="/posts" className="transition-colors hover:text-neutral-950 dark:hover:text-neutral-50">
-                Writing
-              </Link>
-              <a
-                href={site.github}
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:text-neutral-950 dark:hover:text-neutral-50"
-              >
-                GitHub
-              </a>
-            </nav>
-          </header>
-
-          <main className="flex-1">{children}</main>
-
-          <footer className="py-14 text-[0.8rem] text-neutral-400">
-            © {new Date().getFullYear()} {site.author}
-          </footer>
+      <body className="min-h-full">
+        <Sidebar />
+        <div className="lg:pl-60">
+          <div className="mx-auto w-full max-w-[42rem] px-6 py-12 lg:py-16">
+            <main>{children}</main>
+            <footer className="mt-20 text-[0.8rem] text-neutral-400">
+              © {new Date().getFullYear()} {site.author}
+            </footer>
+          </div>
         </div>
       </body>
     </html>

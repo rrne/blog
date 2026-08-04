@@ -112,6 +112,17 @@ body {
   border-color: color-mix(in oklab, currentColor 12%, transparent);
 }
 
+/* rehype-pretty-code는 색을 --shiki-light/--shiki-dark 변수로만 내보낸다.
+   실제 색으로 적용하는 건 이 규칙의 몫이다 (없으면 흑백으로 렌더된다). */
+.prose pre span {
+  color: var(--shiki-light);
+}
+@media (prefers-color-scheme: dark) {
+  .prose pre span {
+    color: var(--shiki-dark);
+  }
+}
+
 /* rehype-pretty-code: 라인 하이라이트 */
 .prose [data-highlighted-line] {
   background: color-mix(in oklab, currentColor 7%, transparent);

@@ -5,6 +5,6 @@ export const site = {
   author: "Grace",
   description:
     "프로덕션에서 실제로 터진 것과 그 근본 원인을 기록합니다. 예약, 결제, 정산 도메인.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3011",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3012",
   github: "https://github.com/rrne",
 } as const;
