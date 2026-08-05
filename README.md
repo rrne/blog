@@ -59,6 +59,23 @@ CI(`.github/workflows/ci.yml`)가 PR마다 이 검사 → typecheck → lint →
 `content/ideas.json`이 백로그다. `score`는 포폴 가치(1–10),
 `sensitivity`는 익명화 난이도, `status`는 `queued → drafting → drafted → published`.
 
+## 전 페이지 정적 생성 (SSG)
+
+블로그는 모든 방문자에게 같은 화면이고 자주 바뀌지 않으므로, 전 페이지를
+빌드 시점에 HTML로 만든다. 응답이 CDN에서 나오고 서버 실행 비용이 들지 않는다.
+
+```bash
+npm run build && npm run check:static
+```
+
+App Router는 동적 기능(`cookies()`, `headers()`, `searchParams`, `no-store`
+fetch)을 쓰지 않으면 기본이 정적이다. 문제는 **정적이 깨질 때 조용하다는 것** —
+빌드는 성공하고 사이트도 동작하지만 CDN 캐싱을 잃는다. `check:static`이
+프리렌더되지 않은 라우트를 찾아 빌드를 실패시킨다. CI에 포함돼 있다.
+
+`output: "export"`는 쓰지 않는다. Vercel의 이미지 최적화와 헤더 기능을
+유지하려고 — 대신 위 검증으로 같은 보장을 얻는다.
+
 ## 배포
 
 main에 push하면 Vercel이 프로덕션 배포한다. PR은 프리뷰 배포가 붙는다.

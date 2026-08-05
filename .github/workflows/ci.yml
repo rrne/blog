@@ -25,3 +25,8 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run build
+
+      # 블로그는 전 페이지가 정적이어야 한다. 동적 렌더링이 끼어들면 조용히
+      # CDN 캐싱을 잃으므로 빌드는 성공해도 여기서 막는다
+      - name: 정적 생성 검증
+        run: npm run check:static
