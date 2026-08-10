@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { PostMeta } from "@/lib/posts";
+import { PostCover } from "@/components/cover";
 
 /** 홈은 연도를 생략해 밀도를 높이고(MM-DD), 목록 페이지는 전체 날짜를 보여준다 */
 function shortDate(iso: string): string {
@@ -50,28 +50,6 @@ export function PostList({
   );
 }
 
-/** 피처드 카드 우측의 장식 도식 — 참고 사이트의 노드 다이어그램 스타일 */
-function FeaturedDiagram() {
-  return (
-    <svg
-      viewBox="0 0 150 92"
-      aria-hidden
-      focusable="false"
-      className="block h-auto w-full"
-    >
-      <g className="stroke-accent-500 fill-none" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="40" y1="46" x2="62" y2="20" />
-        <line x1="40" y1="46" x2="62" y2="46" />
-        <line x1="40" y1="46" x2="62" y2="72" />
-      </g>
-      <rect x="12" y="34" width="28" height="24" rx="5" className="fill-paper-100 stroke-line" />
-      <rect x="62" y="9" width="76" height="20" rx="5" className="fill-accent-50 stroke-accent-500" />
-      <rect x="62" y="36" width="76" height="20" rx="5" className="fill-accent-50 stroke-accent-500" />
-      <rect x="62" y="63" width="76" height="20" rx="5" className="fill-accent-50 stroke-accent-500" />
-    </svg>
-  );
-}
-
 export function FeaturedPost({ post }: { post: PostMeta }) {
   return (
     <Link
@@ -92,19 +70,9 @@ export function FeaturedPost({ post }: { post: PostMeta }) {
         </p>
       </div>
       <div className="hidden w-[150px] max-w-full md:block">
-        {post.thumbnail ? (
-          <div className="relative aspect-[1.91/1] overflow-hidden rounded-[6px] bg-paper-100">
-            <Image
-              src={post.thumbnail}
-              alt=""
-              fill
-              sizes="150px"
-              className="object-cover"
-            />
-          </div>
-        ) : (
-          <FeaturedDiagram />
-        )}
+        <div className="relative aspect-[1.91/1] overflow-hidden rounded-[6px] bg-paper-100">
+          <PostCover post={post} sizes="150px" compact />
+        </div>
       </div>
     </Link>
   );
