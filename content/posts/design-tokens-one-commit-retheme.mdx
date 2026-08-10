@@ -1,0 +1,90 @@
+---
+title: "액센트 색을 전부 지우는 데 커밋 하나면 충분했다"
+description: "블로그 전체를 시안 액센트에서 모노톤으로 바꾸는 작업이 왜 파일 한 곳 수정으로 끝났는지 — 시맨틱 토큰 계층이 실제로 일하는 순간."
+date: "2026-08-10"
+tags: ["design-system", "css", "design-tokens"]
+draft: true
+---
+
+이 블로그는 처음에 시안(cyan) 액센트로 만들었다. 네비게이션의 활성 상태,
+본문 링크, 시리즈 배지, 읽기 진행바 — 수십 곳이 시안을 쓰고 있었다.
+
+그러다 방향을 바꿨다. 색을 전부 걷어내고 순수 흑백으로, 위계는 굵기와
+여백으로만 만드는 모노톤. 컴포넌트를 하나하나 고쳐야 했다면 반나절짜리
+작업이었을 것이다. 실제로는 **CSS 파일 한 곳을 고치는 커밋 하나**로 끝났다.
+
+## 컴포넌트는 색을 모른다
+
+비결은 처음부터 컴포넌트가 색상 값을 직접 쓰지 않게 해둔 것이다.
+컴포넌트는 `text-accent-600` 같은 **역할 이름**만 알고, 그 이름이 실제로
+어떤 색인지는 CSS 변수 계층이 정한다.
+
+```css
+:root {
+  --accent-600: #0e7490; /* 시안이던 시절 */
+}
+```
+
+모노톤 전환은 이 값이 가리키는 곳을 바꾸는 일이었다.
+
+```css
+:root {
+  --ink-950: #111111;
+  /* accent 토큰은 이름만 남기고 전부 잉크색으로 수렴시킨다 */
+  --accent-600: var(--ink-950);
+  --accent-50: var(--paper-100);
+}
+```
+
+`text-accent-600`을 쓰는 수십 곳은 한 줄도 바뀌지 않았다. 이름은 그대로
+두고 실체만 바꿨기 때문이다.
+
+## 이게 디자인 토큰 계층이다
+
+디자인 시스템 문서들이 말하는 토큰 구조는 보통 세 층이다.
+
+| 계층 | 역할 | 예 |
+|---|---|---|
+| Primitive | 순수한 값. 맥락 없음 | `#111111`, `4px` |
+| Semantic | 값에 역할을 부여 | `--accent-600`, `--color-text-primary` |
+| Component | 특정 컴포넌트 전용 | `--button-bg` |
+
+컴포넌트가 primitive를 직접 쓰면(`color: #0e7490`) 테마 전환·리브랜딩
+때마다 전수 수색을 해야 한다. semantic을 거치면 **의미와 값이 분리**돼서,
+값 교체가 선언 한 곳의 일이 된다. 다크모드가 공짜로 따라오는 것도 같은
+원리다 — `.dark`에서 primitive만 다시 정의하면 semantic은 건드릴 필요가
+없다.
+
+## 규칙을 하나 어겼다, 의도적으로
+
+토큰 가이드들은 보통 "semantic은 primitive만 참조하라"고 말한다.
+semantic이 semantic을 참조하기 시작하면 연쇄가 생겨서 값 하나를 추적하는
+데 세 단계를 거슬러 올라가야 하기 때문이다.
+
+위 코드의 `--accent-600: var(--ink-950)`은 이 규칙 위반이다. semantic이
+semantic을 가리킨다. 그런데도 이렇게 한 이유가 있다.
+
+- 이 전환은 **임시일 수 있다.** 나중에 포인트 색을 되살리고 싶으면
+  `--accent-600`에 새 primitive를 넣기만 하면 된다. 이름을 지워버렸다면
+  그 선택지도 사라진다.
+- 잉크색이 바뀌면(예: 다크모드 대비 조정) accent도 자동으로 따라와야
+  한다. 지금 둘은 같은 개념이니까.
+
+규칙은 연쇄가 **관리 안 되는 상태로 늘어나는 것**을 막으려는 것이지,
+두 단계 참조 자체가 죄는 아니다. 왜 어기는지 설명할 수 있으면 어겨도
+된다고 생각한다.
+
+## 남은 것
+
+색만 토큰으로 관리하고 있고, 간격과 타이포그래피는 아직 유틸리티
+클래스에 흩어져 있다. 색 전환이 커밋 하나였던 경험을 하고 나니
+나머지도 토큰으로 끌어올릴 동기가 생겼다 — 다음 리디자인 때 갚을
+빚으로 적어둔다.
+
+---
+
+참고한 글들:
+
+- [Design tokens — Design good practices](https://goodpractices.design/articles/design-tokens)
+- [Design Tokens and Theming Architecture](https://sujeet.pro/articles/design-tokens-and-theming)
+- [The developer's guide to design tokens and CSS variables](https://penpot.app/blog/the-developers-guide-to-design-tokens-and-css-variables/)

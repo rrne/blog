@@ -1,0 +1,93 @@
+---
+title: "frontmatter는 any로 들어온다 — 경계에서 한 번만 의심하기"
+description: "파일에서 읽은 데이터는 타입스크립트가 지켜주지 않는다. 검사를 여기저기 흩뿌리는 대신, 경계에서 한 번 파싱하고 안쪽에서는 타입을 믿는 구조."
+date: "2026-08-10"
+tags: ["typescript", "architecture"]
+draft: true
+---
+
+이 블로그의 글은 MDX 파일이고, 제목과 날짜는 frontmatter에 있다.
+`gray-matter`로 파일을 읽으면 이런 값이 나온다.
+
+```ts
+const { data, content } = matter(raw);
+// data의 타입: { [key: string]: any }
+```
+
+`any`다. 당연하다 — 파일 안에 뭐가 적혀 있을지 라이브러리가 알 방법이
+없다. 문제는 이 `any`가 애플리케이션 안쪽으로 흘러 들어가는 순간부터다.
+목록 정렬에서 `date`가 `undefined`라 터지고, 메타태그에서 `title`이
+비어 나오고 — **터지는 곳과 원인이 있는 곳이 멀어진다.**
+
+## 검사를 흩뿌리면 생기는 일
+
+처음 떠오르는 방어는 쓰는 곳마다 확인하는 것이다.
+
+```ts
+// 목록에서
+if (post.title) { ... }
+// 메타태그에서
+title: post.title ?? "제목 없음",
+```
+
+이 방식의 진짜 비용은 코드 중복이 아니라, **"이 값은 검사된 값인가?"를
+아무도 확답할 수 없게 되는 것**이다. 검사한 뒤에도 타입은 여전히
+`string | undefined`라서 컴파일러도 도와주지 못한다.
+
+## 경계에서 한 번만 의심한다
+
+그래서 이 블로그는 파일을 읽는 함수 하나에서만 의심한다.
+
+```ts
+function readPostFile(fileName: string): Post {
+  const { data, content } = matter(raw);
+  const fm = data as Frontmatter; // 후보일 뿐, 아직 믿지 않는다
+
+  if (!fm.title) throw new Error(`${fileName}: frontmatter에 title이 없습니다`);
+  if (!fm.date) throw new Error(`${fileName}: frontmatter에 date가 없습니다`);
+
+  return {
+    title: fm.title,          // 여기서부터 string
+    date: fm.date,
+    tags: fm.tags ?? [],      // 선택 필드는 기본값을 확정
+    draft: fm.draft ?? false,
+    // ...
+  };
+}
+```
+
+반환 타입 `Post`에는 옵셔널이 없다. 이 함수를 통과했다는 사실 자체가
+"검사 완료"의 증명이라, 안쪽 코드는 `post.title`을 그냥 쓴다. 목록도,
+메타태그도, RSS도 물음표 없이.
+
+이 패턴에는 이름이 있다 — **"Parse, don't validate."** 검증(validate)은
+불리언만 남기고 타입은 그대로지만, 파싱(parse)은 통과한 데이터를
+**더 정확한 타입으로 바꿔서** 그 뒤의 모든 코드가 컴파일러의 보호를
+받게 한다.
+
+## 실패는 시끄럽게
+
+한 가지 더 — 검사에 실패했을 때 기본값으로 조용히 넘어가지 않고
+throw한다. 이 블로그의 빌드는 frontmatter가 깨진 파일이 있으면 실패한다.
+
+제목 없는 글이 "제목 없음"으로 배포되는 것과 빌드가 터지는 것 중
+후자가 낫다. 조용한 폴백은 발견을 미룰 뿐이고, 발견이 늦은 문제가
+가장 비싸다.
+
+## zod를 안 쓴 이유
+
+경계 파싱을 진지하게 하면 [zod](https://zod.dev) 같은 스키마 라이브러리가
+정석이다. 스키마 하나로 파서와 타입을 동시에 얻는다.
+
+여기서 안 쓴 건 필드가 아홉 개고 검사가 두 줄이기 때문이다. 의존성
+하나의 값을 하려면 스키마가 손 검사보다 눈에 띄게 복잡해야 한다.
+API 응답처럼 구조가 깊고 자주 바뀌는 경계라면 바로 zod를 꺼낼 것이다 —
+도구의 문제가 아니라 경계의 크기 문제다.
+
+---
+
+참고한 글들:
+
+- [Parse, don't validate (원문 개념)](https://contemplating.dev/posts/parse-dont-validate/)
+- [Parse, don't validate, incoming data in TypeScript](https://itnext.io/parse-dont-validate-incoming-data-in-typescript-d6d5bfb092c8)
+- [Applying Type-driven Design in Rust and TypeScript](https://www.luiscardoso.dev/blog/parsing-data-with-rust-typescript)
