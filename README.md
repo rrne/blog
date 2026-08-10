@@ -1,7 +1,6 @@
 # hey-grace.dev
 
-예약·결제·정산 도메인에서 겪은 프로덕션 이슈와 근본 원인을 기록하는 블로그.
-포트폴리오 겸용.
+프로덕션에서 터진 문제와 그 근본 원인을 기록하는 블로그. 포트폴리오 겸용.
 
 ## 스택
 
@@ -11,8 +10,27 @@ Next 16 (App Router, Turbopack) · React 19 · Tailwind 4 · MDX
 
 ```bash
 npm install
-npm run dev        # http://localhost:3011
+npm run dev        # http://localhost:3012
 ```
+
+## 다른 컴퓨터에서 이어쓰기
+
+모든 상태(글·글감 큐·스크립트·게이트)가 리포 안에 있다. 클론하면 끝 —
+단, 두 가지는 머신 설정이라 따라오지 않는다.
+
+```bash
+git clone https://github.com/rrne/blog.git && cd blog
+
+# 1) 커밋 신원 — 안 하면 그 머신의 기본(회사?) 이메일로 찍힌다
+git config user.name rrne
+git config user.email hey.grace.dev@gmail.com
+
+# 2) push 인증 — gh auth login (rrne 계정) 또는 SSH 키
+npm install && npm run dev
+```
+
+발행은 frontmatter `draft: false` 후 push — Vercel이 자동 배포하고,
+CI 게이트는 GitHub에서 돌므로 어느 머신이든 동일하게 지켜준다.
 
 ## 글 쓰기
 
