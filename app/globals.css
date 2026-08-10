@@ -4,78 +4,135 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* blog.sangwook.dev 실측 팔레트 — paper(배경)/ink(글자)/accent(시안) */
+:root {
+  --paper-50: #ffffff;
+  --paper-100: #f7f7f5;
+  --paper-200: #ededea;
+  --paper-300: #e0e0dc;
+  --ink-950: #1a1a1a;
+  --ink-700: #4b5563;
+  --ink-600: #6b7280;
+  --ink-500: #656c77;
+  --ink-400: #9096a0;
+  --ink-border: #0000001a;
+  --ink-border-strong: #00000033;
+  --accent-50: #0891b21a;
+  --accent-500: #0891b2;
+  --accent-600: #0e7490;
+  --accent-700: #155e75;
+  --accent-900: #083344;
+
+  --radius: 0.625rem;
+}
+
+.dark {
+  --paper-50: #0b0d10;
+  --paper-100: #14171c;
+  --paper-200: #1b1f26;
+  --paper-300: #242931;
+  --ink-950: #e6e8eb;
+  --ink-700: #a5acb5;
+  --ink-600: #8b919a;
+  --ink-500: #8b919a;
+  --ink-400: #6d737c;
+  --ink-border: #ffffff1f;
+  --ink-border-strong: #ffffff38;
+  --accent-50: #67e8f924;
+  --accent-500: #67e8f9;
+  --accent-600: #67e8f9;
+  --accent-700: #a5f3fc;
+  --accent-900: #67e8f9;
+}
+
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
+  --color-paper-50: var(--paper-50);
+  --color-paper-100: var(--paper-100);
+  --color-paper-200: var(--paper-200);
+  --color-paper-300: var(--paper-300);
+  --color-ink-950: var(--ink-950);
+  --color-ink-700: var(--ink-700);
+  --color-ink-600: var(--ink-600);
+  --color-ink-500: var(--ink-500);
+  --color-ink-400: var(--ink-400);
+  --color-line: var(--ink-border);
+  --color-line-strong: var(--ink-border-strong);
+  --color-accent-50: var(--accent-50);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
+  --color-accent-900: var(--accent-900);
+
+  /* shadcn 시맨틱 토큰을 같은 팔레트로 매핑 (Command 다이얼로그 등) */
+  --color-background: var(--paper-50);
+  --color-foreground: var(--ink-950);
+  --color-card: var(--paper-50);
+  --color-card-foreground: var(--ink-950);
+  --color-popover: var(--paper-50);
+  --color-popover-foreground: var(--ink-950);
+  --color-primary: var(--accent-600);
+  --color-primary-foreground: var(--paper-50);
+  --color-secondary: var(--paper-100);
+  --color-secondary-foreground: var(--ink-700);
+  --color-muted: var(--paper-100);
+  --color-muted-foreground: var(--ink-500);
+  --color-accent: var(--paper-100);
+  --color-accent-foreground: var(--ink-950);
+  --color-destructive: #dc2626;
+  --color-border: var(--ink-border);
+  --color-input: var(--ink-border);
+  --color-ring: var(--accent-600);
+
+  --font-sans: var(--font-pretendard);
+  --font-mono: var(--font-jetbrains);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 body {
-  font-family: var(--font-sans), system-ui, sans-serif;
+  background: var(--paper-50);
+  color: var(--ink-950);
+  font-family: var(--font-pretendard), Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR",
+    sans-serif;
 }
 
-/* 본문 타이포그래피 — 색이 아니라 크기·여백으로 위계를 만든다 */
+/* ── 본문 타이포그래피 (prose-w 680px 기준) ── */
 .prose {
-  font-size: 0.975rem;
-  line-height: 1.75;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink-950);
 }
 .prose > * + * {
-  margin-top: 1.15em;
+  margin-top: 1.1em;
 }
 .prose h2 {
-  margin-top: 2.4em;
-  margin-bottom: 0.6em;
-  font-size: 1.1rem;
+  margin-top: 2.3em;
+  margin-bottom: 0.55em;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.01em;
+  color: var(--accent-900);
 }
 .prose h3 {
-  margin-top: 1.9em;
+  margin-top: 1.8em;
   margin-bottom: 0.5em;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 600;
+  color: var(--accent-900);
+}
+.prose h2 a,
+.prose h3 a {
+  color: inherit;
+  text-decoration: none;
 }
 .prose a {
+  color: var(--accent-600);
   text-decoration: underline;
-  text-decoration-color: color-mix(in oklab, currentColor 30%, transparent);
+  text-decoration-color: color-mix(in oklab, var(--accent-600) 40%, transparent);
   text-underline-offset: 3px;
 }
 .prose strong {
@@ -96,146 +153,65 @@ body {
 }
 .prose blockquote {
   padding-left: 1em;
-  border-left: 2px solid color-mix(in oklab, currentColor 15%, transparent);
-  color: color-mix(in oklab, currentColor 70%, transparent);
+  border-left: 2px solid var(--ink-border-strong);
+  color: var(--ink-600);
 }
 .prose :not(pre) > code {
   padding: 0.15em 0.35em;
-  border-radius: 0.25rem;
-  background: color-mix(in oklab, currentColor 8%, transparent);
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.875em;
+  border-radius: 5px;
+  background: var(--paper-100);
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.88em;
 }
 .prose pre {
   overflow-x: auto;
-  padding: 1rem 1.1rem;
-  border-radius: 0.5rem;
-  border: 1px solid color-mix(in oklab, currentColor 12%, transparent);
-  font-size: 0.85rem;
-  line-height: 1.65;
+  padding: 1.25rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--ink-border);
+  background: var(--paper-100);
+  font-size: 13px;
+  line-height: 1.7;
 }
 .prose pre code {
-  font-family: var(--font-mono), ui-monospace, monospace;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  background: transparent;
+  padding: 0;
 }
 .prose table {
   display: block;
   overflow-x: auto;
   width: 100%;
-  font-size: 0.9rem;
+  font-size: 14px;
   border-collapse: collapse;
 }
 .prose th,
 .prose td {
   padding: 0.5em 0.8em;
-  border: 1px solid color-mix(in oklab, currentColor 12%, transparent);
+  border: 1px solid var(--ink-border);
   text-align: left;
 }
 .prose th {
   font-weight: 600;
-  background: color-mix(in oklab, currentColor 4%, transparent);
+  background: var(--paper-100);
 }
 .prose hr {
   margin: 2.5em 0;
-  border-color: color-mix(in oklab, currentColor 12%, transparent);
+  border-color: var(--ink-border);
 }
 
-/* rehype-pretty-code는 색을 --shiki-light/--shiki-dark 변수로만 내보낸다.
-   실제 색으로 적용하는 건 이 규칙의 몫이다 (없으면 흑백으로 렌더된다). */
+/* rehype-pretty-code — 듀얼 테마는 CSS 변수로만 색을 내보내므로 여기서 적용 */
 .prose pre span {
   color: var(--shiki-light);
 }
 .dark .prose pre span {
   color: var(--shiki-dark);
 }
-
-/* rehype-pretty-code: 라인 하이라이트 */
 .prose [data-highlighted-line] {
-  background: color-mix(in oklab, currentColor 7%, transparent);
+  background: var(--accent-50);
 }
 .prose figcaption[data-rehype-pretty-code-title] {
   margin-bottom: -0.6em;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.78rem;
-  color: color-mix(in oklab, currentColor 55%, transparent);
-}
-
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  html {
-    @apply font-sans;
-  }
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--ink-500);
 }

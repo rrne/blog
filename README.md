@@ -80,5 +80,5 @@ fetch)을 쓰지 않으면 기본이 정적이다. 문제는 **정적이 깨질 
 
 main에 push하면 Vercel이 프로덕션 배포한다. PR은 프리뷰 배포가 붙는다.
 
-환경변수 `NEXT_PUBLIC_SITE_URL`이 메타데이터·RSS·sitemap의 절대 URL 기준이다
-(`.env.example` 참고).
+환경변수 `NEXT_PUBLIC_SITE_URL`이 메타데이터·sitemap의 절대 URL 기준이다
+(`.env.example` 참고). RSS는 두지 않는다.

@@ -8,8 +8,9 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="prose">
-      <h1 className="text-[1.2rem] font-semibold tracking-tight">About</h1>
+    <div className="mx-auto w-full max-w-[640px] px-5 pt-9 pb-12">
+      <div className="prose">
+      <h1 className="mb-2 text-[21px] font-bold text-accent-900">About</h1>
 
       <p>
         숙박 예약 플랫폼에서 예약·결제·정산 도메인을 다룹니다. 운영 중인 서비스의
@@ -41,6 +42,7 @@ export default function AboutPage() {
           GitHub
         </a>
       </p>
+      </div>
     </div>
   );
 }

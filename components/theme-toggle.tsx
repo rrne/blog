@@ -19,7 +19,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label="테마 전환 (라이트/다크)"
       title="테마 전환"
-      className="text-neutral-400 transition-colors hover:text-neutral-700 dark:hover:text-neutral-200"
+      className="inline-flex size-9 cursor-pointer items-center justify-center rounded-[6px] text-ink-600 transition-all hover:bg-paper-100 hover:text-ink-950"
     >
       <Moon className="inline-flex size-4 dark:hidden" />
       <Sun className="hidden size-4 dark:inline-flex" />

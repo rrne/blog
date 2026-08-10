@@ -10,60 +10,46 @@ export default function Home() {
   const rest = posts.filter((p) => p.slug !== featured?.slug);
 
   return (
-    <div>
-      <section className="max-w-[32rem] pb-14">
-        <h1 className="text-[1.3rem] font-semibold tracking-tight">
-          {site.author}
-        </h1>
-        <p className="mt-3 text-[0.94rem] leading-relaxed text-neutral-600 dark:text-neutral-400">
-          예약·결제·정산 도메인을 다루는 백엔드 엔지니어.
-          <br />
-          프로덕션에서 실제로 터진 것과 그 근본 원인을 기록합니다.
-        </p>
-        <div className="mt-4 flex gap-3 font-mono text-[0.78rem] text-neutral-400">
-          <a
-            href={site.github}
-            target="_blank"
-            rel="noreferrer"
-            className="transition-colors hover:text-neutral-700 dark:hover:text-neutral-200"
-          >
-            github
-          </a>
-          <a
-            href="/rss.xml"
-            className="transition-colors hover:text-neutral-700 dark:hover:text-neutral-200"
-          >
-            rss
-          </a>
+    <div className="px-5">
+      <div className="mx-auto w-full max-w-[640px] pt-9 pb-12">
+        <div className="mb-[30px]">
+          <h1 className="mb-2 text-[21px] font-bold text-accent-900">
+            {site.author}
+          </h1>
+          <p className="text-[14px] text-ink-600">
+            예약·결제·정산 도메인을 다루는 백엔드 엔지니어.
+            <br />
+            프로덕션에서 실제로 터진 것과 그 근본 원인을 기록합니다.
+          </p>
+          <div className="mt-3.5 flex flex-wrap gap-2">
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-line px-[11px] py-[3px] font-mono text-[12px] text-ink-600 transition-colors hover:border-line-strong hover:text-ink-950"
+            >
+              github
+            </a>
+          </div>
         </div>
-      </section>
 
-      {featured ? (
-        <>
-          <section className="border-t border-neutral-200 py-8 dark:border-neutral-800">
+        {featured ? (
+          <>
             <FeaturedPost post={featured} />
-          </section>
-
-          {rest.length > 0 && (
-            <section className="border-t border-neutral-200 pt-4 dark:border-neutral-800">
-              <PostList posts={rest.slice(0, 12)} dateFormat="short" />
-            </section>
-          )}
-
-          <div className="pt-6">
+            {rest.length > 0 && <PostList posts={rest.slice(0, 12)} dateFormat="short" />}
             <Link
               href="/posts"
-              className="text-[0.86rem] text-neutral-500 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50"
+              className="mt-3.5 inline-block text-[13px] text-accent-600 hover:underline"
             >
               모든 글 →
             </Link>
-          </div>
-        </>
-      ) : (
-        <p className="border-t border-neutral-200 py-10 text-[0.9rem] text-neutral-500 dark:border-neutral-800">
-          첫 글을 준비하고 있습니다.
-        </p>
-      )}
+          </>
+        ) : (
+          <p className="border-t border-line py-10 text-[14px] text-ink-500">
+            첫 글을 준비하고 있습니다.
+          </p>
+        )}
+      </div>
     </div>
   );
 }

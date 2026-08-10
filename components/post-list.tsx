@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { PostMeta } from "@/lib/posts";
 
-/** 홈은 연도를 생략해 밀도를 높이고, 목록 페이지는 전체 날짜를 보여준다 */
+/** 홈은 연도를 생략해 밀도를 높이고(MM-DD), 목록 페이지는 전체 날짜를 보여준다 */
 function shortDate(iso: string): string {
   return iso.slice(5);
 }
@@ -14,54 +14,74 @@ export function PostList({
   dateFormat?: "full" | "short";
 }) {
   return (
-    <ul>
+    <ol className="m-0 list-none p-0 [&>li:last-child>a]:border-b [&>li:last-child>a]:border-line">
       {posts.map((post) => (
         <li key={post.slug}>
           <Link
             href={`/posts/${post.slug}`}
-            className="group flex items-baseline justify-between gap-4 py-2.5"
+            className="flex items-baseline justify-between gap-4 border-t border-line px-0.5 py-3 text-[14px] text-ink-950 transition-colors hover:text-accent-600"
           >
-            <span className="text-[0.94rem] leading-snug group-hover:underline group-hover:decoration-neutral-300 group-hover:underline-offset-4">
+            <h3 className="min-w-0 font-normal">
               {post.title}
               {post.draft && (
-                <span className="ml-2 align-middle font-mono text-[0.68rem] uppercase tracking-wider text-amber-600">
+                <span className="ml-2 align-middle font-mono text-[11px] uppercase tracking-wider text-amber-600">
                   draft
                 </span>
               )}
-            </span>
-            <time
-              dateTime={post.date}
-              className="shrink-0 font-mono text-[0.76rem] text-neutral-400"
-            >
+            </h3>
+            <span className="shrink-0 font-mono text-[12px] tabular-nums text-ink-500">
               {dateFormat === "short" ? shortDate(post.date) : post.date}
-            </time>
+            </span>
           </Link>
         </li>
       ))}
-    </ul>
+    </ol>
+  );
+}
+
+/** 피처드 카드 우측의 장식 도식 — 참고 사이트의 노드 다이어그램 스타일 */
+function FeaturedDiagram() {
+  return (
+    <svg
+      viewBox="0 0 150 92"
+      aria-hidden
+      focusable="false"
+      className="block h-auto w-full"
+    >
+      <g className="stroke-accent-500 fill-none" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="40" y1="46" x2="62" y2="20" />
+        <line x1="40" y1="46" x2="62" y2="46" />
+        <line x1="40" y1="46" x2="62" y2="72" />
+      </g>
+      <rect x="12" y="34" width="28" height="24" rx="5" className="fill-paper-100 stroke-line" />
+      <rect x="62" y="9" width="76" height="20" rx="5" className="fill-accent-50 stroke-accent-500" />
+      <rect x="62" y="36" width="76" height="20" rx="5" className="fill-accent-50 stroke-accent-500" />
+      <rect x="62" y="63" width="76" height="20" rx="5" className="fill-accent-50 stroke-accent-500" />
+    </svg>
   );
 }
 
 export function FeaturedPost({ post }: { post: PostMeta }) {
   return (
-    <Link href={`/posts/${post.slug}`} className="group block">
-      <h3 className="text-[1.1rem] font-semibold leading-snug tracking-tight group-hover:underline group-hover:decoration-neutral-300 group-hover:underline-offset-4">
-        {post.title}
-        {post.draft && (
-          <span className="ml-2 align-middle font-mono text-[0.7rem] font-normal uppercase tracking-wider text-amber-600">
-            draft
-          </span>
+    <Link
+      href={`/posts/${post.slug}`}
+      className="mb-[26px] grid grid-cols-1 items-center gap-[18px] rounded-[10px] border border-line px-5 py-[18px] transition-colors hover:border-line-strong md:grid-cols-[minmax(0,1fr)_150px] [&:hover_h2]:text-accent-700"
+    >
+      <div className="min-w-0">
+        <h2 className="mt-2.5 mb-[5px] text-[16px] font-semibold text-accent-900 transition-colors">
+          {post.title}
+        </h2>
+        {post.description && (
+          <p className="line-clamp-2 text-[13px] text-ink-600">
+            {post.description}
+          </p>
         )}
-      </h3>
-      {post.description && (
-        <p className="mt-2.5 text-[0.9rem] leading-relaxed text-neutral-600 dark:text-neutral-400">
-          {post.description}
+        <p className="mt-2.5 font-mono text-[12px] text-ink-500">
+          {post.date} · {post.readingMinutes} min
         </p>
-      )}
-      <div className="mt-3 flex items-center gap-2 font-mono text-[0.76rem] text-neutral-400">
-        <time dateTime={post.date}>{post.date}</time>
-        <span aria-hidden>·</span>
-        <span>{post.readingMinutes} min</span>
+      </div>
+      <div className="hidden w-[150px] max-w-full md:block">
+        <FeaturedDiagram />
       </div>
     </Link>
   );

@@ -157,6 +157,20 @@ export function getSeriesNeighbors(post: PostMeta): {
   }
 }
 
+/** 발행 시간축 기준 이전/다음 글 (최신순 목록에서 prev=더 최신, next=더 과거가 아니라 읽기 흐름 기준: prev=이전에 나온 글) */
+export function getAdjacentPosts(slug: string): {
+  prev: PostMeta | null
+  next: PostMeta | null
+} {
+  const posts = getPosts() // 최신순
+  const i = posts.findIndex((p) => p.slug === slug)
+  if (i < 0) return { prev: null, next: null }
+  return {
+    prev: posts[i + 1] ?? null, // 더 오래된 글
+    next: posts[i - 1] ?? null, // 더 최신 글
+  }
+}
+
 export function getAllTags(): { tag: string; count: number }[] {
   const counts = new Map<string, number>()
   for (const post of getPosts()) {
