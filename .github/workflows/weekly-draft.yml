@@ -1,0 +1,58 @@
+name: Weekly draft PR
+
+# 매주 월요일 아침 7시(KST) 글감 큐에서 최상위 항목을 꺼내 초안 PR을 만든다.
+# 검토·집필·발행은 사람이 한다 — 이 워크플로우는 백지를 없애주는 것까지만.
+on:
+  schedule:
+    - cron: "0 22 * * 0" # 일 22:00 UTC = 월 07:00 KST
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: 글감 큐에서 초안 생성
+        id: gen
+        run: |
+          set +e
+          out=$(node scripts/new-post.mjs 2>&1)
+          code=$?
+          echo "$out"
+          if [ $code -ne 0 ]; then
+            echo "queued 글감이 없어 이번 주는 건너뜁니다."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          slug=$(echo "$out" | sed -n 's/초안 생성: content\/posts\/\(.*\)\.mdx/\1/p')
+          echo "slug=$slug" >> "$GITHUB_OUTPUT"
+
+      - name: 브랜치 생성 + PR
+        if: steps.gen.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SLUG: ${{ steps.gen.outputs.slug }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          branch="draft/${SLUG}"
+          git checkout -b "$branch"
+          git add content/
+          git commit -m "초안 스켈레톤: ${SLUG}"
+          git push -u origin "$branch"
+          gh pr create \
+            --title "초안: ${SLUG}" \
+            --body "$(printf '주간 자동 생성 초안입니다.\n\n- [ ] 본문 작성\n- [ ] npm run check (민감정보)\n- [ ] 발행 시점에 draft: false\n\ndraft: true 상태라 머지돼도 프로덕션에는 노출되지 않습니다.')" \
+            --base main --head "$branch"

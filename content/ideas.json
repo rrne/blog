@@ -36,6 +36,60 @@
       "status": "published",
       "sensitivity": "none",
       "notes": "블로그 리포 코드만 인용."
+    },
+    {
+      "id": "same-route-navigation-noop",
+      "title": "같은 곳으로 두 번 가려고 하면, 아무 데도 가지 않는다",
+      "angle": "SPA 동일 라우트 재진입 no-op. 상태의 원천을 하나로.",
+      "score": 8,
+      "status": "published",
+      "sensitivity": "medium",
+      "notes": "회사 작업 익명화 완료. 날짜=실제 작업 시기."
+    },
+    {
+      "id": "security-patch-ate-my-day",
+      "title": "보안 패치 하나 올리려다 하루가 갔다",
+      "angle": "의존성 업그레이드 연쇄와 revert 6회. 업그레이드는 혼자 탄다.",
+      "score": 8,
+      "status": "published",
+      "sensitivity": "medium",
+      "notes": "회사 작업 익명화 완료. 날짜=실제 작업 시기."
+    },
+    {
+      "id": "viewport-height-lies-in-webview",
+      "title": "모바일 웹뷰에서 화면 높이는 거짓말을 한다",
+      "angle": "100vh/dvh/svh/visualViewport. 티켓 하나에 PR 다섯 개.",
+      "score": 8,
+      "status": "published",
+      "sensitivity": "medium",
+      "notes": "회사 작업 익명화 완료. 날짜=실제 작업 시기."
+    },
+    {
+      "id": "calendar-six-week-month",
+      "title": "달력이 6주인 달에만 깨진다",
+      "angle": "달력 UI의 행 수 가변(4~6주) 엣지케이스. 그라데이션·높이가 6주에서만 무너진 사례.",
+      "score": 7,
+      "status": "queued",
+      "sensitivity": "medium",
+      "notes": "2025-07 실작업. 익명화 필요(medium)."
+    },
+    {
+      "id": "money-as-string",
+      "title": "금액을 문자열로 저장하면 정렬이 배신한다",
+      "angle": "콤마 포맷된 금액 문자열이 정렬·합계를 무너뜨림. 저장은 숫자, 표기는 렌더에서.",
+      "score": 7,
+      "status": "queued",
+      "sensitivity": "medium",
+      "notes": "2025-12 어드민 실작업. 익명화 필요(medium)."
+    },
+    {
+      "id": "og-images-at-build-time",
+      "title": "og:image를 빌드 시점에 굽기",
+      "angle": "next/og ImageResponse를 SSG로. 폰트를 리포에 커밋해 네트워크 의존 제거.",
+      "score": 7,
+      "status": "queued",
+      "sensitivity": "none",
+      "notes": "이 블로그 리포 작업. sensitivity none."
     }
   ]
 }
