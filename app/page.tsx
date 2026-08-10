@@ -17,9 +17,9 @@ export default function Home() {
             {site.author}
           </h1>
           <p className="text-[14px] text-ink-600">
-            숙박 예약 플랫폼의 고객 앱과 운영 어드민을 만드는 프론트엔드 엔지니어.
+            고객의 사용성을 데이터로 검증하는 프론트엔드 엔지니어.
             <br />
-            화면에서 DB까지 파고들어, 프로덕션에서 터진 문제의 근본 원인을 기록합니다.
+            디자인 시스템부터 화면 너머의 데이터 흐름까지, 문제의 근본 원인을 기록합니다.
           </p>
           <div className="mt-3.5 flex flex-wrap gap-2">
             <a
