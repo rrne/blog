@@ -11,6 +11,7 @@
   --paper-200: #ededea;
   --paper-300: #e0e0dc;
   --ink-950: #1a1a1a;
+  --ink-800: #3a3d42;
   --ink-700: #4b5563;
   --ink-600: #6b7280;
   --ink-500: #656c77;
@@ -32,6 +33,7 @@
   --paper-200: #1b1f26;
   --paper-300: #242931;
   --ink-950: #e6e8eb;
+  --ink-800: #c2c7ce;
   --ink-700: #a5acb5;
   --ink-600: #8b919a;
   --ink-500: #8b919a;
@@ -51,6 +53,7 @@
   --color-paper-200: var(--paper-200);
   --color-paper-300: var(--paper-300);
   --color-ink-950: var(--ink-950);
+  --color-ink-800: var(--ink-800);
   --color-ink-700: var(--ink-700);
   --color-ink-600: var(--ink-600);
   --color-ink-500: var(--ink-500);

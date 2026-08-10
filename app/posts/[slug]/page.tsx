@@ -81,50 +81,54 @@ export default async function PostPage({ params }: PageProps<"/posts/[slug]">) {
               <MDXRemote source={post.content} options={{ mdxOptions }} />
             </div>
 
-            <div className="mt-12 flex items-center justify-between border-t border-line pt-6">
+            <div className="mt-14 flex justify-end border-t border-line pt-6">
               <ShareButton title={post.title} />
             </div>
-
-            {(prev || next) && (
-              <nav
-                aria-label="이전/다음 글"
-                className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2"
-              >
-                {prev ? (
-                  <Link
-                    href={`/posts/${prev.slug}`}
-                    className="group rounded-[10px] border border-line px-4 py-3 transition-colors hover:border-line-strong"
-                  >
-                    <span className="font-mono text-[11px] text-ink-400">
-                      ← 이전 글
-                    </span>
-                    <span className="mt-1 line-clamp-1 block text-[13px] text-ink-950 transition-colors group-hover:text-accent-600">
-                      {prev.title}
-                    </span>
-                  </Link>
-                ) : (
-                  <span aria-hidden />
-                )}
-                {next && (
-                  <Link
-                    href={`/posts/${next.slug}`}
-                    className="group rounded-[10px] border border-line px-4 py-3 text-right transition-colors hover:border-line-strong"
-                  >
-                    <span className="font-mono text-[11px] text-ink-400">
-                      다음 글 →
-                    </span>
-                    <span className="mt-1 line-clamp-1 block text-[13px] text-ink-950 transition-colors group-hover:text-accent-600">
-                      {next.title}
-                    </span>
-                  </Link>
-                )}
-              </nav>
-            )}
           </article>
 
           <Toc />
         </div>
       </div>
+
+      {(prev || next) && (
+        <div className="mx-auto w-full max-w-[1080px] px-8">
+          <nav
+            aria-label="이전/다음 글"
+            className="mb-8 flex flex-col items-stretch justify-between gap-3 md:flex-row"
+          >
+            {prev ? (
+              <Link
+                href={`/posts/${prev.slug}`}
+                className="flex flex-1 flex-col gap-1 rounded-[10px] border border-line p-4 transition-colors hover:border-line-strong"
+              >
+                <span className="font-mono text-[12px] text-ink-500">
+                  ← 이전 글
+                </span>
+                <span className="line-clamp-2 text-[14px] font-medium text-accent-600">
+                  {prev.title}
+                </span>
+              </Link>
+            ) : (
+              <span className="flex-1" aria-hidden />
+            )}
+            {next ? (
+              <Link
+                href={`/posts/${next.slug}`}
+                className="flex flex-1 flex-col gap-1 rounded-[10px] border border-line p-4 transition-colors hover:border-line-strong md:items-end md:text-right"
+              >
+                <span className="font-mono text-[12px] text-ink-500">
+                  다음 글 →
+                </span>
+                <span className="line-clamp-2 text-[14px] font-medium text-accent-600">
+                  {next.title}
+                </span>
+              </Link>
+            ) : (
+              <span className="flex-1" aria-hidden />
+            )}
+          </nav>
+        </div>
+      )}
     </>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Link2 } from "lucide-react";
+import { Check, Share2 } from "lucide-react";
 
 /** 모바일은 시스템 공유 시트, 데스크톱은 URL 복사 */
 export function ShareButton({ title }: { title: string }) {
@@ -27,10 +27,10 @@ export function ShareButton({ title }: { title: string }) {
     <button
       type="button"
       onClick={share}
-      className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 font-mono text-[12px] text-ink-500 transition-all hover:border-line-strong hover:text-ink-700"
+      className="flex cursor-pointer items-center gap-2 rounded-full bg-paper-200 px-4 py-2 text-sm font-medium text-ink-800 transition-all hover:bg-paper-300"
     >
-      {copied ? <Check className="size-3.5" /> : <Link2 className="size-3.5" />}
-      {copied ? "복사됨" : "공유하기"}
+      {copied ? <Check className="size-4" /> : <Share2 className="size-4" />}
+      <span>{copied ? "복사됨" : "공유하기"}</span>
     </button>
   );
 }
