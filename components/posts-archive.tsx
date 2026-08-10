@@ -122,7 +122,7 @@ function PostRow({ post }: { post: PostMeta }) {
     <li className="border-t border-line last:border-b last:border-line">
       <Link
         href={`/posts/${post.slug}`}
-        className="flex items-baseline justify-between gap-4 px-0.5 py-3 hover:[&_h3]:text-accent-600 hover:[&_h3]:underline"
+        className="flex items-baseline justify-between gap-4 px-0.5 py-3 hover:[&_h3]:underline hover:[&_h3]:underline-offset-4"
       >
         <h3 className="min-w-0 text-[14px] font-normal leading-snug text-ink-950 transition-colors">
           {post.title}
@@ -144,7 +144,7 @@ function PostCard({ post }: { post: PostMeta }) {
   return (
     <Link
       href={`/posts/${post.slug}`}
-      className="flex flex-col gap-2 overflow-hidden rounded-[10px] border border-line p-4 transition-colors hover:border-line-strong [&:hover_h3]:text-accent-600"
+      className="flex flex-col gap-2 overflow-hidden rounded-[10px] border border-line p-4 transition-colors hover:border-line-strong [&:hover_h3]:underline [&:hover_h3]:underline-offset-4"
     >
       <div className="relative -mx-4 -mt-4 mb-1 aspect-[1.91/1] overflow-hidden bg-paper-100">
         <PostCover

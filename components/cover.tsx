@@ -21,48 +21,26 @@ function hash(str: string): number {
   return h >>> 0;
 }
 
-/** 어두운 바탕에서 잘 읽히는 밝은 파스텔 계열 */
-const ACCENTS = [
-  "#67e8f9", // cyan (기본)
-  "#6ee7b7", // mint
-  "#c4b5fd", // violet
-  "#fcd34d", // amber
-  "#fda4af", // rose
-] as const;
-
-const GLOWS = [
-  "10% 0%",
-  "90% 0%",
-  "0% 100%",
-  "100% 100%",
-  "50% -20%",
-] as const;
-
 function variantOf(slug: string) {
   const h = hash(slug);
   return {
-    accent: ACCENTS[h % ACCENTS.length],
-    glow: GLOWS[(h >> 3) % GLOWS.length],
     // 3분의 1 확률로 좌측 정렬 — 전부 가운데면 단조롭다
     leftAlign: (h >> 6) % 3 === 0,
   };
 }
 
 function TitleCover({ post, compact }: { post: PostMeta; compact?: boolean }) {
-  const { accent, glow, leftAlign } = variantOf(post.slug);
+  const { leftAlign } = variantOf(post.slug);
   const label = post.series ?? post.tags[0] ?? null;
 
   return (
     <div
-      className="flex h-full w-full flex-col text-[#e6e8eb]"
-      style={{
-        background: `radial-gradient(130% 130% at ${glow}, ${accent}1f 0%, #0b0d10 58%)`,
-      }}
+      className="flex h-full w-full flex-col bg-[#111111] text-[#e6e8eb]"
       aria-hidden
     >
       {!compact && (
         <div className="flex items-center justify-center gap-1.5 border-b border-white/10 py-[6%]">
-          <span className="size-1.5" style={{ background: accent }} />
+          <span className="size-1.5 bg-[#eeeeee]" />
           <span className="font-mono text-[9px] tracking-wide text-[#e6e8eb]">
             {site.name}
           </span>
@@ -76,10 +54,7 @@ function TitleCover({ post, compact }: { post: PostMeta; compact?: boolean }) {
         )}
       >
         {label && !compact && (
-          <span
-            className="rounded-full border px-2 py-px text-[8px] leading-relaxed"
-            style={{ borderColor: `${accent}99`, color: accent }}
-          >
+          <span className="rounded-full border border-white/50 px-2 py-px text-[8px] leading-relaxed text-[#eeeeee]">
             {label}
           </span>
         )}

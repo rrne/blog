@@ -37,11 +37,7 @@ export default function Home() {
           <>
             <FeaturedPost post={featured} />
             {rest.length > 0 && (
-              <PostList
-                posts={rest.slice(0, 12)}
-                dateFormat="short"
-                underlineOnHover={false}
-              />
+              <PostList posts={rest.slice(0, 12)} dateFormat="short" />
             )}
             <Link
               href="/posts"
