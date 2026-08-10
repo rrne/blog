@@ -5,7 +5,7 @@ import { PostsArchive } from "@/components/posts-archive";
 
 export const metadata: Metadata = {
   title: "글",
-  description: "예약·결제·정산 도메인에서 기록한 글 전체",
+  description: "프로덕션에서 터진 문제와 그 근본 원인을 기록한 글 전체",
 };
 
 export default function PostsPage() {

@@ -3,7 +3,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: `${site.author} — 예약·결제·정산 도메인 엔지니어`,
+  description: `${site.author} — 프론트엔드 엔지니어`,
 };
 
 export default function AboutPage() {
@@ -13,15 +13,16 @@ export default function AboutPage() {
       <h1 className="mb-2 text-[21px] font-bold text-ink-950">About</h1>
 
       <p>
-        숙박 예약 플랫폼에서 예약·결제·정산 도메인을 다룹니다. 운영 중인 서비스의
-        버그를 추적하고, 왜 그렇게 됐는지 근본 원인까지 파고드는 일을 합니다.
+        숙박 예약 플랫폼에서 고객 앱과 운영 어드민을 만드는 프론트엔드
+        엔지니어입니다. 화면에 문제가 보이면 API와 데이터까지 파고들어 근본
+        원인을 찾는 일을 좋아합니다.
       </p>
 
       <h2>관심사</h2>
       <ul>
-        <li>결제와 예약의 정합성 — 두 시스템이 어긋날 때 무엇이 남는지</li>
-        <li>조용한 실패 — 에러 없이 사라지는 버그를 어떻게 드러낼지</li>
+        <li>조용한 실패 — 에러 없이 화면에서 사라지는 버그를 어떻게 드러낼지</li>
         <li>측정 우선 — 코드를 읽고 세운 가설이 실측에서 뒤집히는 순간들</li>
+        <li>WebGL·3D 인터랙션 — 셰이더와 React Three Fiber로 하는 실험들</li>
         <li>AI에 유지보수를 위임할 때 어디에 선을 그어야 하는지</li>
       </ul>
 
