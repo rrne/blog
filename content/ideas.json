@@ -6,7 +6,7 @@
       "title": "액센트 색을 전부 지우는 데 커밋 하나면 충분했다",
       "angle": "시맨틱 토큰 계층 덕에 블로그 전체 톤 전환이 파일 한 곳 수정으로 끝난 실화. primitive/semantic 계층과 의도적 규칙 위반.",
       "score": 9,
-      "status": "drafted",
+      "status": "published",
       "sensitivity": "none",
       "notes": "이 블로그 리포 코드만 인용 — 공개 리포라 안전. 첫 발행 후보."
     },
@@ -15,7 +15,7 @@
       "title": "frontmatter는 any로 들어온다 — 경계에서 한 번만 의심하기",
       "angle": "Parse, don't validate를 실제 블로그 코드로. 경계에서 파싱해 확정 타입으로 바꾸면 안쪽 코드가 컴파일러의 보호를 받는다. zod를 안 쓴 판단 기준까지.",
       "score": 8,
-      "status": "drafted",
+      "status": "published",
       "sensitivity": "none",
       "notes": "블로그 리포 코드만 인용."
     },
@@ -24,7 +24,7 @@
       "title": "게이트를 만들었으면 먼저 부숴봐야 한다",
       "angle": "CI 게이트 3개를 전부 일부러 깨뜨려 검증한 기록. 초록불의 두 가지 뜻, 뮤테이션 테스팅과 닿는 지점.",
       "score": 9,
-      "status": "drafted",
+      "status": "published",
       "sensitivity": "none",
       "notes": "블로그 리포의 실제 실험 3건. 민감정보 게이트 얘기가 나오지만 게이트 존재 자체는 공개 리포에 있음."
     },
@@ -33,7 +33,7 @@
       "title": "React에 클래스는 없어도 다형성은 있다",
       "angle": "객체지향의 핵심은 if의 소유권. PostCover 사례로 분기를 컴포넌트 경계 뒤로 숨기는 것, 상속 대신 조합, 추상화의 타이밍.",
       "score": 8,
-      "status": "drafted",
+      "status": "published",
       "sensitivity": "none",
       "notes": "블로그 리포 코드만 인용."
     }
