@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { PostMeta } from "@/lib/posts";
 
@@ -91,7 +92,19 @@ export function FeaturedPost({ post }: { post: PostMeta }) {
         </p>
       </div>
       <div className="hidden w-[150px] max-w-full md:block">
-        <FeaturedDiagram />
+        {post.thumbnail ? (
+          <div className="relative aspect-[1.91/1] overflow-hidden rounded-[6px] bg-paper-100">
+            <Image
+              src={post.thumbnail}
+              alt=""
+              fill
+              sizes="150px"
+              className="object-cover"
+            />
+          </div>
+        ) : (
+          <FeaturedDiagram />
+        )}
       </div>
     </Link>
   );

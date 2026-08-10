@@ -16,6 +16,8 @@ export type PostMeta = {
   series: string | null
   seriesOrder: number
   seriesDescription: string
+  /** 카드 뷰·피처드에 쓰는 대표 이미지. public 기준 경로 (예: /thumbs/foo.png) */
+  thumbnail: string | null
 }
 
 export type Post = PostMeta & { content: string }
@@ -39,6 +41,7 @@ type Frontmatter = {
   series?: string
   seriesOrder?: number
   seriesDescription?: string
+  thumbnail?: string
 }
 
 function readPostFile(fileName: string): Post {
@@ -61,6 +64,7 @@ function readPostFile(fileName: string): Post {
     series: fm.series ?? null,
     seriesOrder: fm.seriesOrder ?? 0,
     seriesDescription: fm.seriesDescription ?? '',
+    thumbnail: fm.thumbnail ?? null,
     content,
   }
 }
@@ -77,6 +81,7 @@ function toMeta(post: Post): PostMeta {
     series: post.series,
     seriesOrder: post.seriesOrder,
     seriesDescription: post.seriesDescription,
+    thumbnail: post.thumbnail,
   }
 }
 

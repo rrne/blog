@@ -27,11 +27,17 @@ frontmatter:
 
 ```yaml
 ---
-title: "제목"          # 필수 — 없으면 빌드 실패
+title: "제목"                    # 필수 — 없으면 빌드 실패
 description: "요약"
-date: "2026-08-04"     # 필수
+date: "2026-08-04"               # 필수
 tags: ["automation"]
-draft: true            # true면 프로덕션에 노출되지 않음
+draft: true                      # true면 프로덕션에 노출되지 않음
+series: "시리즈 이름"            # 선택 — 같은 이름끼리 /series에 묶인다
+seriesOrder: 1                   # 선택 — 같은 날 발행된 편의 순서
+seriesDescription: "시리즈 소개" # 선택 — 시리즈 중 한 편에만 적으면 된다
+thumbnail: "/thumbs/foo.png"     # 선택 — 카드 뷰·홈 피처드에 표시.
+                                 #   이미지는 public/thumbs/에 두고 절대경로로.
+                                 #   외부 URL은 next.config images 설정이 따로 필요
 ---
 ```
 

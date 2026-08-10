@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -143,8 +144,19 @@ function PostCard({ post }: { post: PostMeta }) {
   return (
     <Link
       href={`/posts/${post.slug}`}
-      className="flex flex-col gap-2 rounded-[10px] border border-line p-4 transition-colors hover:border-line-strong [&:hover_h3]:text-accent-600"
+      className="flex flex-col gap-2 overflow-hidden rounded-[10px] border border-line p-4 transition-colors hover:border-line-strong [&:hover_h3]:text-accent-600"
     >
+      {post.thumbnail && (
+        <div className="relative -mx-4 -mt-4 mb-1 aspect-[1.91/1] bg-paper-100">
+          <Image
+            src={post.thumbnail}
+            alt=""
+            fill
+            sizes="(min-width: 1024px) 300px, (min-width: 640px) 45vw, 90vw"
+            className="object-cover"
+          />
+        </div>
+      )}
       <h3 className="text-[14px] font-semibold leading-snug text-ink-950 transition-colors">
         {post.title}
       </h3>
