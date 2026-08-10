@@ -9,19 +9,29 @@ function shortDate(iso: string): string {
 export function PostList({
   posts,
   dateFormat = "full",
+  underlineOnHover = true,
 }: {
   posts: PostMeta[];
   dateFormat?: "full" | "short";
+  /** 홈 목록만 밑줄 없이 색만 바뀐다 (참고 사이트 동일) */
+  underlineOnHover?: boolean;
 }) {
   return (
-    <ol className="m-0 list-none p-0 [&>li:last-child>a]:border-b [&>li:last-child>a]:border-line">
+    <ol className="m-0 list-none p-0">
       {posts.map((post) => (
-        <li key={post.slug}>
+        <li
+          key={post.slug}
+          className="border-t border-line last:border-b last:border-line"
+        >
           <Link
             href={`/posts/${post.slug}`}
-            className="flex items-baseline justify-between gap-4 border-t border-line px-0.5 py-3 text-[14px] text-ink-950 transition-colors hover:text-accent-600"
+            className={
+              underlineOnHover
+                ? "flex items-baseline justify-between gap-4 px-0.5 py-3 hover:[&_h3]:text-accent-600 hover:[&_h3]:underline"
+                : "flex items-baseline justify-between gap-4 px-0.5 py-3 hover:[&_h3]:text-accent-600"
+            }
           >
-            <h3 className="min-w-0 font-normal">
+            <h3 className="min-w-0 text-[14px] font-normal leading-snug text-ink-950 transition-colors">
               {post.title}
               {post.draft && (
                 <span className="ml-2 align-middle font-mono text-[11px] uppercase tracking-wider text-amber-600">

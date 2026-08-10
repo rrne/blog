@@ -36,7 +36,13 @@ export default function Home() {
         {featured ? (
           <>
             <FeaturedPost post={featured} />
-            {rest.length > 0 && <PostList posts={rest.slice(0, 12)} dateFormat="short" />}
+            {rest.length > 0 && (
+              <PostList
+                posts={rest.slice(0, 12)}
+                dateFormat="short"
+                underlineOnHover={false}
+              />
+            )}
             <Link
               href="/posts"
               className="mt-3.5 inline-block text-[13px] text-accent-600 hover:underline"
