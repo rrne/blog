@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getSeriesList } from "@/lib/posts";
 import { PostList } from "@/components/post-list";
 
@@ -34,9 +35,14 @@ export default function SeriesPage() {
             <section key={series.name} className="mb-[34px] last:mb-0">
               <div className="mb-2 flex items-baseline justify-between gap-4">
                 <h2 className="min-w-0">
-                  <span className="inline-block rounded-[6px] bg-accent-50 px-[9px] py-0.5 text-[12px] leading-snug text-accent-600">
-                    {series.name}
-                  </span>
+                  <Link
+                    href={`/posts?series=${encodeURIComponent(series.name)}`}
+                    className="inline-block hover:underline"
+                  >
+                    <span className="inline-block rounded-[6px] bg-accent-50 px-[9px] py-0.5 text-[12px] leading-snug text-accent-600">
+                      {series.name}
+                    </span>
+                  </Link>
                 </h2>
                 <span className="shrink-0 font-mono text-[12px] tabular-nums text-ink-500">
                   {series.posts.length}편
