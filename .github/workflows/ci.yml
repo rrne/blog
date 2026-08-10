@@ -22,6 +22,11 @@ jobs:
       - name: 민감정보 검사
         run: node scripts/sanitize-check.mjs
 
+      # 프로덕션 빌드는 draft를 제외하므로 깨진 초안 MDX가 빌드를 통과한다.
+      # draft 포함 전체를 컴파일해 사각지대를 막는다
+      - name: MDX 컴파일 검사 (draft 포함)
+        run: npm run check:mdx
+
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run build

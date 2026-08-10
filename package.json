@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "new": "node scripts/new-post.mjs",
     "check": "node scripts/sanitize-check.mjs",
-    "check:static": "node scripts/assert-static.mjs"
+    "check:static": "node scripts/assert-static.mjs",
+    "check:mdx": "node scripts/check-mdx.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

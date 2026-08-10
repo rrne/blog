@@ -87,7 +87,7 @@ function FilterGroup({
   return (
     <div className="flex flex-col gap-1.5 border-t border-line pt-3">
       <GroupLabel>{label}</GroupLabel>
-      <ul className="m-0 flex list-none flex-col p-0">
+      <ul className="m-0 flex list-none flex-col gap-1 p-0">
         {items.map((item) => {
           const isActive = active.includes(item.id);
           return (
@@ -162,7 +162,7 @@ export function PostsArchive({ posts }: { posts: PostMeta[] }) {
   const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<Sort>("recent");
-  const [view, setView] = useState<View>("list");
+  const [view, setView] = useState<View>("cards");
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const [activeSeries, setActiveSeries] = useState<string | null>(
     () => searchParams.get("series"),
