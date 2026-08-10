@@ -17,9 +17,9 @@ export default function Home() {
             {site.author}
           </h1>
           <p className="text-[14px] text-ink-600">
-            고객의 사용성을 데이터로 검증하는 프론트엔드 엔지니어.
+            디자인과 구현 사이의 간극을 줄이는 프론트엔드 엔지니어.
             <br />
-            디자인 시스템부터 화면 너머의 데이터 흐름까지, 문제의 근본 원인을 기록합니다.
+            작은 어색함 하나까지 파고들어, 좋은 사용자 경험의 기준을 시스템으로 만듭니다.
           </p>
           <div className="mt-3.5 flex flex-wrap gap-2">
             <a
