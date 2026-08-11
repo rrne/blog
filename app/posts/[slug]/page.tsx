@@ -2,12 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote-client/rsc";
-import {
-  getAdjacentPosts,
-  getPost,
-  getPosts,
-  getSeriesNeighbors,
-} from "@/lib/posts";
+import { getAdjacentPosts, getPost, getPosts } from "@/lib/posts";
 import { mdxOptions } from "@/lib/mdx";
 import { ReadingProgress } from "@/components/reading-progress";
 import { Toc } from "@/components/toc";
@@ -41,7 +36,6 @@ export default async function PostPage({ params }: PageProps<"/posts/[slug]">) {
   const post = getPost(slug);
   if (!post) notFound();
 
-  const { series } = getSeriesNeighbors(post);
   const { prev, next } = getAdjacentPosts(slug);
 
   return (
@@ -51,14 +45,6 @@ export default async function PostPage({ params }: PageProps<"/posts/[slug]">) {
         <div className="grid grid-cols-1 items-start gap-0 lg:grid-cols-[1fr_240px] lg:gap-16">
           <article className="mx-auto w-full min-w-0 max-w-[680px] lg:mx-0">
             <header>
-              {series && (
-                <Link
-                  href="/series"
-                  className="font-mono text-[12px] text-accent-600 hover:underline"
-                >
-                  {series.name}
-                </Link>
-              )}
               <h1 className="mt-3 mb-1.5 text-[22px] font-bold leading-snug text-accent-900">
                 {post.title}
               </h1>

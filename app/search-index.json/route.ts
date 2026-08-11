@@ -11,7 +11,6 @@ export function GET() {
       title: p.title,
       description: p.description,
       date: p.date,
-      series: p.series,
     }));
 
   return Response.json(index);

@@ -16,7 +16,6 @@ type SearchEntry = {
   title: string;
   description: string;
   date: string;
-  series: string | null;
 };
 
 /** 글 수가 수백 편이 되기 전까지는 정적 인덱스 + 클라이언트 필터로 충분하다 */
@@ -65,7 +64,7 @@ export function SearchDialog({
       open={open}
       onOpenChange={onOpenChange}
       title="글 검색"
-      description="제목이나 시리즈로 글을 찾습니다"
+      description="제목으로 글을 찾습니다"
     >
       <CommandInput placeholder="제목으로 검색" />
       <CommandList>
@@ -77,7 +76,7 @@ export function SearchDialog({
             {entries.map((entry) => (
               <CommandItem
                 key={entry.slug}
-                value={`${entry.title} ${entry.description} ${entry.series ?? ""}`}
+                value={`${entry.title} ${entry.description}`}
                 onSelect={() => go(entry.slug)}
                 className="flex-col items-start gap-0.5"
               >
@@ -87,11 +86,6 @@ export function SearchDialog({
                     {entry.date}
                   </time>
                 </div>
-                {entry.series && (
-                  <span className="text-[0.76rem] text-muted-foreground">
-                    {entry.series}
-                  </span>
-                )}
               </CommandItem>
             ))}
           </CommandGroup>

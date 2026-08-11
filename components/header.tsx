@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/posts", label: "글" },
-  { href: "/series", label: "시리즈" },
   { href: "/about", label: "About" },
 ] as const;
 

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { Funnel, X } from "lucide-react";
 import type { PostMeta } from "@/lib/posts";
@@ -166,14 +165,10 @@ function PostCard({ post }: { post: PostMeta }) {
 }
 
 export function PostsArchive({ posts }: { posts: PostMeta[] }) {
-  const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<Sort>("recent");
   const [view, setView] = useState<View>("cards");
   const [activeTags, setActiveTags] = useState<string[]>([]);
-  const [activeSeries, setActiveSeries] = useState<string | null>(
-    () => searchParams.get("series"),
-  );
   const [activeYear, setActiveYear] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -182,10 +177,6 @@ export function PostsArchive({ posts }: { posts: PostMeta[] }) {
       countBy(posts.flatMap((p) => p.tags))
         .slice(0, 12)
         .map((i) => ({ ...i, label: `#${i.id}` })),
-    [posts],
-  );
-  const seriesItems = useMemo(
-    () => countBy(posts.map((p) => p.series).filter((s): s is string => !!s)),
     [posts],
   );
   const yearItems = useMemo(
@@ -200,7 +191,6 @@ export function PostsArchive({ posts }: { posts: PostMeta[] }) {
         return false;
       if (activeTags.length > 0 && !activeTags.every((t) => p.tags.includes(t)))
         return false;
-      if (activeSeries && p.series !== activeSeries) return false;
       if (activeYear && !p.date.startsWith(activeYear)) return false;
       return true;
     });
@@ -208,14 +198,12 @@ export function PostsArchive({ posts }: { posts: PostMeta[] }) {
     if (sort === "shortest")
       return [...list].sort((a, b) => a.readingMinutes - b.readingMinutes);
     return list;
-  }, [posts, query, sort, activeTags, activeSeries, activeYear]);
+  }, [posts, query, sort, activeTags, activeYear]);
 
-  const activeCount =
-    activeTags.length + (activeSeries ? 1 : 0) + (activeYear ? 1 : 0);
+  const activeCount = activeTags.length + (activeYear ? 1 : 0);
 
   function clearAll() {
     setActiveTags([]);
-    setActiveSeries(null);
     setActiveYear(null);
     setQuery("");
   }
@@ -265,12 +253,6 @@ export function PostsArchive({ posts }: { posts: PostMeta[] }) {
             prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id],
           )
         }
-      />
-      <FilterGroup
-        label="시리즈"
-        items={seriesItems}
-        active={activeSeries ? [activeSeries] : []}
-        onToggle={(id) => setActiveSeries((prev) => (prev === id ? null : id))}
       />
       <FilterGroup
         label="연도"

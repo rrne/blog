@@ -28,7 +28,7 @@ export default async function OgImage({
   const { slug } = await params;
   const post = getPost(slug);
   const title = post?.title ?? site.name;
-  const label = post?.series ?? post?.tags[0] ?? null;
+  const label = post?.tags[0] ?? null;
   const date = post?.date ?? "";
 
   return new ImageResponse(

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { getPosts } from "@/lib/posts";
 import { PostsArchive } from "@/components/posts-archive";
 
@@ -21,10 +20,7 @@ export default function PostsPage() {
       </header>
 
       {posts.length > 0 ? (
-        // useSearchParams(시리즈 딥링크)를 쓰는 클라이언트 컴포넌트 — Suspense로 감싸야 정적 생성 유지
-        <Suspense>
-          <PostsArchive posts={posts} />
-        </Suspense>
+        <PostsArchive posts={posts} />
       ) : (
         <p className="text-[14px] text-ink-500">아직 발행한 글이 없습니다.</p>
       )}
