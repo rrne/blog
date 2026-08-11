@@ -1,6 +1,5 @@
 import Image from "next/image";
 import type { PostMeta } from "@/lib/posts";
-import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -8,8 +7,8 @@ import { cn } from "@/lib/utils";
  * 카드가 전부 똑같아 보이지 않도록 slug 해시로 액센트 색·배경 글로우
  * 위치·정렬을 글마다 다르게 뽑는다. 해시 기반이라 같은 글은 항상 같은
  * 모습 (Math.random을 쓰면 SSR/하이드레이션이 어긋난다).
- * 실제 이미지처럼 라이트/다크 어디서나 같은 검정이어야 하므로 테마 변수
- * 대신 고정 색을 쓴다.
+ * 배경은 테마를 따른다 — 라이트는 화이트, 다크는 다크 네이비. 사이트의
+ * 모노톤 paper 토큰과 달리 커버만 네이비를 쓰므로 고정 색으로 지정한다.
  */
 
 function hash(str: string): number {
@@ -31,22 +30,13 @@ function variantOf(slug: string) {
 
 function TitleCover({ post, compact }: { post: PostMeta; compact?: boolean }) {
   const { leftAlign } = variantOf(post.slug);
-  const label = post.series ?? post.tags[0] ?? null;
+  const label = post.tags[0] ?? null;
 
   return (
     <div
-      className="flex h-full w-full flex-col bg-[#111111] text-[#e6e8eb]"
+      className="flex h-full w-full flex-col bg-[#fafafa] text-[#26282c] dark:bg-[#0f172a] dark:text-[#e2e8f0]"
       aria-hidden
     >
-      {!compact && (
-        <div className="flex items-center justify-center gap-1.5 border-b border-white/10 py-[6%]">
-          <span className="size-1.5 bg-[#eeeeee]" />
-          <span className="font-mono text-[9px] tracking-wide text-[#e6e8eb]">
-            {site.name}
-          </span>
-        </div>
-      )}
-
       <div
         className={cn(
           "flex min-h-0 flex-1 flex-col justify-center gap-[6%] px-[8%]",
@@ -54,7 +44,7 @@ function TitleCover({ post, compact }: { post: PostMeta; compact?: boolean }) {
         )}
       >
         {label && !compact && (
-          <span className="rounded-full border border-white/50 px-2 py-px text-[8px] leading-relaxed text-[#eeeeee]">
+          <span className="rounded-full border border-black/30 px-2 py-px text-[8px] leading-relaxed dark:border-white/50">
             {label}
           </span>
         )}
@@ -67,14 +57,6 @@ function TitleCover({ post, compact }: { post: PostMeta; compact?: boolean }) {
           {post.title}
         </span>
       </div>
-
-      {!compact && (
-        <div className="flex items-center justify-center gap-1.5 border-t border-white/10 py-[5%] font-mono text-[8px] text-[#8b919a]">
-          <span>{post.date}</span>
-          <span aria-hidden>·</span>
-          <span>{site.name}</span>
-        </div>
-      )}
     </div>
   );
 }
