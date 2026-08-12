@@ -1,8 +1,8 @@
 ---
 title: "팀 코드 컨벤션을 만들며 — Airbnb 스타일 가이드 기반"
-description: "레포지토리마다 스타일이 달라서 코드를 파악하는 비용이 컸다. Airbnb JavaScript Style Guide를 기반으로 팀 컨벤션 문서를 만들며 정한 규칙들을 '왜'와 함께 요약했다."
+description: "레포지토리마다 스타일이 달라서 코드를 파악하는 시간이 길어졌다. Airbnb JavaScript Style Guide와 Google TypeScript Style Guide를 기반으로 팀 컨벤션 문서를 만들며 정한 규칙들을 '왜'와 함께 요약했다."
 date: "2025-08-26"
-tags: ["javascript", "convention"]
+tags: ["javascript", "typescript", "convention"]
 draft: false
 thumbnail: "/thumbs/convention.png"
 ---
@@ -14,15 +14,18 @@ thumbnail: "/thumbs/convention.png"
 
 컨벤션이 있으면 얻는 것이 분명하다. 코딩 스타일이 통일되면 서로
 다른 프로젝트를 오가면서도 빠른 코드 파악과 수정·배포가 가능하다.
-새로운 인력이 투입되거나 교체될 때도 낮은 러닝커브로 빠르게 회사에
-기여를 시작할 수 있다. 반대로 컨벤션이 없으면 그 비용은 코드를
-읽는 모든 사람이 매번 나눠서 낸다.
+새로운 인력이 투입되거나 교체될 때도 낮은 러닝커브로 빠르게 코드에
+기여 할 수 있다. 반대로 컨벤션이 없으면 그 비용은 코드를
+읽는 모든 사람이 매번 감당해야한다.
 
 [Airbnb JavaScript Style
 Guide](https://github.com/airbnb/javascript)를 기반으로 하고
 [Google JavaScript Style
 Guide](https://google.github.io/styleguide/jsguide.html)를 참고하되,
-내부 상황에 맞게 조정했다. 이 글은 그 문서의 요약이다.
+내부 상황에 맞게 조정했다. TypeScript 네이밍 규칙은 [Google
+TypeScript Style
+Guide](https://google.github.io/styleguide/tsguide.html)를 기반으로
+했다. 이 글은 그 문서의 요약이다.
 
 ## 변수
 
@@ -82,21 +85,6 @@ const timeSaleTitle = 'Black Friday!';
 때문이다.
 
 ```js
-// bad
-function checkNicknameLikeName(nickname) {
-    const name = getName();
-
-    if (nickname === '') {
-        return false;
-    }
-
-    if (nickname === name) {
-        return false;
-    }
-
-    return true;
-}
-
 // good — name은 실제로 쓰기 직전에 조회한다
 function checkNicknameLikeName(nickname) {
     if (nickname === '') {
@@ -113,20 +101,23 @@ function checkNicknameLikeName(nickname) {
 }
 ```
 
+고정 값은 코드에 바로 넣지 않고 상수로 선언해 상단에 둔다 — 바로
+넣으면 디버깅이나 일괄 수정이 어렵다. 해당 컴포넌트 안에서만
+쓰이면 컴포넌트 파일 상단에, 범용적으로 쓰이면 `/utils/values.ts`에
+담는다.
+
+```tsx
+const MY_COMPONENT_HEADER_HEIGHT = 300;
+
+function MyComponent() {
+  return <Header headerHeight={MY_COMPONENT_HEADER_HEIGHT} />;
+}
+```
+
 ## 문자열
 
 문자열은 작은따옴표로 감싼다. 긴 문자열도 `+`로 줄을 쪼개지 않고
 한 줄에 쓴다 — 의미 없는 개행은 코드를 찾고 작성하기 어렵게 한다.
-
-```js
-// bad
-const longString = 'Lorem ipsum dolor sit amet,' +
-'consectetur adipiscing elit, sed do eiusmod tempor incididunt ut' +
-'labore et dolore magna aliqua.';
-
-// good
-const longString = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-```
 
 값을 끼워 넣을 때는 `+` 연결이나 `join` 대신 템플릿 리터럴을 쓰고,
 `${ name }`처럼 중괄호 안에 공백을 넣지 않는다.
@@ -134,7 +125,6 @@ const longString = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
 ```js
 // bad
 const introduce = 'Hello my name is ' + name + '..!';
-const introduce = ['Hello my name is ', name, '..!'].join();
 const introduce = `Hello my name is ${ name }..!`;
 
 // good
@@ -187,18 +177,8 @@ posts.push('some letter');
 let subArray = [...mainArray];
 ```
 
-배열 메서드 콜백이 단일 구문이면 return을 생략해 한 줄로 쓴다.
-
-```js
-// good
-numberArray.map((numberItem) => {
-    const calNumber = numberItem + 1;
-    return calNumber * numberItem;
-});
-
-// good — 단일 구문은 생략
-numberArray.map(numberItem => numberItem + 1);
-```
+배열 메서드 콜백이 단일 구문이면 return을 생략해 한 줄로 쓴다 —
+`numberArray.map(numberItem => numberItem + 1)`.
 
 ## 비교·연산자
 
@@ -250,28 +230,9 @@ const testData = (a && b < 0) || (c > 0) || (d + 1 === 0);
 
 ## 블록
 
-여러 줄에는 항상 중괄호를 쓴다.
-
-```js
-// bad
-if (test)
-    return false;
-
-function func() { return false; }
-
-// good
-if (test) {
-    return false;
-}
-
-function func() {
-    return false;
-}
-```
-
-`else`는 `if`의 중괄호가 끝나는 곳에 같은 줄로 쓴다. if가
-return으로 끝나면 else를 만들지 않고, else if에서 return해야
-한다면 if를 따로 나눈다.
+여러 줄에는 항상 중괄호를 쓴다. `else`는 `if`의 중괄호가 끝나는
+곳에 같은 줄로 쓴다. if가 return으로 끝나면 else를 만들지 않고,
+else if에서 return해야 한다면 if를 따로 나눈다.
 
 ```js
 // bad
@@ -287,22 +248,14 @@ if (isCat) {
 }
 
 return 'nope';
-
-// good — else if 대신 if를 나눈다
-function animals() {
-    if (isDog) {
-        return 'bow';
-    }
-
-    if (isCat) {
-        return 'meow';
-    }
-}
 ```
 
 ## 함수
 
 이름은 `camelCase`로, 동작 방식이나 결과값이 예측 가능하게 짓는다.
+`get`(값 반환), `calc`(계산), `create`(생성), `check`(확인 후
+boolean 반환) 같은 키워드를 접두사로 쓴다 —
+`getCommunityArticles()`, `checkEpisodeSubscription()`.
 함수는 선언문 대신 **이름 있는 함수 표현식**으로 쓴다 — 선언문은
 호이스팅되어 파일에서 정의되기 전에 참조할 수 있기 때문이다. 블록
 스코프(`if`, `while` 등) 안에서는 함수를 선언하지 않는다.
@@ -404,14 +357,58 @@ import한 것을 같은 줄에서 바로 export하는 방식은 지양한다 —
 모듈을 후순위에 배치한다.
 
 ```js
-// bad
-export { something as default } from './MyCustomModule';
-
-import validate from 'calculator';
-import { nameValidate, emailValidate } from 'calculator';
-
 // good
 import validate, { nameValidate, emailValidate } from 'calculator';
+```
+
+## 인터페이스 (TypeScript)
+
+인터페이스는 `PascalCase`로 작성하고, 존재 이유가 이름에 담기게
+짓는다. 구별용 관용 접두사는 붙이지 않는다 — 기존 코드에 남아 있는
+I-prefix는 구버전이고, 신규 코드는 제거하고 작성한다.
+
+```ts
+// bad
+interface babyStatus {}
+interface IMyComponent {}
+interface CommunityArticleInterface {}
+
+// good
+interface BabyStatus {}
+interface MyComponentProps {}
+interface CommunityArticleItem {}
+```
+
+## 컴포넌트 (React)
+
+컴포넌트는 `PascalCase`로, 함수형 컴포넌트로 선언한다. 이름만으로
+사용 이유를 유추할 수 있어야 한다. 해당 컴포넌트 안에서만 쓰이면
+내부에 여러 개 선언할 수 있지만, 반복 사용되거나 그럴 가능성이
+있으면 파일을 분리한다. 다만 너무 많은 파일 분리와 props 남용으로
+props drilling이 심해지지 않도록 주의한다.
+
+props는 인터페이스로 타입을 선언하고 본문에서 구조 분해한다.
+
+```tsx
+import { memo } from 'react';
+
+interface BasicComponentProps {
+  isShow: boolean;
+}
+
+function BasicComponent(props: BasicComponentProps) {
+  const { isShow } = props;
+
+  return (
+    <>
+      {isShow && (
+        <>{/* Add Component */}</>
+      )}
+    </>
+  );
+}
+
+export default memo(BasicComponent);
 ```
 
 ## 그 외 추가 설정들
@@ -494,6 +491,36 @@ function modifyUser(
 ) { ... }
 ```
 
+## ESLint·Prettier 설정
+
+문서의 규칙은 결국 lint 설정으로 강제한다. `.eslintrc.js`에서
+자주 쓰는 핵심 규칙만 추리면 이렇다. 에디터에는 저장 시
+`eslint --fix`가 자동 실행되도록 설정해둔다.
+
+```js
+rules: {
+  quotes: ['error', 'single'], // 싱글쿼트
+  'jsx-quotes': ['error', 'prefer-single'], // JSX도 싱글쿼트
+  semi: ['error', 'always'], // 세미콜론 필수
+  indent: ['error', 2], // 들여쓰기 2칸
+  'comma-dangle': ['error', 'always-multiline'], // 여러 줄이면 후행 콤마
+  'arrow-parens': ['error', 'always'], // 화살표 함수 매개변수 괄호 필수
+  'object-curly-spacing': ['error', 'always'], // 객체 중괄호 안 공백 유지
+  curly: ['error', 'all'], // 한 줄이어도 중괄호 강제
+  'brace-style': ['error', '1tbs'], // else는 닫는 중괄호와 같은 줄에
+  'no-unused-vars': 'warn', // 사용하지 않는 변수 경고
+  '@typescript-eslint/no-unused-vars': 'warn', // TS도 동일
+  'import/newline-after-import': 'warn', // import 구문 뒤 한 줄 공백
+  'react/jsx-max-props-per-line': [1, { when: 'always', maximum: 1 }], // props 2개 이상이면 줄바꿈
+},
+```
+
+Prettier는 느슨하게 두고 lint에 의존한다. 포매팅 도구로는
+적합하지만 강제로 린팅되는 부분이 많아서다 — 예를 들어
+`react/jsx-max-props-per-line`으로 줄바꿈한 props를 Prettier의
+`printWidth: 140`이 도로 한 줄로 만들어버리는 충돌이 있었다.
+겹치는 영역에서는 ESLint 규칙이 이기게 한다.
+
 ## AI가 컨벤션을 지키게 하기
 
 요즘은 코드의 상당 부분을 Cursor, Claude Code 같은 AI 도구가
@@ -527,4 +554,6 @@ AI가 오염을 재생산하는 속도만 빨라진다는 뜻이다.
 
 참고: [Airbnb JavaScript Style
 Guide](https://github.com/airbnb/javascript) · [Google JavaScript
-Style Guide](https://google.github.io/styleguide/jsguide.html)
+Style Guide](https://google.github.io/styleguide/jsguide.html) ·
+[Google TypeScript Style
+Guide](https://google.github.io/styleguide/tsguide.html)
