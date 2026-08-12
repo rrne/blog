@@ -41,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="px-5">
             <div className="mx-auto flex w-full max-w-[640px] flex-wrap items-center justify-between gap-3">
               <span className="font-mono text-[12px] text-ink-500">
-                © {new Date().getFullYear()} {site.author}
+                © 2025 {site.author}
               </span>
               <div className="flex flex-wrap items-center gap-4">
                 <Link
