@@ -1,0 +1,190 @@
+---
+title: "프론트엔드 테스트, 어디까지 해야 할까"
+description: "프론트엔드에서 테스트는 가장 쉽게 건너뛰는 관문이다. 테스트의 종류와 도구를 한번 알아보자."
+date: "2025-11-20"
+tags: ["testing", "react", "frontend"]
+draft: false
+thumbnail: "/thumbs/test.png"
+---
+
+프론트엔드에서 테스트는 가장 쉽게 건너뛰는 단계이다. 화면은 눈으로
+확인하면 되고, UI는 다음 주에 또 바뀔 텐데 테스트를 써봐야 또 바뀔거라는 논리.
+마감이 겹치면 더 테스트는 등한시하게 된다. 나도 오랫동안 테스트를 건너뛰어왔다.
+
+그런데 서비스가 커질수록 테스트의 필요를 느낀다. 수정한 곳은 멀쩡한데
+안 건드린 화면이 깨지는 회귀, "이 함수 고쳐도 되나요?"를 아무도
+답하지 못 하는 레거시, 배포 전 손으로 돌리는 클릭 시나리오. 전부
+테스트가 없어서 내는 비용이다. 그래서 기준을 세워봤다.
+
+## 테스트의 종류
+
+- **정적 검사** — TypeScript와 ESLint. 실행 없이 오타와 타입
+  오류를 잡는다. 
+- **단위 테스트** — 함수 하나를 격리해서 검증한다. 빠르다.
+- **통합 테스트** — 컴포넌트 여러 개 + API 모킹까지, 실제 사용
+  흐름에 가깝게 검증한다.
+- **E2E 테스트** — 진짜 브라우저에서 사용자 시나리오 전체를
+  돌린다. 신뢰도가 가장 높지만 가장 느리다.
+
+나는 프론트엔드 테스트에선 단위 테스트를 산더미처럼 쌓기보다, 사용자 동작에 가까운 통합 테스트에
+비중을 두라는 것이 좋다고 생각한다. 통합 테스트가 느리고 리소스가 많이 든다는 건 도구가 좋아진
+지금은 옛말이기 때문이다.
+
+## 도구
+
+테스트 러너부터.
+
+- **[Jest](https://jestjs.io)** — 오랫동안 사실상 표준이었던 테스트
+  러너. 실행기·단언·모킹·커버리지가 한 몸이고 자료가 가장 많다.
+  이미 세팅된 프로젝트라면 굳이 갈아탈 필요는 없다.
+- **[Vitest](https://vitest.dev)** — Jest API와 호환되면서 Vite
+  기반이라 훨씬 빠른 러너. 신규 프로젝트라면 이쪽이 기본값이다.
+
+컴포넌트를 테스트하는 도구.
+
+- **[React Testing Library](https://testing-library.com)** —
+  컴포넌트를 사용자 관점에서 테스트한다. "버튼을 클릭하면 문구가
+  보인다"를 검증하지, 내부 state를 들여다보지 않는다. 러너(Jest나
+  Vitest) 위에서 돌아간다.
+- **[Storybook](https://storybook.js.org)** — 컴포넌트를 격리
+  환경에서 상태별로 렌더링하는 작업대다. 문서화 도구로 알려져
+  있지만 테스트 도구이기도 하다 — `play` 함수로 스토리 안에서
+  클릭·입력 시나리오를 돌리고, test-runner로 전체 스토리를 CI에서
+  검증하며, 시각 회귀 테스트(Chromatic)의 기반이 된다.
+- **[MSW](https://mswjs.io)** — 네트워크 레벨에서 API를 가로채
+  가짜 응답을 준다. fetch를 함수 단위로 모킹하는 것과 달리, 실제
+  요청 코드가 그대로 실행되어 통합 테스트의 신뢰도가 올라간다.
+
+E2E 도구는 사실상 둘 중 하나를 쓴다.
+
+- **[Cypress](https://www.cypress.io)** — E2E를 대중화시킨 도구.
+  브라우저 안에서 테스트가 실행되고, 타임 트래블 디버깅 GUI가
+  강점이다.
+- **[Playwright](https://playwright.dev)** — 후발이지만 멀티
+  브라우저(크로미움·파이어폭스·웹킷) 지원, 병렬 실행, 속도에서
+  앞서며 신규 프로젝트의 흐름은 이쪽으로 넘어왔다. CI에서
+  헤드리스로 돌린다.
+
+## 사용법 — 층마다 하나씩
+
+**단위 — 순수 함수부터.** 도메인 규칙이 담긴 순수 함수가 가장
+쓰기 간단하고 확실한 시작점이다. 입력과 출력만 있으니 렌더링도
+모킹도 필요 없다.
+
+```ts
+// isValidStayRange.test.ts
+import { isValidStayRange } from './isValidStayRange';
+
+describe('isValidStayRange', () => {
+  it('체크아웃이 체크인보다 뒤면 유효하다', () => {
+    expect(isValidStayRange('2025-11-20', '2025-11-22')).toBe(true);
+  });
+
+  it('같은 날짜는 무효다 — 0박은 예약이 아니다', () => {
+    expect(isValidStayRange('2025-11-20', '2025-11-20')).toBe(false);
+  });
+});
+```
+
+테스트 이름을 문장으로 쓰는 것에 주목 — 실패했을 때 이름만 읽어도
+어떤 규칙이 깨졌는지 알 수 있다.
+
+**통합 — 컴포넌트를 사용자처럼.** Testing Library의 쿼리는
+`getByRole`을 최우선으로 쓴다. 사용자(그리고 스크린 리더)가
+인식하는 방식 그대로 요소를 찾기 때문이다.
+
+```tsx
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+it('약관에 동의해야 결제 버튼이 활성화된다', async () => {
+  const user = userEvent.setup();
+  render(<CheckoutForm />);
+
+  const payButton = screen.getByRole('button', { name: '결제하기' });
+  expect(payButton).toBeDisabled();
+
+  await user.click(screen.getByRole('checkbox', { name: /약관에 동의/ }));
+  expect(payButton).toBeEnabled();
+});
+```
+
+API가 끼면 MSW를 얹는다. 컴포넌트 코드는 한 줄도 안 바꾸고, 요청만
+가로채서 준비된 응답을 준다.
+
+```tsx
+const server = setupServer(
+  http.get('/api/rooms', () =>
+    HttpResponse.json([{ id: 1, name: '디럭스 더블' }]),
+  ),
+);
+
+it('객실 목록을 불러와 보여준다', async () => {
+  render(<RoomList />);
+  expect(await screen.findByText('디럭스 더블')).toBeInTheDocument();
+});
+```
+
+**E2E — 돈이 걸린 플로우만.** 검색부터 결제 완료까지 같은
+크리티컬 패스를 진짜 브라우저로 검증한다.
+
+```ts
+test('검색부터 예약 요청까지', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('searchbox', { name: '지역 검색' }).fill('서울');
+  await page.getByRole('link', { name: /디럭스 더블/ }).click();
+  await page.getByRole('button', { name: '예약하기' }).click();
+  await expect(page.getByText('예약이 요청되었습니다')).toBeVisible();
+});
+```
+
+## 좋은 테스트의 기준
+
+**구현이 아니라 행위를 테스트한다.** 내부 state 값이나 함수 호출
+여부를 검증하는 테스트는 리팩토링만 해도 깨진다. Testing Library의
+원칙 — [테스트가 소프트웨어의 실제 사용 방식을 닮을수록 신뢰할 수
+있다](https://testing-library.com/docs/guiding-principles/) — 를
+기준으로 삼으면, "사용자가 보는 것과 하는 것"만 남는다.
+
+**준비-실행-검증(AAA)의 3단 구조를 지킨다.** 위 예시들처럼 렌더
+→ 동작 → 단언 순서가 눈에 보이면, 테스트가 곧 그 기능의 사용
+설명서가 된다.
+
+**결정론적으로 만든다.** 오늘 날짜, 랜덤 값, 실제 네트워크가 끼면
+어제 통과한 테스트가 오늘 깨진다. 시간은 `vi.setSystemTime`으로
+고정하고, 네트워크는 MSW로 끊고, 랜덤은 주입으로 바꾼다. 가끔
+깨지는 테스트는 없느니만 못하다 — 팀 전체가 빨간불에 무뎌진다.
+
+**커버리지 숫자를 목표로 삼지 않는다.** 커버리지는 어디가 비었는지
+보는 지도지, 채워야 할 할당량이 아니다. 90%를 채우려고 쓰는 무의미한
+테스트가 유지보수 비용만 늘린다.
+
+## 최소한 이만큼
+
+정리하면 이게 내가 세운 최소선이다.
+
+1. **도메인 규칙이 담긴 순수 함수는 전부 단위 테스트.** 날짜 검증,
+   금액 계산, 상태 전이 — 조건 분기 하나당 케이스 하나. 테스트
+   하나에 몇 분이면 쓰는데 효과는 가장 확실하다.
+2. **핵심 사용자 플로우는 통합 테스트.** 로그인, 결제, 예약처럼
+   깨지면 사고인 화면을 Testing Library + MSW로. 개수보다 "깨지면
+   안 되는 순서"대로.
+3. **E2E는 한두 개만.** 서비스의 생명줄인 시나리오만 Playwright로
+   CI에 걸어둔다. 많이 만들수록 느려지고 관리를 포기하게 된다.
+4. **버그를 고칠 땐 재현 테스트부터.** 버그를 재현하는 실패
+   테스트를 먼저 쓰고, 고쳐서 통과시킨다. 전체 개발을 TDD로 하지
+   않더라도 이 순간만큼은 TDD의 리듬이 정확히 맞다 — 같은 버그는
+   두 번 다시 돌아오지 못한다.
+
+테스트는 전부냐 전무냐가 아니다. 순수 함수 하나, 결제 폼 하나부터
+시작해도 어제보다 안전하다. 관문을 통과하는 방법은 낮은 문턱부터
+넘는 것이다.
+
+참고: [The Testing Trophy and Testing
+Classifications](https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications) ·
+[Write tests. Not too many. Mostly
+integration.](https://kentcdodds.com/blog/write-tests) · [Testing
+Library — Guiding
+Principles](https://testing-library.com/docs/guiding-principles/) ·
+[Vitest](https://vitest.dev) · [MSW](https://mswjs.io) ·
+[Playwright](https://playwright.dev)

@@ -137,13 +137,13 @@
       "notes": "본인 작성 컨벤션 문서 기반, 원문 예시 유지 + AI 준수 섹션(규칙 파일·lint 강제·기존 코드=프롬프트) 추가. 발행일 2025-08-26 — 세 번째 글 포지션. 대표 이미지 /thumbs/convention.png (2026-08-12)."
     },
     {
-      "id": "first-tests-in-legacy-pure-functions",
-      "title": "테스트 코드 없는 레거시, 첫 테스트는 순수 함수부터",
-      "angle": "테스트 러너는 세팅돼 있지만 커버리지가 없는 코드베이스에서 시작점 고르기. 스토어 리팩토링 때 분리해둔 순수 함수(날짜 유효성)와 판별 유니온 렌더 분기가 왜 첫 테스트 대상으로 최적인지 — 분리해두면 테스트는 따라온다.",
+      "id": "frontend-testing-baseline",
+      "title": "프론트엔드 테스트, 어디까지 해야 할까",
+      "angle": "웹 자료 기반 가이드. 테스팅 트로피(정적·단위·통합·E2E, Kent C. Dodds) → 표준 도구(Vitest·RTL·MSW·Playwright) → 층별 코드 예시 → 좋은 테스트 기준(행위 중심·AAA·결정론적·커버리지는 지도) → 미들급 최소선 4개(순수 함수 전부, 핵심 플로우 통합, E2E 한두 개, 버그 픽스는 재현 테스트부터=TDD 리듬 언급).",
       "score": 8,
-      "status": "drafted",
-      "sensitivity": "medium",
-      "notes": "2025 실작업 코드 기반의 회고·제안형(당시 테스트를 안 붙인 것을 정직하게 다룸). 익명화 필요(medium). 날짜=2025."
+      "status": "published",
+      "sensitivity": "none",
+      "notes": "구 first-tests-in-legacy-pure-functions를 대체(2026-08-12). 발행일 2025-11-20(5번째 포지션 유지). 회사 코드 인용 없음, 예시는 일반 예약 도메인."
     }
   ]
 }
