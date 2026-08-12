@@ -128,13 +128,13 @@
       "notes": "2025-05 예약 클라이언트 리팩토링 실작업(단일 커밋으로 before/after 남음). 익명화 필요(medium). 발행일 2025-10-14 — 첫 글(2025-07-11) 이후로 배치."
     },
     {
-      "id": "design-system-variant-lookup-map",
-      "title": "디자인 시스템의 최소 단위 — variant 타입과 스타일 룩업 맵",
-      "angle": "Tab 컴포넌트의 세 가지 모양(BUTTON/LINE/LIST)을 문자열 리터럴 유니온 + 스타일 룩업 맵으로 관리. if 분기 대신 데이터로 선언하는 variant 시스템의 원형 — CVA 같은 라이브러리가 하는 일을 손으로 만들어보면 보이는 것들.",
-      "score": 8,
-      "status": "drafted",
-      "sensitivity": "medium",
-      "notes": "2024~2025 예약 클라이언트 공용 컴포넌트 실작업(해당 파일 최다 저자). 도메인 색 옅어 익명화 쉬움. 날짜=2025."
+      "id": "design-system-shadcn-ai-guide",
+      "title": "디자인 시스템 구축 가이드 — 구성요소와 shadcn과 AI 도구",
+      "angle": "입문 독자용 가이드. 디자인 시스템 = 원칙+파운데이션+컴포넌트(코드잇 글 기준, KRDS/LINE과 동일 구조). 원칙은 판정 기준 문장, 파운데이션은 primitive/semantic 2단계 토큰, 컴포넌트는 닫힌 variant 목록. shadcn 접목(globals.css 토큰, cva variant 수정, 레지스트리 배포)과 AI 도구 접목(규칙 파일, lint 강제, 레지스트리 MCP 연결)까지 코드 예시로.",
+      "score": 9,
+      "status": "published",
+      "sensitivity": "none",
+      "notes": "회사 코드 인용 없음. 구체·직관 문체(추상어 지양). 구 design-system-variant-lookup-map에서 세 차례 개고 끝에 최종. AI 도구 섹션(MCP 등) 시기를 고려해 발행일 2026-01-15로 확정(2026-08-12 발행)."
     },
     {
       "id": "first-tests-in-legacy-pure-functions",
