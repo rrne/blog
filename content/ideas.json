@@ -49,9 +49,9 @@
     {
       "id": "mcp-more-is-not-better",
       "title": "MCP는 붙일수록 좋은 게 아니었다",
-      "angle": "MCP 18개 → 7개 축소기. 압축률 12.8% 측정이 촉발한 CloudWatch MCP 제거(CLI 헬퍼+룰로 대체), 8도구→2도구 75% 절감, '매 턴 300토큰 이상이면 격리' 원칙, prod DB 소스 제거(사고 반경). 전부 측정 기반 판단.",
+      "angle": "MCP 18개 → 7개 축소기. 압축률 12.8% 측정이 촉발한 로그 MCP 제거(CLI 헬퍼+룰로 대체), 8도구→2도구 75% 절감, '매 턴 300토큰 이상이면 격리' 원칙, prod DB 소스 제거(사고 반경). 전부 측정 기반 판단.",
       "score": 9,
-      "status": "queued",
+      "status": "drafted",
       "sensitivity": "medium",
       "notes": "AI 시리즈 2편. 근거: harness-changelog 342~372, 270~338, 524~539, 122~151줄. 발행일 2026-04 하순 예정. DB 자격증명 등 값 인용 절대 금지."
     },
