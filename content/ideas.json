@@ -8,7 +8,7 @@
       "score": 9,
       "status": "published",
       "sensitivity": "none",
-      "notes": "이 블로그 리포 코드만 인용 — 공개 리포라 안전. 첫 발행 후보."
+      "notes": "이 블로그 레포 코드만 인용 — 공개 레포라 안전. 첫 발행 후보."
     },
     {
       "id": "parse-dont-validate-frontmatter",
@@ -17,7 +17,7 @@
       "score": 8,
       "status": "published",
       "sensitivity": "none",
-      "notes": "블로그 리포 코드만 인용."
+      "notes": "블로그 레포 코드만 인용."
     },
     {
       "id": "break-your-gates-first",
@@ -26,7 +26,7 @@
       "score": 9,
       "status": "published",
       "sensitivity": "none",
-      "notes": "블로그 리포의 실제 실험 3건. 민감정보 게이트 얘기가 나오지만 게이트 존재 자체는 공개 리포에 있음."
+      "notes": "블로그 레포의 실제 실험 3건. 민감정보 게이트 얘기가 나오지만 게이트 존재 자체는 공개 레포에 있음."
     },
     {
       "id": "polymorphism-lives-at-component-boundary",
@@ -35,7 +35,7 @@
       "score": 8,
       "status": "published",
       "sensitivity": "none",
-      "notes": "블로그 리포 코드만 인용."
+      "notes": "블로그 레포 코드만 인용."
     },
     {
       "id": "same-route-navigation-noop",
@@ -71,7 +71,7 @@
       "score": 8,
       "status": "published",
       "sensitivity": "none",
-      "notes": "이 블로그 리포 작업. 2025년 첫 글 포지션."
+      "notes": "이 블로그 레포 작업. 2025년 첫 글 포지션."
     },
     {
       "id": "calendar-six-week-month",
@@ -94,11 +94,11 @@
     {
       "id": "og-images-at-build-time",
       "title": "og:image를 빌드 시점에 굽기",
-      "angle": "next/og ImageResponse를 SSG로. 폰트를 리포에 커밋해 네트워크 의존 제거.",
+      "angle": "next/og ImageResponse를 SSG로. 폰트를 레포에 커밋해 네트워크 의존 제거.",
       "score": 7,
       "status": "queued",
       "sensitivity": "none",
-      "notes": "이 블로그 리포 작업. sensitivity none."
+      "notes": "이 블로그 레포 작업. sensitivity none."
     },
     {
       "id": "typescript-oop-frontend",
@@ -107,16 +107,16 @@
       "score": 9,
       "status": "published",
       "sensitivity": "medium",
-      "notes": "구 typescript-options-as-single-source(2번째)·typescript-discriminated-union-list(4번째) 두 글을 통합 대체(2026-08-12). 발행일 2025-08-12(2번째 포지션 유지). 실코드 섹션은 예약 클라이언트 네이티브 브릿지 — 제품명·리포명 익명화 완료."
+      "notes": "구 typescript-options-as-single-source(2번째)·typescript-discriminated-union-list(4번째) 두 글을 통합 대체(2026-08-12). 발행일 2025-08-12(2번째 포지션 유지). 실코드 섹션은 예약 클라이언트 네이티브 브릿지 — 제품명·레포명 익명화 완료."
     },
     {
-      "id": "oop-composition-zustand-slices",
-      "title": "객체지향의 '상속보다 조합' — Zustand 단일 스토어를 slice로 쪼개기",
-      "angle": "모놀리식 전역 스토어를 관심사별 slice로 분해하고 교차 타입으로 합성. partialize로 영속화 대상 선별, 리하이드레이션 훅에서 도메인 규칙(날짜 유효성) 적용. 클래스 없는 코드베이스에서 조합 원칙이 작동하는 방식.",
+      "id": "zustand-why-and-how",
+      "title": "상태 관리를 Zustand로",
+      "angle": "웹 자료 기반 + 1인칭 마이그레이션기. 쓰던 Recoil이 아카이브되어 교체 결정 → Zustand 정의(1KB·훅 기반·Provider 없음) → 선택 이유 4가지 → 실제 후보만 비교: Redux(RTK)/Recoil(떠나는 이유·유지보수 교훈)/Jotai(가장 쉬운 이주로지만 atom vs store 모델 차이로 배제) → Recoil에서 옮기는 법 + 사용법(create·selector·persist·slice).",
       "score": 9,
-      "status": "drafted",
-      "sensitivity": "medium",
-      "notes": "2025-05 예약 클라이언트 리팩토링 실작업(단일 커밋으로 before/after 남음). 익명화 필요(medium). 발행일 2025-10-14 — 첫 글(2025-07-11) 이후로 배치."
+      "status": "published",
+      "sensitivity": "none",
+      "notes": "구 oop-composition-zustand-slices(객체지향+Zustand 혼합)를 Zustand 단독 주제로 대체(2026-08-12). 발행일 2025-10-14(4번째 포지션 유지). 회사 코드 인용 없음."
     },
     {
       "id": "design-system-shadcn-ai-guide",

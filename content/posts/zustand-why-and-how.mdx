@@ -1,0 +1,282 @@
+---
+title: "상태 관리를 Zustand로"
+description: "프로젝트가 쓰던 Recoil이 업데이트가 끊기고 아카이브됐다. 라이브러리를 고르며 Redux·Jotai를 비교한 과정, Zustand를 선택한 이유, 그리고 스토어 생성부터 selector·persist·slice 패턴까지 실제 사용법을 정리했다."
+date: "2025-10-14"
+tags: ["zustand", "react", "state-management"]
+draft: false
+---
+
+우리 프로젝트의 전역 상태는 Recoil이 맡고 있었다. 그런데 언제부턴가
+릴리스가 멈췄고, 결국 [메타가 레포지토리를
+아카이브](https://github.com/facebookexperimental/Recoil)하면서
+공식적으로 끝났다. 새 React 버전 대응도, 버그 수정도 더는 기대할
+수 없는 라이브러리를 계속 안고 갈 수는 없다. 그래서 교체를
+결정했고, 후보는 Redux, Jotai, Zustand였다. 결론부터 말하면
+Zustand를 골랐고, 지금까지 후회가 없다. 이 글은 그 선택의 기록이다.
+
+## Zustand란 무엇인가
+
+[Zustand](https://github.com/pmndrs/zustand)는 독일어로 "상태"라는
+뜻이다. react-three-fiber, Jotai를 만든 Poimandres 팀의 상태 관리
+라이브러리로, 세 가지 특징으로 요약된다.
+
+- **작다.** 번들 크기 약 1KB. API도 사실상 `create` 하나다.
+- **훅 기반이다.** 스토어가 곧 훅이라서 `useState`를 쓰던 감각
+  그대로 전역 상태를 쓴다.
+- **Provider가 없다.** 스토어가 React 트리 바깥의 모듈로 존재해서,
+  앱을 `<Provider>`로 감쌀 필요가 없다.
+
+```ts
+import { create } from 'zustand';
+
+const useCartStore = create((set) => ({
+  items: [],
+  addItem: (item) =>
+    set((state) => ({ items: [...state.items, item] })),
+  clear: () => set({ items: [] }),
+}));
+```
+
+이게 전부다. 액션 타입도, 리듀서도, 디스패치도, Provider도 없다.
+컴포넌트에서는 훅처럼 꺼내 쓴다.
+
+```tsx
+function CartBadge() {
+  const count = useCartStore((state) => state.items.length);
+  return <Badge>{count}</Badge>;
+}
+```
+
+## 내가 Zustand를 고른 이유
+
+**첫째, 보일러플레이트가 없다.** Redux는 상태 하나를 추가하려면
+액션·리듀서·(과거엔) 액션 타입까지 여러 파일을 오가야 했다.
+Zustand는 스토어 정의에 상태와 함수를 한 줄씩 추가하면 끝이다.
+학습 곡선도 마찬가지 — `useState`를 아는 팀원이라면 10분이면
+읽고 쓸 수 있다.
+
+**둘째, 리렌더를 selector로 제어한다.** 컴포넌트는 스토어 전체가
+아니라 `(state) => state.items.length`처럼 **필요한 값만
+구독**하고, 그 값이 바뀔 때만 리렌더된다. Context API로 전역 상태를
+만들었을 때 겪는 "value 객체가 바뀌면 구독자 전원이 리렌더"
+문제가 구조적으로 없다.
+
+**셋째, React 바깥에서도 접근할 수 있다.** 스토어가 모듈이라서
+axios 인터셉터나 유틸 함수 같은 훅을 못 쓰는 곳에서도 상태를 읽고
+쓸 수 있다.
+
+```ts
+// 훅이 아닌 곳 — 예: API 클라이언트의 인증 헤더
+const token = useAuthStore.getState().token;
+```
+
+**넷째, 로컬 저장이 내장이다.** 개인적으로 이게 결정적이었다.
+예약 진행값처럼 새로고침해도 살아 있어야 하는 상태가 많다. Redux는
+영속화가 내장이 아니라서 서드파티 redux-persist를 붙여야 하고,
+`persistReducer`·`PersistGate` 같은 설정 보일러플레이트가 따라온다.
+Jotai는 `atomWithStorage`라는 공식 유틸이 있지만 **atom 하나
+단위**라서, 유지할 상태가 여럿이면 localStorage 키가 atom 수만큼
+흩어진다. Zustand는 공식 `persist` 미들웨어로 스토어 전체를 키
+하나에 연결하고 `partialize`로 저장할 값만 고른다.
+
+## 다른 라이브러리와의 비교
+
+**Redux (Redux Toolkit)** — 가장 검증된 선택지고, DevTools와
+미들웨어 생태계·엄격한 단방향 규약은 대규모 팀에서 여전히 강점이다.
+RTK가 보일러플레이트를 많이 줄였지만, 그래도 slice·dispatch·
+Provider라는 구조 자체는 남는다. 우리 규모(프론트 몇 명)에서 그
+규약의 비용이 이득보다 컸다.
+
+**Recoil** —  atom 모델과 파생 selector는 지금
+봐도 좋은 아이디어였지만, 끝까지 실험 딱지를 떼지
+못한 채 업데이트가 멈췄다. 유지보수가 끝난 라이브러리는 React
+메이저 업그레이드 때마다 리스크가 된다 — 라이브러리를 고를 때
+기능만큼 **유지보수 상태와 커뮤니티 규모를 봐야 한다**는 걸 이번에
+배웠다.
+
+**Jotai** — 가장 고민한 상대이자, Recoil에서 옮기기엔 제일 쉬운
+길이었다. 같은 atom 모델이라 `atom()` 선언을 거의 기계적으로 옮길
+수 있고, 만든 팀(Poimandres)이 사실상 Recoil의 정신적 후계자로
+만든 라이브러리다. 그런데 어차피 전체 상태 코드를 손보는 김에 우리
+상태의 모양을 다시 보니, "독립적인 작은 atom 여러 개"가 아니라
+"예약 진행 상태", "인증 상태"처럼 **도메인 단위 묶음**이었다.
+[공식 비교 문서](https://jotai.org/docs/basics/comparison)의 표현을
+빌리면 Zustand는 스토어 중심(module first), Jotai는 atom
+중심(context first) — 마이그레이션 비용을 조금 더 내더라도, 모델
+자체를 우리 상태 모양에 맞는 쪽으로 바꾸기로 했다.
+
+## 사용법 — Recoil에서 옮기며
+
+마이그레이션 자체는 생각보다 기계적이었다. 흩어져 있던 atom들을
+도메인별 스토어로 모으고, `useRecoilState(tokenAtom)`을
+`useAuthStore((s) => s.token)`으로 바꾸는 작업의 반복이다.
+Recoil의 selector로 만들던 파생 값은 스토어의 함수나 컴포넌트 안
+계산으로 내려온다.
+
+**상태와 액션을 한 스토어에** — [공식
+가이드](https://zustand.docs.pmnd.rs/)의 권장은 상태를 바꾸는
+함수, 즉 **액션을 스토어 안에 같이 두는 것**(colocated actions)이다.
+상태 변경의 유일한 통로가 `set`이 되고, 스토어 파일 하나만 보면 이
+상태에 일어날 수 있는 일이 전부 보인다.
+
+```ts
+interface AuthStore {
+  // state
+  token: string | null;
+  // actions
+  login: (token: string) => void;
+  logout: () => void;
+}
+
+export const useAuthStore = create<AuthStore>()((set) => ({
+  token: null,
+  login: (token) => set({ token }),
+  logout: () => set({ token: null }),
+}));
+```
+
+액션을 스토어 밖 모듈 함수로 빼는 패턴도 공식 문서에 있다 —
+`useAuthStore.setState`를 직접 호출하는 방식으로, 훅 없이 부를 수
+있고 코드 스플리팅에 유리하다. 다만 공식 권장 기본값은 colocate다.
+reducer가 익숙한 팀을 위한 `redux` 미들웨어(dispatch 추가)까지
+있지만, 그걸 쓸 거면 애초에 Zustand를 고른 이유가 흐려진다.
+
+**set은 얕은 병합이다** — `set({ token })`이 나머지 상태를 지우지
+않는 건 `set`이 최상위 한 단계를 **얕게 병합**해주기 때문이다.
+뒤집어 말하면 중첩 객체는 병합해주지 않는다 — 스프레드로 직접
+복사해야 하고, 중첩이 깊다면 공식 문서가 소개하는 `immer`
+미들웨어로 변이 문법을 쓸 수 있다.
+
+```ts
+// 중첩 상태 — 스프레드로 한 단계씩 복사해야 한다
+set((state) => ({
+  reservation: {
+    ...state.reservation,
+    guest: { ...state.reservation.guest, count: 2 },
+  },
+}));
+
+// immer 미들웨어를 얹으면 — 직접 수정하듯 쓴다
+set((state) => {
+  state.reservation.guest.count = 2;
+});
+```
+
+**구독은 selector로** — 쓰는 값만 집어서 가져온다. 이 습관이
+Zustand 성능의 전부라고 해도 과언이 아니다.
+
+```tsx
+// bad — 스토어 전체 구독. 아무 값이나 바뀌면 리렌더
+const store = useAuthStore();
+
+// good — token이 바뀔 때만 리렌더
+const token = useAuthStore((state) => state.token);
+```
+
+여러 값을 한 번에 꺼내려고 selector가 새 객체나 배열을 만들어
+반환하면, 내용이 같아도 참조가 매번 바뀌어 리렌더가 다시 새기
+시작한다. 이럴 땐 공식 제공 `useShallow`로 얕은 비교를 시킨다.
+
+```tsx
+import { useShallow } from 'zustand/react/shallow';
+
+// 객체를 새로 만들지만, 내용이 같으면 리렌더하지 않는다
+const { token, login } = useAuthStore(
+  useShallow((state) => ({ token: state.token, login: state.login })),
+);
+```
+
+**persist 미들웨어** — 새로고침에도 살아야 하는 상태는 감싸기만
+하면 된다. `partialize`로 저장할 값만 고를 수 있다.
+
+```ts
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set) => ({ /* ...위와 동일... */ }),
+    {
+      name: 'auth-storage',
+      partialize: (state) => ({ token: state.token }), // 함수는 저장 안 함
+    },
+  ),
+);
+```
+
+**스토어는 slice로 쪼갠다** — 우리가 실제로 쓰는 구조다. 도메인이
+늘수록 스토어 파일 하나가 비대해지는데, slice 패턴은 도메인별
+상태와 액션을 각자의 파일에 `StateCreator`로 정의하고 스토어
+하나로 합친다.
+
+```ts
+// slices/authSlice.ts
+export interface AuthSlice {
+  token: string | null;
+  login: (token: string) => void;
+  logout: () => void;
+}
+
+export const createAuthSlice: StateCreator<AppStore, [], [], AuthSlice> =
+  (set) => ({
+    token: null,
+    login: (token) => set({ token }),
+    logout: () => set({ token: null }),
+  });
+```
+
+```ts
+// slices/cartSlice.ts
+export interface CartSlice {
+  items: Item[];
+  addItem: (item: Item) => void;
+}
+
+export const createCartSlice: StateCreator<AppStore, [], [], CartSlice> =
+  (set, get) => ({
+    items: [],
+    addItem: (item) => {
+      if (!get().token) return; // 다른 slice의 상태도 get()으로 읽는다
+      set((state) => ({ items: [...state.items, item] }));
+    },
+  });
+```
+
+```ts
+// store.ts — 합성. 스토어는 하나, 파일은 도메인별
+export type AppStore = AuthSlice & CartSlice;
+
+export const useAppStore = create<AppStore>()(
+  persist(
+    (...args) => ({
+      ...createAuthSlice(...args),
+      ...createCartSlice(...args),
+    }),
+    {
+      name: 'app-storage',
+      partialize: (state) => ({ token: state.token }),
+    },
+  ),
+);
+```
+
+첫 번째 제네릭이 합성된 전체 타입(`AppStore`), 마지막이 이 slice
+자신의 타입(`AuthSlice`)이다. 그래서 slice 안에서 `get()`으로 다른
+slice의 상태를 읽는 것까지 타입이 통한다 — 장바구니 담기 전에 인증
+여부를 확인하는 식의 도메인 교차 로직이 자연스럽게 들어간다.
+
+컴포넌트 입장에서는 여전히 스토어가 하나라 `useAppStore` 훅 하나만
+알면 되고, persist 같은 미들웨어도 합성 지점에 한 번만 감싸면 모든
+slice에 적용된다. 파일은 도메인별로 나뉘어 코드 리뷰가 좁아진다.
+
+## 정리
+
+Recoil의 아카이브는 아쉬웠지만, 덕분에 상태 관리를 처음부터 다시
+생각할 기회가 됐다. Zustand를 고른 건 기능이 많아서가 아니라
+**뺄 게 없어서**였다. Provider도, 리듀서도, 새 개념도 없이
+"스토어 = 훅" 하나로 끝나는 모델은 팀에 설명할 것도 적고 코드
+리뷰에서 논쟁할 것도 적다. 전역 상태라는 문제는 생각보다 작고,
+작은 문제에는 작은 도구가 맞다.
+
+참고: [Zustand 공식 문서](https://zustand.docs.pmnd.rs/) ·
+[Zustand GitHub](https://github.com/pmndrs/zustand) ·
+[Zustand vs Recoil vs Jotai 비교
+(SK Devocean)](https://devocean.sk.com/blog/techBoardDetail.do?ID=167942&boardType=techBlog) ·
+[Jotai 공식 비교 문서](https://jotai.org/docs/basics/comparison)
