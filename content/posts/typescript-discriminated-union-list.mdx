@@ -1,0 +1,96 @@
+---
+title: "타입스크립트 판별 유니온 — 성격이 다른 아이템을 한 리스트에 담기"
+description: "목록의 99%는 같은 모양인데 하나만 규칙이 다를 때, optional 필드로 뭉개면 타입이 거짓말을 시작한다. itemType 판별자로 서로 다른 shape을 공존시키고, as any 캐스트까지 걷어내는 과정."
+date: "2025-09-15"
+tags: ["typescript", "react"]
+draft: true
+---
+
+부대시설 예약 목록을 그리고 있었다. 목록의 행은 전부 같은 모양 —
+이름, 썸네일, 가격, 그리고 상세로 이동할 개별 `id`. 그런데 한 시설이
+규칙을 깼다. 상품 세 개를 **한 행으로 묶어서** 보여줘야 하고, 그래서
+행이 개별 id를 갖지 않으며, 쿠폰도 없다.
+
+첫 유혹은 기존 타입에 물음표를 붙이는 것이다.
+
+```ts
+interface Facility {
+  id?: number;        // 번들 행에는 없음…
+  hasCoupon: boolean; // 번들 행은 항상 false인데 타입은 모름
+}
+```
+
+이 순간부터 타입은 거짓말을 한다. 모든 행에서 `id`가 있을 수도 없을
+수도 있다고 말하지만, 진실은 "일반 행에는 반드시 있고 번들 행에는
+절대 없다"이다. **조건부로 존재하는 게 아니라, 종류에 따라 결정되어
+있는 것** — 이걸 표현하는 문법이 판별 유니온(discriminated union)이다.
+
+## 종류를 필드로 선언한다
+
+```ts
+export type ListRow = TimeSlotRow | BundleRow;
+
+export interface TimeSlotRow extends Facility {
+  itemType: 'TIMESLOT';   // 판별자
+}
+
+// 번들은 상품 3개를 1행으로 묶어 노출한다(상품별 행 아님).
+// 클릭 시 상세에서 전체를 재조회하므로 개별 id를 행이 들고 있지 않다.
+export interface BundleRow {
+  itemType: 'BUNDLE';
+  displayName: string;
+  thumbnailImage: string;
+  hasCoupon: false;       // boolean이 아니라 리터럴 false
+  minPrice: number;
+  mainPrice: number;
+}
+```
+
+두 가지가 핵심이다. 첫째, `itemType` 리터럴이 판별자다. 이 필드를
+확인하는 순간 타입스크립트가 나머지 shape 전체를 확정해준다. 둘째,
+`hasCoupon: false` — boolean이 아니라 **리터럴 false**다. "번들에는
+쿠폰이 없다"는 도메인 규칙이 주석이 아니라 타입에 박힌다. 번들 행에
+쿠폰을 넣으려는 코드는 컴파일이 안 된다.
+
+렌더는 판별자로 분기한다.
+
+```tsx
+{rows.map((row) => {
+  const imgUrl = row.itemType === 'BUNDLE'
+    ? row.thumbnailImage              // 완성 URL — 리사이저 거치면 깨짐
+    : resizeCdnUrl(row.thumbnailImage);
+  ...
+})}
+```
+
+## 남아 있던 as any — 유니온이 일을 다 하게 하라
+
+그런데 처음 작성한 렌더 코드에는 이런 줄이 남아 있었다.
+
+```ts
+const rowId = itemType === 'BUNDLE' ? 'group' : (row as any).id;
+```
+
+`as any`. 판별 유니온을 만들어놓고 왜 캐스트가 필요했을까 —
+구조 분해가 범인이었다. `const { itemType } = row`처럼 필드를 먼저
+뽑아버리면, 그 뒤의 `itemType` 검사는 **이미 row와 분리된 변수**를
+검사하는 것이라 row의 타입은 좁혀지지 않는다.
+
+row를 통째로 들고 판별자를 검사하면 캐스트는 필요 없다.
+
+```ts
+const rowId = row.itemType === 'BUNDLE' ? 'group' : row.id;
+// else 가지에서 row는 TimeSlotRow로 좁혀져 있다 — id가 있다
+```
+
+`as any`는 대부분 타입 설계의 실패가 아니라 **타입이 좁혀지는 경로를
+끊어먹은 코드**의 자백이다. 판별 유니온을 썼는데 캐스트가 남아
+있다면, 유니온을 의심하기 전에 구조 분해부터 의심하자.
+
+## 언제 꺼내는 패턴인가
+
+리스트 아이템이 "거의 같은데 하나만 달라요"라는 요구가 왔을 때,
+optional 필드를 추가하는 것과 유니온으로 쪼개는 것의 갈림길이 있다.
+기준은 하나다 — **그 필드의 존재가 조건부인가, 종류에 의해 결정되어
+있는가.** 후자라면 유니온이다. 물음표는 "모른다"는 뜻이지 "종류가
+다르다"는 뜻이 아니다.

@@ -1,0 +1,109 @@
+---
+title: "객체지향의 '상속보다 조합' — Zustand 단일 스토어를 slice로 쪼개기"
+description: "전역 스토어가 모든 상태를 한 객체에 담기 시작하면 수정이 무서워진다. 관심사별 slice로 나누고 조합으로 합치기 — 클래스 없는 코드베이스에서 객체지향 원칙이 작동하는 방식."
+date: "2025-10-14"
+tags: ["oop", "zustand", "react", "state-management"]
+draft: true
+---
+
+예약 서비스의 전역 스토어가 한 파일이었다. 검색 조건, 유저 정보,
+공용 UI 상태가 한 객체 안에 살았고, 새 상태가 필요할 때마다 그 파일이
+자랐다. 어느 시점부터 수정이 무서워졌다 — **검색 로직을 고치는데 유저
+상태 코드가 같은 화면에 보인다는 것** 자체가 신호였다.
+
+## 상속이 아니라 조합으로
+
+객체지향에서 가장 오래 살아남은 조언은 "상속보다 조합(composition
+over inheritance)"이다. React + Zustand 코드베이스에 클래스는 없지만
+이 원칙은 그대로 적용된다. 거대한 하나를 만들지 말고, 작은 것들을
+만들어 합쳐라.
+
+Zustand의 slice 패턴이 정확히 그 모양이다. 관심사마다 slice를
+만들고, 스토어는 그것들을 펼쳐서 합성만 한다.
+
+```ts
+type StoreState = SearchSliceType & CommonState & UserSliceType;
+
+const useStore = create<StoreState>()(
+  persist(
+    (set, get, store) => ({
+      ...createSearchSlice(set, get, store),
+      ...createCommonSlice(set, get, store),
+      ...createUserSlice(set, get, store),
+    }),
+    { name: 'app-store' },
+  ),
+);
+```
+
+타입도 교차 타입(`&`)으로 합쳐진다. 각 slice는 자기 상태와 자기
+액션만 안다.
+
+```ts
+// stores/search/slice.ts — 검색 관심사만 존재하는 파일
+const createSearchSlice: StateCreator<SearchSliceType> = (set) => ({
+  search: { ...initialState },
+  save: (props) =>
+    set((state) => ({
+      search: { ...state.search, ...props, _updatedAt: now() },
+    })),
+  clear: () => set(() => ({ search: defaultSearch() })),
+});
+```
+
+파일 경계가 곧 책임의 경계다. 검색을 고치는 PR은 `search/slice.ts`만
+건드리고, 리뷰어는 diff만 봐도 영향 범위를 안다.
+
+## 조합의 두 번째 배당: 영속화를 선별한다
+
+쪼개고 나니 전에는 뭉개져 있던 질문이 보였다. **"이 중에 뭘
+localStorage에 저장해야 하지?"** 단일 객체일 때는 통째로 저장하거나
+말거나였지만, slice로 나뉘면 `partialize`로 답할 수 있다.
+
+```ts
+partialize: (state) => ({
+  search: state.search,
+  user: state.user,
+  // 서버 데이터(예약 목록 등)는 저장하지 않는다 — 원천이 서버다
+}),
+```
+
+서버가 원천인 데이터를 로컬에 영속화하면 낡은 사본이 진실 행세를
+한다. 저장 대상을 고르는 행위가 곧 "이 상태의 원천은 어디인가"를
+선언하는 행위가 됐다.
+
+## 복원에도 규칙이 필요하다
+
+영속화의 짝은 복원이고, 복원된 값은 믿으면 안 된다. 어제 저장된
+체크인 날짜는 오늘 유효하지 않을 수 있다. 리하이드레이션 훅에서 3단
+폴백을 태웠다.
+
+```ts
+onRehydrateStorage: () => (state) => {
+  if (!state) return;
+  if (isCheckInValid(state.search.checkIn)) return; // 1. 저장값이 유효하면 그대로
+  const q = new URLSearchParams(window.location.search);
+  if (q.get('checkIn') && isCheckInValid(q.get('checkIn')!)) {
+    state.save({ checkIn: q.get('checkIn')!, ... });  // 2. URL 쿼리로 복원
+    return;
+  }
+  state.clear();                                      // 3. 오늘 날짜 기본값
+},
+```
+
+검증 규칙은 순수 함수로 분리했다. 스토어 밖에서도 쓰이고, 나중에
+보니 이 분리가 또 다른 배당을 남겼다(테스트 이야기 — 다른 글에서).
+
+```ts
+// 오늘 이전이거나 현재 기준 2시간 이내인 체크인은 유효하지 않다
+export const isCheckInValid = (checkIn: string): boolean =>
+  !dayjs(checkIn).endOf('day').isBefore(dayjs().add(2, 'hour'));
+```
+
+## 클래스가 없어도 설계는 있다
+
+이 리팩토링에 클래스도 인터페이스 상속도 등장하지 않는다. 하지만
+한 일은 명백히 객체지향이 말하던 그것이다 — **단일 책임으로 쪼개고,
+조합으로 합치고, 경계에 규칙을 세운다.** 패러다임의 문법이 아니라
+원칙이 살아남는다. 함수형이든 훅이든, 거대해진 하나를 보면 쪼갤 선을
+먼저 찾자.
