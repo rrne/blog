@@ -27,6 +27,10 @@ jobs:
       - name: MDX 컴파일 검사 (draft 포함)
         run: npm run check:mdx
 
+      # typecheck는 빌드가 생성하는 라우트 타입(PageProps·LayoutProps)에
+      # 의존한다. 빌드 전에 타입만 먼저 생성해 순서 문제를 없앤다
+      - run: npx next typegen
+
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run build
