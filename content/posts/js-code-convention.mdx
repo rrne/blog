@@ -1,64 +1,163 @@
 ---
-title: "팀 JavaScript 코드 컨벤션을 만들며 — Airbnb 스타일 가이드 기반"
-description: "레포지토리마다 스타일이 달라서 코드를 파악하는 비용이 컸다. Airbnb JavaScript Style Guide를 기반으로 팀 컨벤션 문서를 만들며 정한 규칙들 — 변수, 문자열, 객체·배열, 비교, 블록, 함수, 모듈 — 을 '왜'와 함께 요약했다."
+title: "팀 코드 컨벤션을 만들며 — Airbnb 스타일 가이드 기반"
+description: "레포지토리마다 스타일이 달라서 코드를 파악하는 비용이 컸다. Airbnb JavaScript Style Guide를 기반으로 팀 컨벤션 문서를 만들며 정한 규칙들을 '왜'와 함께 요약했다."
 date: "2025-08-26"
 tags: ["javascript", "convention"]
 draft: false
+thumbnail: "/thumbs/convention.png"
 ---
 
-프로젝트마다 컨벤션과 환경 설정이 달랐다. 어떤 레포는 큰따옴표,
-어떤 레포는 작은따옴표. 누가 어떤 프로젝트를 수정하든 빠르게 코드를
+현재 회사내 레포지토리마다 컨벤션과 환경 설정이 달랐다.
+어떤 레포는 큰따옴표, 어떤 레포는 작은따옴표. 누가 어떤 프로젝트를 수정하든 빠르게 코드를
 파악하고 적은 리소스로 기여할 수 있으려면 스타일이 통일돼야 했다.
 그래서 팀 컨벤션 문서를 만들었다.
 
-바닥부터 발명하지는 않았다. [Airbnb JavaScript Style
+컨벤션이 있으면 얻는 것이 분명하다. 코딩 스타일이 통일되면 서로
+다른 프로젝트를 오가면서도 빠른 코드 파악과 수정·배포가 가능하다.
+새로운 인력이 투입되거나 교체될 때도 낮은 러닝커브로 빠르게 회사에
+기여를 시작할 수 있다. 반대로 컨벤션이 없으면 그 비용은 코드를
+읽는 모든 사람이 매번 나눠서 낸다.
+
+[Airbnb JavaScript Style
 Guide](https://github.com/airbnb/javascript)를 기반으로 하고
 [Google JavaScript Style
 Guide](https://google.github.io/styleguide/jsguide.html)를 참고하되,
-내부 상황에 맞게 조정했다. 이 글은 그 문서의 요약이다 — 규칙과
-함께, 각 규칙을 고른 이유를 남긴다.
+내부 상황에 맞게 조정했다. 이 글은 그 문서의 요약이다.
 
-## 변수 — const 우선, 한 줄에 하나
+## 변수
 
-`var`는 쓰지 않는다. 재할당이 없으면 `const`, 있으면 `let`.
-선언은 한 줄에 하나씩 한다 — comma로 다중 선언하면 변수를
-추가·삭제할 때 diff가 지저분해지고, 디버거에서 할당이 한 번에
-잡혀 단계별 확인이 안 된다.
+변수 선언은 `let`과 `const`를 기본으로 하고 `var`는 지양한다.
+값이 재할당되거나 재사용되면 `let`, 상수처럼 한 번만 선언되면
+`const`다. 타입을 혼동해서 쓰지 않도록 주의한다.
+
+```js
+// bad
+var a = 1;
+var tmp = '2';
+var index = 0;
+let foo = '50px';
+
+// good
+const a = 1;
+const mockData = 2;
+let historyIndex = 0;
+const bottomStatusBar = '50px';
+```
+
+이름은 `camelCase`로 쓰고, 내부 상수·고유 문자열·Enum성 값은
+`UPPER_CASE`로 쓴다 — 단, 더 이상 변하지 않는 고정 값일 때만.
+`tmp`처럼 의미를 알 수 없는 임의 이름과 `opt_` 같은 접두사는
+쓰지 않는다.
+
+```js
+// bad
+const tmp = {};
+const APPINSTALLLINK = '~';
+
+// good
+const mockData = {};
+const APP_INSTALL_LINK = '~';
+```
+
+선언은 한 줄에 하나씩 한다. comma로 다중 선언하면 변수를
+교체·수정하기 번거롭고, 디버거에서 할당이 한 번에 이뤄져 디버깅에
+용이하지 않다.
 
 ```js
 // bad
 const salesList = getTimeSaleList(),
-    isTimeSale = true;
+    isTimeSale = true,
+    timeSaleTitle = 'Black Friday!';
 
 // good
 const salesList = getTimeSaleList();
 const isTimeSale = true;
+const timeSaleTitle = 'Black Friday!';
 ```
 
-`const`를 먼저 모아 선언하고 `let`을 뒤에 둔다. 그리고 변수는
-파일 상단이 아니라 **쓰이는 곳 가까이에서** 할당한다 — 이른
-return으로 함수가 끝나면, 그 아래에서만 쓰일 값을 미리 계산한 게
-낭비가 되기 때문이다.
+`const`를 먼저 모아 선언하고 `let`을 뒤에 둔다 — 이미 정의된
+변수를 재가공해 할당할 때 일관되게 적용할 수 있다. 그리고 변수는
+파일 상단이 아니라 **의미가 있는 곳에서** 할당한다. 이른 return으로
+함수가 끝나면 그 아래에서만 쓰일 값을 미리 계산한 게 낭비가 되기
+때문이다.
 
-## 문자열 — 작은따옴표, 연결 대신 템플릿 리터럴
+```js
+// bad
+function checkNicknameLikeName(nickname) {
+    const name = getName();
 
-문자열은 작은따옴표로 감싼다. 긴 문자열도 `+`로 줄을 쪼개지
-않는다 — 쪼개진 문자열은 검색이 안 걸린다. 값을 끼워 넣을 때는
-`+` 연결 대신 템플릿 리터럴을 쓴다.
+    if (nickname === '') {
+        return false;
+    }
+
+    if (nickname === name) {
+        return false;
+    }
+
+    return true;
+}
+
+// good — name은 실제로 쓰기 직전에 조회한다
+function checkNicknameLikeName(nickname) {
+    if (nickname === '') {
+        return false;
+    }
+
+    const name = getName();
+
+    if (nickname === name) {
+        return false;
+    }
+
+    return true;
+}
+```
+
+## 문자열
+
+문자열은 작은따옴표로 감싼다. 긴 문자열도 `+`로 줄을 쪼개지 않고
+한 줄에 쓴다 — 의미 없는 개행은 코드를 찾고 작성하기 어렵게 한다.
+
+```js
+// bad
+const longString = 'Lorem ipsum dolor sit amet,' +
+'consectetur adipiscing elit, sed do eiusmod tempor incididunt ut' +
+'labore et dolore magna aliqua.';
+
+// good
+const longString = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+```
+
+값을 끼워 넣을 때는 `+` 연결이나 `join` 대신 템플릿 리터럴을 쓰고,
+`${ name }`처럼 중괄호 안에 공백을 넣지 않는다.
 
 ```js
 // bad
 const introduce = 'Hello my name is ' + name + '..!';
+const introduce = ['Hello my name is ', name, '..!'].join();
+const introduce = `Hello my name is ${ name }..!`;
 
 // good
 const introduce = `Hello my name is ${name}..!`;
 ```
 
-## 객체·배열 — 리터럴로 만들고, 메서드로 다룬다
+## 객체·배열
 
-`new Object()`, `new Array()` 대신 `{}`, `[]`. 객체 속성이 변수와
-이름이 같으면 shorthand로 적고, shorthand 속성들을 **앞쪽에
-모은다** — 어떤 속성이 축약인지 한눈에 구분된다.
+오브젝트와 배열은 생성자 대신 리터럴 형식으로 선언한다.
+
+```js
+// bad
+const item = new Object();
+const items = new Array();
+
+// good
+const item = {};
+const items = [];
+```
+
+객체 속성이 변수와 이름이 같으면 shorthand로 적고, shorthand
+속성들을 **앞쪽에 모은다** — 어떤 속성이 축약인지 명확하게 파악할
+수 있다. 속성 키는 유효하지 않은 식별자일 때만 따옴표로 감싼다.
 
 ```js
 // good
@@ -66,16 +165,51 @@ const userObject = {
     age,
     nickname,
     job: 'developer',
+    'something-description': '~~',
 };
 ```
 
-배열에 값을 넣을 때는 인덱스 대입이 아니라 `push`, 복사할 때는
-for 루프가 아니라 spread(`[...arr]`)를 쓴다.
+배열에 값을 추가할 때는 인덱스 대입이 아니라 `push`를 쓰고, 복사할
+때는 for 루프가 아니라 spread를 쓴다.
 
-## 비교 — 타입마다 규칙이 다르다
+```js
+// bad
+posts[posts.length] = 'some letter';
 
-`===`와 `!==`만 쓴다. 조건문 축약은 타입별로 다르게 간다 —
-불리언은 축약하고, 문자열과 숫자는 명시적으로 비교한다.
+let subArray = [];
+for (let i = 0, len = mainArray.length; i < len; i++) {
+    subArray[i] = mainArray[i];
+}
+
+// good
+posts.push('some letter');
+
+let subArray = [...mainArray];
+```
+
+배열 메서드 콜백이 단일 구문이면 return을 생략해 한 줄로 쓴다.
+
+```js
+// good
+numberArray.map((numberItem) => {
+    const calNumber = numberItem + 1;
+    return calNumber * numberItem;
+});
+
+// good — 단일 구문은 생략
+numberArray.map(numberItem => numberItem + 1);
+```
+
+## 비교·연산자
+
+`===`와 `!==`만 쓴다. 조건문 축약은 ToBoolean 규칙을 따른다.
+
+- `Object`는 항상 `true`
+- `undefined`와 `null`은 항상 `false`
+- `Number`는 `+0, -0, NaN`을 제외하고 모두 `true`
+- `String`은 빈 값 `''`을 제외하고 모두 `true`
+
+그래서 불리언은 축약하고, 문자열과 숫자는 명시적으로 비교한다.
 
 ```js
 // 불리언 — 축약
@@ -86,19 +220,58 @@ if (name !== '') { ... }
 if (categories.length > 0) { ... }
 ```
 
-`if (name)`은 빈 문자열과 undefined를 구분하지 못한다. 축약이
-줄여주는 글자 수보다, "이 조건이 정확히 뭘 거르는가"가 드러나는
-쪽이 더 값지다.
+삼항 연산자는 중첩하지 않고, 중첩이 필요하면 구문을 나눈다.
+불필요한 삼항은 피한다.
 
-삼항 연산자는 중첩하지 않고, 중첩이 필요하면 변수로 나눈다.
-연산자를 혼용할 때는 괄호로 우선순위를 표시한다 —
-`(a && b < 0) || (c > 0)`처럼, 읽는 사람이 우선순위 표를 떠올리지
-않아도 되게.
+```js
+// bad
+const result = maybe1 > maybe2 ? 'result1' : value1 > value2 ? 'result2' : null;
+const useValue = value1 ? value1 : value2;
+const isTrueValue = value1 ? true : false;
 
-## 블록 — else보다 이른 return
+// good
+const maybeNull = value1 > value2 ? 'result2' : null;
+const result = maybe1 > maybe2 ? 'result1' : maybeNull;
+const useValue = value1 || value2;
+const isTrueValue = !!value1;
+```
 
-여러 줄 블록에는 항상 중괄호를 쓴다. if가 return으로 끝나면
-else를 만들지 않는다.
+연산자는 혼용해서 적지 않고, 혼용해야 하면 괄호로 먼저 처리되는
+연산자에 우선순위를 표시한다. 의도가 명확해지고 로직을 이해하는
+리소스가 줄어든다.
+
+```js
+// bad
+const testData = a && b < 0 || c > 0 || d + 1 === 0;
+
+// good
+const testData = (a && b < 0) || (c > 0) || (d + 1 === 0);
+```
+
+## 블록
+
+여러 줄에는 항상 중괄호를 쓴다.
+
+```js
+// bad
+if (test)
+    return false;
+
+function func() { return false; }
+
+// good
+if (test) {
+    return false;
+}
+
+function func() {
+    return false;
+}
+```
+
+`else`는 `if`의 중괄호가 끝나는 곳에 같은 줄로 쓴다. if가
+return으로 끝나면 else를 만들지 않고, else if에서 return해야
+한다면 if를 따로 나눈다.
 
 ```js
 // bad
@@ -114,70 +287,243 @@ if (isCat) {
 }
 
 return 'nope';
+
+// good — else if 대신 if를 나눈다
+function animals() {
+    if (isDog) {
+        return 'bow';
+    }
+
+    if (isCat) {
+        return 'meow';
+    }
+}
 ```
 
-들여쓰기 깊이가 곧 읽기 난이도다. 이른 return은 "이 아래는 그
-경우가 아니다"를 보장해서, 남은 코드를 읽을 때 머리에 들고 있어야
-할 조건을 줄여준다.
+## 함수
 
-## 함수 — 표현식으로, 파라미터는 건드리지 않는다
-
-함수는 선언문 대신 **이름 있는 함수 표현식**으로 쓴다. 선언문은
-호이스팅돼서 정의보다 앞에서 호출할 수 있는데, 그게 가능하다는
-사실 자체가 코드 읽는 순서를 흐트러뜨린다.
-
-파라미터는 함수 안에서 재할당하지 않는다. 기본값이 필요하면
-default parameter로 선언하고, 기본값 있는 파라미터는 마지막에
-둔다. `arguments` 객체 대신 rest(`...args`)를 쓴다.
+이름은 `camelCase`로, 동작 방식이나 결과값이 예측 가능하게 짓는다.
+함수는 선언문 대신 **이름 있는 함수 표현식**으로 쓴다 — 선언문은
+호이스팅되어 파일에서 정의되기 전에 참조할 수 있기 때문이다. 블록
+스코프(`if`, `while` 등) 안에서는 함수를 선언하지 않는다.
 
 ```js
 // bad
+const tmpFunc = function(){};
+const aabbcc = function() {};
+
+// good
+const checkAwesome = function () {};
+const newArticle = function addArticle() {};
+```
+
+파라미터는 함수 안에서 재할당하지 않는다. 기본값이 필요하면
+default parameter로 선언하고, 기본값 있는 파라미터는 마지막에
+둔다.
+
+```js
+// really bad
 function getPosts(opts) {
     opts = opts || {};
 }
 
 // good
 function getPosts(opts = {}) { ... }
+
+// bad
+function getUser(age = 0, name, job) { ... }
+
+// good
+function getUser(name, job, age = 0) { ... }
+```
+
+`arguments`는 절대 파라미터로 넘기지 않는다 — 함수 범위에 지정된
+인수 객체보다 우선 적용되어 의도치 않은 값을 반환한다. prototype으로
+직접 접근하지도 않고, 필요하면 rest로 받는다.
+
+```js
+// bad
+function getArticles() {
+    const args = Array.prototype.slice.call(arguments);
+}
+
+// good
+function getArticles(idx, title, ...args) { ... }
 ```
 
 객체를 받는 함수는 파라미터에서 바로 구조 분해한다.
 
 ```js
+// bad
+function getUserName(user) {
+    const firstName = user.firstName;
+    const lastName = user.lastName;
+
+    return `${firstName} ${lastName}`;
+}
+
 // best
 function getUserName({ firstName, lastName }) {
     return `${firstName} ${lastName}`;
 }
 ```
 
-화살표 함수는 익명 함수 자리(콜백)에 쓰고, 로직이 복잡해지면
-이름 있는 함수로 뺀다. 단일 표현식이면 중괄호와 return을 생략한다
-— `arr.map(item => item + 1)`.
-
-## 모듈 — import/export, 와일드카드 금지
-
-`require` 대신 `import`/`export`. `import *` 와일드카드는 쓰지
-않는다 — 무엇을 가져왔는지가 코드에 드러나지 않기 때문이다. 같은
-경로의 모듈은 한 줄로 합친다. import한 것을 같은 줄에서 바로
-export하는 것도 지양한다 — 한 줄이 줄지만 import/export의 일관성이
-깨진다.
+화살표 함수는 익명 함수 자리(콜백)에 쓰고, 복잡한 논리 계산식은
+일반 명명 함수로 뺀다. 단일 값 리턴이면 중괄호를 생략한다.
 
 ```js
+// bad
+numberArr.map(function (numberItem) {
+    return numberItem + 1;
+});
+
+// best
+numberArr.map(numberItem => numberItem + 1);
+```
+
+## 모듈
+
+`require`/`module.exports` 대신 `import`/`export`를 쓰고,
+와일드카드로 가져오지 않는다.
+
+```js
+// bad
+const MyCustomModule = require('./MyCustomModule');
+module.exports = MyCustomModule.something;
+
+import * as MyCustomModule from './MyCustomModule';
+
+// good
+import { something } from './MyCustomModule';
+export default something;
+```
+
+import한 것을 같은 줄에서 바로 export하는 방식은 지양한다 — 한
+줄로 간결해 보이지만 `import`/`export`를 일관되게 적용하는 쪽이
+좋다. 같은 경로의 모듈은 한 줄로 합치고, 세부적으로 가져오는
+모듈을 후순위에 배치한다.
+
+```js
+// bad
+export { something as default } from './MyCustomModule';
+
+import validate from 'calculator';
+import { nameValidate, emailValidate } from 'calculator';
+
 // good
 import validate, { nameValidate, emailValidate } from 'calculator';
 ```
 
-## 규칙보다 중요한 것
+## 그 외 추가 설정들
 
-문서를 만들며 확실해진 게 하나 있다. 컨벤션의 가치는 개별 규칙의
-옳고 그름이 아니라 **같은 논쟁을 두 번 하지 않는 데** 있다.
-작은따옴표든 큰따옴표든 반나절 토론할 주제가 아니다 — 한 번 정하고,
-문서에 적고, 다음부터는 코드 리뷰에서 스타일 얘기가 사라지는 것.
-그게 목적이다.
+이유는 생략하고, 필수로 지키는 설정들만 모아둔다.
 
-그래서 다음 단계는 이 문서를 사람이 아니라 도구가 지키게 하는
-것이다. 여기 적은 규칙 대부분은 ESLint + Prettier 설정으로 강제할
-수 있고, 그렇게 되면 문서는 "왜 이렇게 정했는가"의 기록으로
-남는다. 규칙은 도구가, 이유는 문서가 맡는 분업이다.
+```js
+// 탭은 2 spaces
+function getName() {
+  let name;
+}
+
+// 제어문 괄호 앞 공백 1개, 함수 이름과 괄호 사이 공백 없음
+if (isRight) {
+  callApi();
+}
+
+// 연산자 양옆 공백
+const x = y * 5;
+
+// 소괄호·대괄호 안 공백 없음, 중괄호 앞 1 space
+const arr = [1, 2, 3];
+function test(articleIdx, title) { ... }
+
+// 블록이 끝나면 빈 줄 하나, 블록 시작 직후 빈 줄 금지
+if (isFirstEpisode) {
+  return 'Is first episode!';
+}
+
+return 'episode title';
+
+// 중첩 배열은 인라인, 객체 배열은 항목마다 개행
+const nestedArr = [[0, 1], [2, 3], [4, 5]];
+const objectArray = [
+  {
+    idx: 1,
+  },
+  {
+    idx: 2,
+  },
+];
+
+// 여러 줄 주석은 /** ... */, 한 줄 주석은 코드 위에 + // 뒤 공백
+/**
+ * make() returns a new element
+ * based on the passed in tag name
+ */
+
+// is current value
+const isActive = true;
+
+// 노출이 필요한 문제 표시는 FIXME(수정 필요) / TODO(추가 예정)만
+// FIXME: need default type to const
+// TODO: set default type to const
+
+// switch의 case에서 선언이 필요하면 중괄호로 스코프를 만든다
+switch (type) {
+  case 1: {
+    let x = 1;
+    break;
+  }
+  default: {
+    let z = 3;
+  }
+}
+
+// 오브젝트 내 메서드는 축약형으로
+const calculator = {
+  value: 1,
+  addValue(value) {
+    return calculator.value + value;
+  },
+};
+
+// 함수 파라미터가 많으면 한 줄에 하나 + trailing comma
+function modifyUser(
+  name,
+  age,
+  job,
+) { ... }
+```
+
+## AI가 컨벤션을 지키게 하기
+
+요즘은 코드의 상당 부분을 Cursor, Claude Code 같은 AI 도구가
+쓴다. 그래서 이 문서를 만들며 AI에게 어떻게 지키게 할지도 같이 고민했다.
+
+**규칙 파일에 요약본을 넣는다.** Claude Code는 `CLAUDE.md`,
+Cursor는 `.cursorrules`를 매 세션 읽는다. 문서 전체를 붙이는 대신,
+AI가 자주 어기는 것 위주로 추린다.
+
+```markdown
+## 코드 컨벤션
+- 문자열은 작은따옴표. 값 삽입은 템플릿 리터럴.
+- var 금지. 재할당 없으면 const.
+- if가 return으로 끝나면 else를 만들지 않는다.
+- 함수는 이름 있는 함수 표현식으로. arguments 대신 ...rest.
+- import/export만 사용. import * 금지.
+```
+
+**lint로 강제한다.** 규칙 파일은 권고라서 AI가 넘어갈 수 있지만,
+lint는 강제다. AI가 생성한 코드도 사람 코드와 같은 검사를
+통과해야 한다. 마침 Airbnb 가이드는
+[eslint-config-airbnb](https://www.npmjs.com/package/eslint-config-airbnb)로
+제공되어서, 이 문서의 규칙 대부분을 설정 하나로 걸 수 있다.
+위에서 정한 규칙 중 lint로 못 거르는 것(변수 이름의 의미, 의미
+있는 곳에 할당 등)만 규칙 파일과 코드 리뷰가 맡는다.
+
+**기존 코드가 곧 프롬프트다.** AI는 레포의 코드 패턴을 따라 쓴다.
+컨벤션에 맞는 코드가 쌓일수록 AI 결과물도 컨벤션에 수렴하고,
+어긋난 코드가 남아 있으면 그걸 흉내 낸다. 컨벤션 적용을 미룰수록
+AI가 오염을 재생산하는 속도만 빨라진다는 뜻이다.
 
 참고: [Airbnb JavaScript Style
 Guide](https://github.com/airbnb/javascript) · [Google JavaScript

@@ -143,7 +143,7 @@
       "score": 7,
       "status": "published",
       "sensitivity": "none",
-      "notes": "본인 작성 컨벤션 문서 축약. 발행일 2025-08-26 — 세 번째 글 포지션(2번째 2025-08-12와 3번째였던 2025-09-15 사이). 대표 이미지 js.png 업로드 대기(2026-08-12)."
+      "notes": "본인 작성 컨벤션 문서 기반, 원문 예시 유지 + AI 준수 섹션(규칙 파일·lint 강제·기존 코드=프롬프트) 추가. 발행일 2025-08-26 — 세 번째 글 포지션. 대표 이미지 /thumbs/convention.png (2026-08-12)."
     },
     {
       "id": "first-tests-in-legacy-pure-functions",
