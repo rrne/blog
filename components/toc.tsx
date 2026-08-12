@@ -16,10 +16,32 @@ export function Toc() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    let observer: IntersectionObserver | null = null;
+    let nodes: HTMLElement[] = [];
+    let scrollRaf = 0;
+
+    // 활성 섹션 = 읽기 기준선(헤더 아래)을 지나온 마지막 헤딩.
+    // IntersectionObserver는 헤딩이 기준 밴드에 "교차하는 순간"에만 갱신되어
+    // 빠른 스크롤·긴 섹션에서 하이라이트가 이전 위치에 멈추는 문제가 있었다.
+    const update = () => {
+      let current = "";
+      for (const el of nodes) {
+        if (el.getBoundingClientRect().top <= 100) {
+          current = el.id;
+        } else {
+          break;
+        }
+      }
+      setActiveId(current);
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(scrollRaf);
+      scrollRaf = requestAnimationFrame(update);
+    };
+
     // 본문 페인트 이후에 헤딩을 수집한다 (effect 본문에서 동기 setState 금지 규칙 준수)
     const raf = requestAnimationFrame(() => {
-      const nodes = Array.from(
+      nodes = Array.from(
         document.querySelectorAll<HTMLElement>(
           "article .prose h2[id], article .prose h3[id]",
         ),
@@ -32,23 +54,16 @@ export function Toc() {
           level: el.tagName === "H2" ? 2 : 3,
         })),
       );
-
-      observer = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) {
-              setActiveId(entry.target.id);
-              break;
-            }
-          }
-        },
-        { rootMargin: "-56px 0px -70% 0px" },
-      );
-      nodes.forEach((el) => observer?.observe(el));
+      update();
     });
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
       cancelAnimationFrame(raf);
-      observer?.disconnect();
+      cancelAnimationFrame(scrollRaf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
