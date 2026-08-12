@@ -27,7 +27,8 @@ export function Toc() {
       setHeadings(
         nodes.map((el) => ({
           id: el.id,
-          text: el.textContent ?? "",
+          // 헤딩 끝에 붙는 앵커 문자(#)는 목차 라벨에서 제외
+          text: (el.textContent ?? "").replace(/#\s*$/, "").trim(),
           level: el.tagName === "H2" ? 2 : 3,
         })),
       );

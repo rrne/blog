@@ -152,10 +152,17 @@ body {
   font-weight: 600;
   color: var(--accent-900);
 }
-.prose h2 a,
-.prose h3 a {
-  color: inherit;
+/* 소제목 앵커 — 제목 옆 작은 #, 클릭하면 해당 섹션으로 이동 */
+.prose h2 a.heading-anchor,
+.prose h3 a.heading-anchor {
+  margin-left: 0.45em;
+  font-size: 0.8em;
+  color: var(--ink-400);
   text-decoration: none;
+}
+.prose h2 a.heading-anchor:hover,
+.prose h3 a.heading-anchor:hover {
+  color: var(--ink-950);
 }
 .prose a {
   color: var(--ink-950);
@@ -228,6 +235,11 @@ body {
 .prose hr {
   margin: 2.5em 0;
   border-color: var(--ink-border);
+}
+.prose img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--ink-border);
 }
 
 /* rehype-pretty-code — 듀얼 테마는 CSS 변수로만 색을 내보내므로 여기서 적용 */

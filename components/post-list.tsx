@@ -27,11 +27,6 @@ export function PostList({
           >
             <h3 className="min-w-0 text-[14px] font-normal leading-snug text-ink-950 transition-colors">
               {post.title}
-              {post.draft && (
-                <span className="ml-2 align-middle font-mono text-[11px] uppercase tracking-wider text-amber-600">
-                  draft
-                </span>
-              )}
             </h3>
             <span className="shrink-0 font-mono text-[12px] tabular-nums text-ink-500">
               {dateFormat === "short" ? shortDate(post.date) : post.date}
@@ -59,7 +54,7 @@ export function FeaturedPost({ post }: { post: PostMeta }) {
           </p>
         )}
         <p className="mt-2.5 font-mono text-[12px] text-ink-500">
-          {post.date} · {post.readingMinutes} min
+          {post.date}
         </p>
       </div>
       <div className="hidden w-[150px] max-w-full md:block">

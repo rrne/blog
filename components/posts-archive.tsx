@@ -125,11 +125,6 @@ function PostRow({ post }: { post: PostMeta }) {
       >
         <h3 className="min-w-0 text-[14px] font-normal leading-snug text-ink-950 transition-colors">
           {post.title}
-          {post.draft && (
-            <span className="ml-2 align-middle font-mono text-[11px] uppercase tracking-wider text-amber-600">
-              draft
-            </span>
-          )}
         </h3>
         <span className="shrink-0 font-mono text-[12px] tabular-nums text-ink-500">
           {post.date}
@@ -158,7 +153,7 @@ function PostCard({ post }: { post: PostMeta }) {
         <p className="line-clamp-2 text-[13px] text-ink-600">{post.description}</p>
       )}
       <p className="mt-auto pt-1 font-mono text-[12px] tabular-nums text-ink-500">
-        {post.date} · {post.readingMinutes} min
+        {post.date}
       </p>
     </Link>
   );

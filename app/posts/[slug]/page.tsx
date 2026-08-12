@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote-client/rsc";
@@ -45,16 +46,31 @@ export default async function PostPage({ params }: PageProps<"/posts/[slug]">) {
         <div className="grid grid-cols-1 items-start gap-0 lg:grid-cols-[1fr_240px] lg:gap-16">
           <article className="mx-auto w-full min-w-0 max-w-[680px] lg:mx-0">
             <header>
-              <h1 className="mt-3 mb-1.5 text-[22px] font-bold leading-snug text-accent-900">
+              {post.thumbnail && (
+                <div className="relative mb-6 aspect-[1.91/1] w-full overflow-hidden rounded-[10px] border border-line bg-paper-100">
+                  <Image
+                    src={post.thumbnail}
+                    alt=""
+                    fill
+                    priority
+                    sizes="(min-width: 768px) 680px, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              )}
+              <h1 className="mt-3 mb-4 text-[22px] font-bold leading-snug text-accent-900">
                 {post.title}
               </h1>
-              <p className="mb-2.5 font-mono text-[12px] tabular-nums text-ink-500">
-                {post.date} · {post.readingMinutes} min
-                {post.draft && (
-                  <span className="ml-2 uppercase tracking-wider text-amber-600">
-                    draft
+              <p className="mb-5 flex flex-wrap items-center gap-x-1.5 gap-y-1.5 font-mono text-[12px] tabular-nums text-ink-500">
+                <span className="mr-1.5">{post.date}</span>
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-line bg-paper-100 px-2.5 py-0.5 text-[11px] leading-relaxed text-ink-600"
+                  >
+                    #{tag}
                   </span>
-                )}
+                ))}
               </p>
               {post.description && (
                 <p className="mb-[22px] text-[14px] leading-relaxed text-ink-600">
