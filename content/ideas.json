@@ -58,20 +58,20 @@
     {
       "id": "ai-token-diet",
       "title": "AI 토큰 비용 다이어트",
-      "angle": "매 턴 ~13,500토큰이 어디서 새는지 항목별 분해 → 6주간의 절감기(CLAUDE.md 138→64줄, 산재 CLAUDE.md 136→12개, 스킬·플러그인 정리, 출력 토큰이 진짜 주범이라는 반전 — alwaysThinking off로 출력 50%+ 절감). 결말: 60-90% 압축 도구(RTK)를 3일 만에 ROI 부족으로 걷어낸 반전.",
+      "angle": "매 턴 ~13,500토큰이 어디서 새는지 항목별 분해 → 6주간의 절감기(CLAUDE.md 다이어트, 상시 주입 정리, 출력 토큰이 진짜 주범이라는 반전, 재읽기 세금, 압축 도구 ROI 부족 제거, 토큰 회계 재인식).",
       "score": 10,
-      "status": "queued",
+      "status": "parked",
       "sensitivity": "medium",
-      "notes": "AI 시리즈 3편(수치 가장 풍부). 근거: changelog 850~873, 155~179, 462~465, 726~753줄 + settings.json 실물. 발행일 2026-05 예정."
+      "notes": "작성했다가 작성자 판단으로 발행 내림(2026-08-13, 토큰 주제 제외). 글 파일은 git 히스토리에 없음(미커밋 삭제) — 근거 자료는 docs/harness에 그대로."
     },
     {
       "id": "claude-md-pendulum",
       "title": "CLAUDE.md, 늘릴수록 무시당한다",
-      "angle": "규칙 md 파일 운영 실패기. 60줄 초과 시 규칙 매몰 → MANDATORY 강제 → 과잉 위임 → AND 조건 과엄격 → OR 재완화의 진자 운동 3라운드(날짜·원문 피드백 포함). CLAUDE.md 자기 증식 사태(136개→12개, 재발 63개), 'rules/는 자동 주입되지 않는다'는 자체 반증까지.",
+      "angle": "규칙 md 파일 운영 실패기 4연작: 규칙 매몰(138줄 중간 규칙은 무시) → MANDATORY 강제의 역효과와 진자 운동(모호→강제→과엄격→완화) → CLAUDE.md 자기 증식(136개→12개, 재발 63개, 생성원 차단) → 'rules/는 자동 주입되지 않는다'는 자체 반증(넛지 vs 훅). 결론: md는 측정해야 하는 시스템.",
       "score": 10,
-      "status": "queued",
+      "status": "drafted",
       "sensitivity": "medium",
-      "notes": "AI 시리즈 4편 — 요청받은 'md 실패기'. 근거: engineering-guide 279~313, changelog 458~499, 931~955, HISTORY.md 142~159줄. 발행일 2026-05~06 예정."
+      "notes": "AI 시리즈 3편 — 요청받은 'md 실패기'. 근거: engineering-guide 279~313, changelog 458~499, 931~955, HISTORY.md 142~159줄. 발행일 2026-05-14."
     },
     {
       "id": "stop-hook-enforcement",
