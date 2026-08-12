@@ -1,0 +1,201 @@
+---
+title: "타입스크립트와 객체지향 — 프론트엔드에서 클래스는 어디에 필요한가"
+description: "타입스크립트를 매일 쓰면서도 '타입 붙은 자바스크립트'로만 쓰고 있는 건 아닐까. 타입스크립트와 객체지향을 다시 정의하고, 프론트엔드에서 객체지향이 실제로 값어치를 하는 자리를 찾아본 기록. 구조적 타이핑과 타입 소거라는 함정, 그리고 실제 코드에 적용된 모습까지."
+date: "2025-08-12"
+tags: ["typescript", "oop"]
+draft: false
+thumbnail: "/thumbs/typescript.png"
+---
+
+타입스크립트를 몇 년째 매일 쓰고 있다. 그런데 어느 날 코드를
+돌아보니 내가 쓰는 타입스크립트는 인터페이스로 props 모양을 잡고,
+API 응답에 타입을 붙이는 게 거의 전부였다. 말하자면 "타입 붙은
+자바스크립트". 클래스, 캡슐화, 다형성 같은 단어는 면접 대비할 때나
+꺼내는 개념이 되어 있었다.
+
+React가 함수형으로 넘어온 지 오래인데 프론트엔드에서 객체지향이
+여전히 필요한가? 필요하다면 어디에? 이 질문을 정리해봤다.
+
+## 타입스크립트, 다시 짧게 정의하면
+
+[타입스크립트](https://www.samsungsds.com/kr/insights/typescript.html)는
+자바스크립트의 슈퍼셋이다. 유효한 자바스크립트 코드는 그대로
+타입스크립트 코드이고, 거기에 정적 타입 문법이 얹힌다. 핵심 가치는
+**에러를 만나는 시점을 런타임에서 컴파일 타임으로 당기는 것** —
+사용자가 겪을 오류를 에디터에서 먼저 겪는다.
+
+하나 더 기억할 성질이 있다. 컴파일하면 **타입은 전부 지워진다.**
+`.ts`가 `.js`로 변환되는 순간 인터페이스도 제네릭도 사라지고 순수
+자바스크립트만 남는다. 이 "타입 소거"가 뒤에서 얘기할 함정의
+원인이 된다.
+
+## 객체지향, 다시 짧게 정의하면
+
+![객체지향 — 데이터와 행동을 객체로 묶는다](/thumbs/object.png)
+
+[객체지향 프로그래밍](https://velog.io/@rmaomina/Basic-Concepts)은
+데이터와 그 데이터를 다루는 행동을 **객체 하나로 묶는** 패러다임이다.
+네 가지 특징으로 요약된다.
+
+- **캡슐화** — 내부 상태를 숨기고 정해진 통로로만 접근하게 한다.
+- **추상화** — 사용하는 쪽에는 필요한 것만 단순한 이름으로 노출한다.
+- **상속** — 공통 부분을 물려받아 재사용한다.
+- **다형성** — 같은 메시지에 객체마다 다르게 반응한다. `if` 분기를
+  객체 교체로 대신하는 힘이 여기서 나온다.
+
+## 타입스크립트에서 객체지향 쓰기
+
+자바스크립트에도 클래스는 있지만, 타입스크립트는 객체지향의
+문법적 지원을 제대로 갖췄다. 접근 제어자(`private`, `readonly`)로
+캡슐화를, `interface` + `implements`로 계약을, `abstract`로 공통
+뼈대를 강제할 수 있다.
+
+```ts
+interface TokenStorage {
+  save(token: string): void;
+  load(): string | null;
+}
+
+class LocalTokenStorage implements TokenStorage {
+  private readonly key = 'auth-token'; // 외부에서 키를 알 필요가 없다
+
+  save(token: string) {
+    localStorage.setItem(this.key, token);
+  }
+
+  load() {
+    return localStorage.getItem(this.key);
+  }
+}
+```
+
+이렇게 얻는 이점은 구체적이다.
+
+- 사용하는 쪽은 `TokenStorage`라는 **계약**에만 의존한다. 저장소를
+  쿠키로 바꿔도, 테스트에서 메모리 구현으로 갈아 끼워도 사용처는 한
+  줄도 안 바뀐다.
+- `private`이 지키는 건 값이 아니라 **가정**이다. "이 키는 여기서만
+  만진다"가 컴파일러에 의해 보장되면, 버그를 찾을 때 뒤질 범위가
+  줄어든다.
+- 구현체가 늘어날 때 `if` 분기가 아니라 클래스가 하나 늘어난다.
+
+## 그런데, 부딪히는 문제들
+
+여기까지는 교과서다. 실제로 써보면서 부딪힌 건 세 가지였다.
+
+**첫째, 타입스크립트의 호환성은 이름이 아니라 모양이다.**
+자바나 C#의 클래스에 익숙한 눈으로 보면 당황하는 지점인데,
+타입스크립트는 [구조적
+타이핑](https://stevekinney.com/courses/react-typescript/typescript-structural-typing)이라
+`implements`를 선언하지 않은 객체도 **모양만 맞으면** 그 인터페이스
+자리에 들어간다. 우연히 모양이 같은 전혀 다른 도메인의 객체가
+통과하는 걸 막을 수 없다. 재미있는 건 `private` 멤버가 하나라도
+있으면 구조가 같아도 호환되지 않는다는 것 — 캡슐화가 타입 수준의
+구분까지 만들어준다.
+
+**둘째, 타입은 런타임에 존재하지 않는다.** 인터페이스는 컴파일하면
+사라지므로 `instanceof TokenStorage` 같은 검사가 불가능하다. API
+응답에 타입을 붙였다고 해서 런타임에 그 모양이 보장되는 것도
+아니다 — 결국 경계에서는 타입 가드(`v is string` 형태의 술어
+함수)로 직접 검증해야 한다. 타입스크립트는 안전을 주는 게 아니라
+**내가 세운 가정을 문서화하고 검사**해줄 뿐이다.
+
+**셋째, 함수형 React 세계에서 클래스의 자리가 애매하다.** 컴포넌트는
+함수고, 상태는 훅이고, 로직은 유틸 함수다. 클래스로 도메인 모델을
+만들어봐야 React 상태로 쓰려면 불변성 때문에 결국 spread로 복사하게
+된다. 그래서 한동안 "프론트엔드에 객체지향은 안 맞는다"고
+결론내릴 뻔했는데 — 틀린 결론이었다. 클래스의 자리는 UI가 아니라
+**다른 곳**에 있었다.
+
+## 실제 코드에서 — 하나의 React 앱, 세 개의 런타임
+
+내가 일하는 예약 서비스의 클라이언트 앱은 하이브리드 앱이다. 같은
+Next.js 코드가 **Android WebView, iOS WKWebView, 순수 브라우저**
+세 환경에서 돌아간다. 화면 전환·공유·앱 배지 같은 앱 셸 제어는
+환경마다 브릿지 규약이 완전히 다르다. 안드로이드는 JS 인터페이스,
+iOS는 `postMessage`, 브라우저는 그런 게 아예 없다.
+
+이 문제를 코드베이스는 추상 클래스 하나로 풀고 있다.
+
+```ts
+// 플랫폼마다 다른 것은 "전송 방식" 딱 하나다
+abstract class NativeService {
+  abstract doAction(action: Action, data?: unknown): void;
+
+  push = (url: string, option?: PushOption) => {
+    this.doAction('push', { url: this.toUri(url), option });
+  };
+
+  pop = (url?: string) => {
+    this.doAction('pop', url ? { url: this.toUri(url) } : undefined);
+  };
+}
+```
+
+구현체는 셋. 각자 `doAction` 하나만 자기 방식으로 구현한다.
+
+```ts
+class AndroidService extends NativeService {
+  private android: JavascriptInterface; // 브릿지 객체는 밖으로 노출하지 않는다
+
+  doAction = (action: Action, data?: unknown) => {
+    this.android.doAction(JSON.stringify({ action, data }));
+  };
+}
+
+class WebkitService extends NativeService {
+  constructor(private handler: ScriptMessageHandler) { super(); }
+
+  doAction = (action: Action, data?: unknown) => {
+    this.handler.postMessage(JSON.stringify({ action, data }));
+  };
+}
+
+class BrowserService extends NativeService {
+  private routesStack: string[] = []; // 네이티브 뷰 스택을 소프트웨어로 재현
+
+  pop = () => {
+    const uri = this.routesStack.pop();
+    this.router.push(uri ?? '/');
+  };
+
+  setBadge = () => {}; // 브라우저엔 앱 배지가 없다 — 안전한 no-op
+}
+```
+
+어떤 구현체를 쓸지는 팩토리가 실행 환경을 보고 결정하고, 앱
+전체에서 `new`는 여기서만 등장한다.
+
+```ts
+const getNativeService = (router: Router): NativeService => {
+  if (typeof window === 'undefined') return new BrowserService(router); // SSR
+  if (window.webkit?.messageHandlers) return new WebkitService(...);
+  if (window.Android) return new AndroidService(window.Android);
+  return new BrowserService(router);
+};
+```
+
+이 구조의 결과가 인상적이다. 화면 코드 어디에도 `if (isAndroid)`
+분기가 **한 줄도 없다.** 컴포넌트는 자기가 어느 플랫폼에서 도는지
+모른 채 `nativeService.push('/home')`만 호출한다. 새 플랫폼이
+생기면 클래스 하나를 추가하면 되고, 브라우저처럼 기능이 없는
+환경은 no-op 구현으로 조용히 흡수된다. 캡슐화(`private` 브릿지
+객체), 추상화(`doAction` 하나로 좁힌 차이), 상속(공통 메서드),
+다형성(환경별 교체) — 네 가지가 전부 실전에서 일하고 있다.
+
+## 정리
+
+객체지향이 필요한 자리는 UI가 아니라 **런타임 경계**였다. 컴포넌트와
+상태는 함수형이 맞다. 하지만 플랫폼·SDK·저장소처럼 "같은 요청,
+다른 구현"이 만나는 경계에서는 인터페이스와 클래스가 분기를
+삼켜준다. 타입스크립트를 "타입 붙은 자바스크립트"로 쓰느냐, 설계
+도구로 쓰느냐는 이 경계를 알아보는 눈의 차이인 것 같다.
+
+참고: [TypeScript란?
+(Samsung SDS)](https://www.samsungsds.com/kr/insights/typescript.html) ·
+[객체 지향 프로그래밍의 4가지
+특징](https://velog.io/@rmaomina/Basic-Concepts) · [Structural
+Typing in
+TypeScript](https://stevekinney.com/courses/react-typescript/typescript-structural-typing) ·
+[TypeScript for React Developers — Common
+Mistakes](https://www.greatfrontend.com/blog/typescript-for-react-developers)

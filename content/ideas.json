@@ -101,22 +101,13 @@
       "notes": "이 블로그 리포 작업. sensitivity none."
     },
     {
-      "id": "typescript-discriminated-union-list",
-      "title": "타입스크립트 판별 유니온 — 성격이 다른 아이템을 한 리스트에 담기",
-      "angle": "일반 상품과 규칙이 전혀 다른 특수 상품(개별 id 없음, 묶음 노출)을 itemType 판별자로 한 union에 모델링하고 렌더에서 분기. 남아있던 as any 캐스트를 걷어내는 before/after까지.",
+      "id": "typescript-oop-frontend",
+      "title": "타입스크립트와 객체지향 — 프론트엔드에서 클래스는 어디에 필요한가",
+      "angle": "웹 자료 기반 고찰 + 실코드 사례. TS 정의(슈퍼셋·정적 타입·타입 소거) → OOP 4대 특징 → TS의 OOP 문법과 이점 → 미들급이 부딪히는 문제 3개(구조적 타이핑, 런타임에 타입 없음, 함수형 React에서 클래스의 자리) → 예약 클라이언트의 NativeService 추상 클래스+팩토리(3개 런타임 다형성) 사례. 결론: 객체지향의 자리는 UI가 아니라 런타임 경계.",
       "score": 9,
-      "status": "drafted",
+      "status": "published",
       "sensitivity": "medium",
-      "notes": "2025 예약 클라이언트 실작업. 도메인 용어 익명화 필요(medium). 날짜=실제 작업 시기(2025)."
-    },
-    {
-      "id": "typescript-options-as-single-source",
-      "title": "타입스크립트 typeof 파생 타입 — 셀렉트 옵션과 유니온 타입의 이중 관리 끝내기",
-      "angle": "런타임 옵션 배열({value,label}[])에서 (typeof options)[number]['value']로 리터럴 유니온을 파생. 옵션 추가가 곧 타입 확장이 되는 단일 소스 구조. as const·인덱스 접근 타입·[number] 순회를 실전 코드로.",
-      "score": 9,
-      "status": "drafted",
-      "sensitivity": "medium",
-      "notes": "2024~2026 어드민 정산 화면 실작업(한 파일에서 20곳+ 반복 사용). 상태값 예시 익명화 필요(medium). 발행일 2025-08-12 — 첫 글(2025-07-11) 이후로 배치."
+      "notes": "구 typescript-options-as-single-source(2번째)·typescript-discriminated-union-list(4번째) 두 글을 통합 대체(2026-08-12). 발행일 2025-08-12(2번째 포지션 유지). 실코드 섹션은 예약 클라이언트 네이티브 브릿지 — 제품명·리포명 익명화 완료."
     },
     {
       "id": "oop-composition-zustand-slices",
