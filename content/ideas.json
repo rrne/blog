@@ -6,36 +6,81 @@
       "title": "액센트 색을 전부 지우는 데 커밋 하나면 충분했다",
       "angle": "시맨틱 토큰 계층 덕에 블로그 전체 톤 전환이 파일 한 곳 수정으로 끝난 실화. primitive/semantic 계층과 의도적 규칙 위반.",
       "score": 9,
-      "status": "published",
+      "status": "parked",
       "sensitivity": "none",
-      "notes": "이 블로그 레포 코드만 인용 — 공개 레포라 안전. 첫 발행 후보."
+      "notes": "이 블로그 레포 코드만 인용 — 공개 레포라 안전. 2026-08 발행분 4편 일괄 발행 내림(2026-08-12, 작성자 판단). 글 파일은 git 히스토리에 있음."
     },
     {
       "id": "parse-dont-validate-frontmatter",
       "title": "frontmatter는 any로 들어온다 — 경계에서 한 번만 의심하기",
       "angle": "Parse, don't validate를 실제 블로그 코드로. 경계에서 파싱해 확정 타입으로 바꾸면 안쪽 코드가 컴파일러의 보호를 받는다. zod를 안 쓴 판단 기준까지.",
       "score": 8,
-      "status": "published",
+      "status": "parked",
       "sensitivity": "none",
-      "notes": "블로그 레포 코드만 인용."
+      "notes": "블로그 레포 코드만 인용. 2026-08 발행분 4편 일괄 발행 내림(2026-08-12). 글 파일은 git 히스토리에 있음."
     },
     {
       "id": "break-your-gates-first",
       "title": "게이트를 만들었으면 먼저 부숴봐야 한다",
       "angle": "CI 게이트 3개를 전부 일부러 깨뜨려 검증한 기록. 초록불의 두 가지 뜻, 뮤테이션 테스팅과 닿는 지점.",
       "score": 9,
-      "status": "published",
+      "status": "parked",
       "sensitivity": "none",
-      "notes": "블로그 레포의 실제 실험 3건. 민감정보 게이트 얘기가 나오지만 게이트 존재 자체는 공개 레포에 있음."
+      "notes": "블로그 레포의 실제 실험 3건. 2026-08 발행분 4편 일괄 발행 내림(2026-08-12). 글 파일은 git 히스토리에 있음."
     },
     {
       "id": "polymorphism-lives-at-component-boundary",
       "title": "React에 클래스는 없어도 다형성은 있다",
       "angle": "객체지향의 핵심은 if의 소유권. PostCover 사례로 분기를 컴포넌트 경계 뒤로 숨기는 것, 상속 대신 조합, 추상화의 타이밍.",
       "score": 8,
-      "status": "published",
+      "status": "parked",
       "sensitivity": "none",
-      "notes": "블로그 레포 코드만 인용."
+      "notes": "블로그 레포 코드만 인용. 2026-08 발행분 4편 일괄 발행 내림(2026-08-12). 글 파일은 git 히스토리에 있음."
+    },
+    {
+      "id": "harness-for-ai-agents",
+      "title": "하네스 엔지니어링에 대해",
+      "angle": "프롬프트→컨텍스트→에이전트 진화와 하네스 개념(위키독스 '하네스 엔지니어링 입문' 구성요소 뼈대: 지시문서·아키텍처 제약·피드백 루프·지식 저장소·가비지 컬렉션). 구성요소별 팀 적용 기록(3계층 컨텍스트·모델 계층화·성공은 침묵 훅·메모리 49파일) + 우아한형제들 구축기(globs 규칙, 환경 설계 인사이트) 참고.",
+      "score": 9,
+      "status": "drafted",
+      "sensitivity": "medium",
+      "notes": "AI 시리즈 1편. 근거: docs/harness 4문서(engineering-guide, changelog 1086줄 등). 발행일 2026-04-05(실작업 2026-03~06). 회사·제품명 익명화 필수(2026-08-12)."
+    },
+    {
+      "id": "mcp-more-is-not-better",
+      "title": "MCP는 붙일수록 좋은 게 아니었다",
+      "angle": "MCP 18개 → 7개 축소기. 압축률 12.8% 측정이 촉발한 CloudWatch MCP 제거(CLI 헬퍼+룰로 대체), 8도구→2도구 75% 절감, '매 턴 300토큰 이상이면 격리' 원칙, prod DB 소스 제거(사고 반경). 전부 측정 기반 판단.",
+      "score": 9,
+      "status": "queued",
+      "sensitivity": "medium",
+      "notes": "AI 시리즈 2편. 근거: harness-changelog 342~372, 270~338, 524~539, 122~151줄. 발행일 2026-04 하순 예정. DB 자격증명 등 값 인용 절대 금지."
+    },
+    {
+      "id": "ai-token-diet",
+      "title": "AI 토큰 비용 다이어트",
+      "angle": "매 턴 ~13,500토큰이 어디서 새는지 항목별 분해 → 6주간의 절감기(CLAUDE.md 138→64줄, 산재 CLAUDE.md 136→12개, 스킬·플러그인 정리, 출력 토큰이 진짜 주범이라는 반전 — alwaysThinking off로 출력 50%+ 절감). 결말: 60-90% 압축 도구(RTK)를 3일 만에 ROI 부족으로 걷어낸 반전.",
+      "score": 10,
+      "status": "queued",
+      "sensitivity": "medium",
+      "notes": "AI 시리즈 3편(수치 가장 풍부). 근거: changelog 850~873, 155~179, 462~465, 726~753줄 + settings.json 실물. 발행일 2026-05 예정."
+    },
+    {
+      "id": "claude-md-pendulum",
+      "title": "CLAUDE.md, 늘릴수록 무시당한다",
+      "angle": "규칙 md 파일 운영 실패기. 60줄 초과 시 규칙 매몰 → MANDATORY 강제 → 과잉 위임 → AND 조건 과엄격 → OR 재완화의 진자 운동 3라운드(날짜·원문 피드백 포함). CLAUDE.md 자기 증식 사태(136개→12개, 재발 63개), 'rules/는 자동 주입되지 않는다'는 자체 반증까지.",
+      "score": 10,
+      "status": "queued",
+      "sensitivity": "medium",
+      "notes": "AI 시리즈 4편 — 요청받은 'md 실패기'. 근거: engineering-guide 279~313, changelog 458~499, 931~955, HISTORY.md 142~159줄. 발행일 2026-05~06 예정."
+    },
+    {
+      "id": "stop-hook-enforcement",
+      "title": "AI에게 부탁하는 건 규칙이 아니다",
+      "angle": "advisory 주입은 100% 무시된다 — 주간 유지보수 태스크가 9일간 0회 실행된 사건과 Stop hook 'decision: block'으로 강제한 해법(26줄 스크립트 전문). one-shot 플래그로 무한 루프 방지, '세션 중 간섭 제로, 종료 시 1회 강제' 설계. 넛지 vs 훅의 트레이드오프(발동률 90% vs 100%, 판단력 100% vs 0%).",
+      "score": 9,
+      "status": "queued",
+      "sensitivity": "medium",
+      "notes": "AI 시리즈 5편. 근거: changelog 690~723, 74~119줄, dream-gate-stop.sh 실물, HISTORY.md 넛지/훅 비교표. 발행일 2026-06 예정."
     },
     {
       "id": "same-route-navigation-noop",
