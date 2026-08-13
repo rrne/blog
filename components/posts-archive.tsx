@@ -7,19 +7,6 @@ import type { PostMeta } from "@/lib/posts";
 import { PostCover } from "@/components/cover";
 import { cn } from "@/lib/utils";
 
-type Sort = "recent" | "oldest" | "shortest";
-type View = "list" | "cards";
-
-const SORTS: { id: Sort; label: string }[] = [
-  { id: "recent", label: "최신순" },
-  { id: "oldest", label: "오래된순" },
-  { id: "shortest", label: "짧은 글부터" },
-];
-const VIEWS: { id: View; label: string }[] = [
-  { id: "list", label: "리스트" },
-  { id: "cards", label: "카드" },
-];
-
 type Item = { id: string; label: string; count: number };
 
 function countBy(values: string[]): Item[] {
@@ -38,39 +25,6 @@ function GroupLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-/** 세그먼트 컨트롤 — paper.100 배경 안에서 활성 조각만 밝게 */
-function Segmented<T extends string>({
-  value,
-  options,
-  onChange,
-}: {
-  value: T;
-  options: { id: T; label: string }[];
-  onChange: (v: T) => void;
-}) {
-  return (
-    <ul className="m-0 inline-flex list-none items-stretch overflow-hidden rounded-[6px] border border-line bg-paper-100 p-0">
-      {options.map((opt) => (
-        <li key={opt.id} className="flex">
-          <button
-            type="button"
-            aria-pressed={value === opt.id}
-            onClick={() => onChange(opt.id)}
-            className={cn(
-              "cursor-pointer px-2.5 py-1.5 text-[12.5px] transition-colors",
-              value === opt.id
-                ? "bg-paper-50 font-semibold text-ink-950"
-                : "text-ink-600 hover:text-ink-950",
-            )}
-          >
-            {opt.label}
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 /** 필터 그룹 — 전체 폭 행 버튼 + 우측 개수 배지 (참고 사이트 실측 스타일) */
 function FilterGroup({
   label,
@@ -85,7 +39,7 @@ function FilterGroup({
 }) {
   if (items.length === 0) return null;
   return (
-    <div className="flex flex-col gap-1.5 border-t border-line pt-3">
+    <div className="flex flex-col gap-1.5 border-t border-line pt-3 first:border-t-0 first:pt-0">
       <GroupLabel>{label}</GroupLabel>
       <ul className="m-0 flex list-none flex-col gap-1 p-0">
         {items.map((item) => {
@@ -116,24 +70,6 @@ function FilterGroup({
   );
 }
 
-function PostRow({ post }: { post: PostMeta }) {
-  return (
-    <li className="border-t border-line last:border-b last:border-line">
-      <Link
-        href={`/posts/${post.slug}`}
-        className="flex items-baseline justify-between gap-4 px-0.5 py-3 hover:[&_h3]:underline hover:[&_h3]:underline-offset-4"
-      >
-        <h3 className="min-w-0 text-[14px] font-normal leading-snug text-ink-950 transition-colors">
-          {post.title}
-        </h3>
-        <span className="shrink-0 font-mono text-[12px] tabular-nums text-ink-500">
-          {post.date}
-        </span>
-      </Link>
-    </li>
-  );
-}
-
 function PostCard({ post }: { post: PostMeta }) {
   return (
     <Link
@@ -160,9 +96,6 @@ function PostCard({ post }: { post: PostMeta }) {
 }
 
 export function PostsArchive({ posts }: { posts: PostMeta[] }) {
-  const [query, setQuery] = useState("");
-  const [sort, setSort] = useState<Sort>("recent");
-  const [view, setView] = useState<View>("cards");
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const [activeYear, setActiveYear] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -180,65 +113,23 @@ export function PostsArchive({ posts }: { posts: PostMeta[] }) {
   );
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const list = posts.filter((p) => {
-      if (q && !`${p.title} ${p.description} ${p.tags.join(" ")}`.toLowerCase().includes(q))
-        return false;
+    return posts.filter((p) => {
       if (activeTags.length > 0 && !activeTags.every((t) => p.tags.includes(t)))
         return false;
       if (activeYear && !p.date.startsWith(activeYear)) return false;
       return true;
     });
-    if (sort === "oldest") return [...list].reverse();
-    if (sort === "shortest")
-      return [...list].sort((a, b) => a.readingMinutes - b.readingMinutes);
-    return list;
-  }, [posts, query, sort, activeTags, activeYear]);
+  }, [posts, activeTags, activeYear]);
 
   const activeCount = activeTags.length + (activeYear ? 1 : 0);
 
   function clearAll() {
     setActiveTags([]);
     setActiveYear(null);
-    setQuery("");
   }
 
   const rail = (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-2 rounded-[6px] border border-line px-2.5 py-1.5">
-        <span aria-hidden className="text-ink-400">
-          ⌕
-        </span>
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="제목, 본문, 태그 검색…"
-          aria-label="글 검색"
-          className="w-0 min-w-0 flex-1 border-none bg-transparent text-[13px] text-ink-950 outline-none placeholder:text-ink-500"
-        />
-        {query && (
-          <button
-            type="button"
-            onClick={() => setQuery("")}
-            className="shrink-0 cursor-pointer font-mono text-[12px] text-ink-500 hover:text-ink-950"
-          >
-            지우기
-          </button>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-2">
-          <GroupLabel>정렬</GroupLabel>
-          <Segmented value={sort} options={SORTS} onChange={setSort} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <GroupLabel>뷰</GroupLabel>
-          <Segmented value={view} options={VIEWS} onChange={setView} />
-        </div>
-      </div>
-
       <FilterGroup
         label="태그"
         items={tagItems}
@@ -273,15 +164,9 @@ export function PostsArchive({ posts }: { posts: PostMeta[] }) {
       <div className="border-t border-line py-14 text-center">
         <p className="text-[14px] text-ink-950">조건에 맞는 글이 없습니다.</p>
         <p className="mt-1.5 text-[13px] text-ink-500">
-          필터를 풀거나 다른 검색어로 시도해보세요.
+          필터를 풀어보세요.
         </p>
       </div>
-    ) : view === "list" ? (
-      <ol className="m-0 list-none p-0">
-        {filtered.map((post) => (
-          <PostRow key={post.slug} post={post} />
-        ))}
-      </ol>
     ) : (
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((post) => (
