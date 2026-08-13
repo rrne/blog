@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 730" font-family="system-ui, -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif">
+  <rect width="940" height="730" fill="#fafafa"/>
+
+  <!-- ===== 프레임 1: 이름 ===== -->
+  <g>
+    <rect x="30" y="30" width="270" height="620" rx="20" fill="#fff" stroke="#ddd" stroke-width="2"/>
+    <clipPath id="v1"><rect x="32" y="32" width="266" height="616" rx="18"/></clipPath>
+    <g clip-path="url(#v1)">
+      <text x="52" y="90" font-size="17" font-weight="700" fill="#111">안전한 예약 조회를 위해</text>
+      <text x="52" y="114" font-size="17" font-weight="700" fill="#111">본인 확인이 필요해요</text>
+      <text x="52" y="140" font-size="11" fill="#666" text-decoration="underline">Are you a foreigner? Click here</text>
+      <!-- 이름 (active) -->
+      <text x="52" y="180" font-size="12" font-weight="500" fill="#111">이름</text>
+      <rect x="52" y="190" width="226" height="44" rx="6" fill="#fff" stroke="#000"/>
+      <text x="66" y="217" font-size="14" fill="#111">홍길동</text>
+      <rect x="114" y="199" width="1.5" height="26" fill="#000"/>
+      <!-- CTA (키보드 위에 붙음) -->
+      <rect x="32" y="416" width="266" height="42" fill="#000"/>
+      <text x="165" y="442" font-size="12.5" font-weight="700" fill="#fff" text-anchor="middle">다음</text>
+      <!-- 키보드 (한글) -->
+      <rect x="32" y="458" width="266" height="190" fill="#d3d6db"/>
+      <g fill="#fff">
+        <rect x="40" y="468" width="22" height="32" rx="4"/><rect x="66" y="468" width="22" height="32" rx="4"/><rect x="92" y="468" width="22" height="32" rx="4"/><rect x="118" y="468" width="22" height="32" rx="4"/><rect x="144" y="468" width="22" height="32" rx="4"/><rect x="170" y="468" width="22" height="32" rx="4"/><rect x="196" y="468" width="22" height="32" rx="4"/><rect x="222" y="468" width="22" height="32" rx="4"/><rect x="248" y="468" width="22" height="32" rx="4"/>
+        <rect x="52" y="506" width="22" height="32" rx="4"/><rect x="78" y="506" width="22" height="32" rx="4"/><rect x="104" y="506" width="22" height="32" rx="4"/><rect x="130" y="506" width="22" height="32" rx="4"/><rect x="156" y="506" width="22" height="32" rx="4"/><rect x="182" y="506" width="22" height="32" rx="4"/><rect x="208" y="506" width="22" height="32" rx="4"/><rect x="234" y="506" width="22" height="32" rx="4"/>
+        <rect x="40" y="544" width="34" height="32" rx="4"/><rect x="78" y="544" width="22" height="32" rx="4"/><rect x="104" y="544" width="22" height="32" rx="4"/><rect x="130" y="544" width="22" height="32" rx="4"/><rect x="156" y="544" width="22" height="32" rx="4"/><rect x="182" y="544" width="22" height="32" rx="4"/><rect x="208" y="544" width="22" height="32" rx="4"/><rect x="242" y="544" width="28" height="32" rx="4" fill="#c8ccd2"/>
+        <rect x="40" y="582" width="60" height="34" rx="4" fill="#c8ccd2"/><rect x="104" y="582" width="120" height="34" rx="4"/>
+      </g>
+      <rect x="228" y="582" width="42" height="34" rx="4" fill="#111"/>
+      <text x="249" y="604" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">완료</text>
+    </g>
+    <text x="165" y="686" font-size="13" fill="#888" text-anchor="middle">① 이름 — 키보드 '완료'가 곧 다음</text>
+  </g>
+
+  <!-- ===== 프레임 2: 주민등록번호가 위로 등장 ===== -->
+  <g>
+    <rect x="335" y="30" width="270" height="620" rx="20" fill="#fff" stroke="#ddd" stroke-width="2"/>
+    <clipPath id="v2"><rect x="337" y="32" width="266" height="616" rx="18"/></clipPath>
+    <g clip-path="url(#v2)">
+      <text x="357" y="90" font-size="17" font-weight="700" fill="#111">안전한 예약 조회를 위해</text>
+      <text x="357" y="114" font-size="17" font-weight="700" fill="#111">본인 확인이 필요해요</text>
+      <!-- 주민등록번호 (active, 새로 등장) -->
+      <text x="357" y="156" font-size="12" font-weight="500" fill="#111">주민등록번호</text>
+      <rect x="357" y="166" width="226" height="44" rx="6" fill="#fff" stroke="#000"/>
+      <text x="371" y="193" font-size="14" fill="#111">990101</text>
+      <rect x="428" y="187" width="10" height="1.5" fill="#888"/>
+      <g fill="#000">
+        <circle cx="452" cy="188" r="5"/><circle cx="468" cy="188" r="5" fill="#d1d1d1"/><circle cx="484" cy="188" r="5" fill="#d1d1d1"/><circle cx="500" cy="188" r="5" fill="#d1d1d1"/><circle cx="516" cy="188" r="5" fill="#d1d1d1"/><circle cx="532" cy="188" r="5" fill="#d1d1d1"/><circle cx="548" cy="188" r="5" fill="#d1d1d1"/>
+      </g>
+      <!-- 이름 (아래로 밀림, 완료 상태) -->
+      <text x="357" y="236" font-size="12" font-weight="500" fill="#111">이름</text>
+      <rect x="357" y="246" width="226" height="44" rx="6" fill="#fff" stroke="#ccc"/>
+      <text x="371" y="273" font-size="14" fill="#111">홍길동</text>
+      <!-- CTA -->
+      <rect x="337" y="416" width="266" height="42" fill="#000"/>
+      <text x="470" y="442" font-size="12.5" font-weight="700" fill="#fff" text-anchor="middle">다음</text>
+      <!-- 숫자 키패드 -->
+      <rect x="337" y="458" width="266" height="190" fill="#d3d6db"/>
+      <g fill="#fff">
+        <rect x="349" y="468" width="76" height="38" rx="5"/><rect x="431" y="468" width="76" height="38" rx="5"/><rect x="513" y="468" width="76" height="38" rx="5"/>
+        <rect x="349" y="512" width="76" height="38" rx="5"/><rect x="431" y="512" width="76" height="38" rx="5"/><rect x="513" y="512" width="76" height="38" rx="5"/>
+        <rect x="349" y="556" width="76" height="38" rx="5"/><rect x="431" y="556" width="76" height="38" rx="5"/><rect x="513" y="556" width="76" height="38" rx="5"/>
+        <rect x="431" y="600" width="76" height="38" rx="5"/>
+      </g>
+      <g font-size="15" fill="#111" text-anchor="middle">
+        <text x="387" y="492">1</text><text x="469" y="492">2</text><text x="551" y="492">3</text>
+        <text x="387" y="536">4</text><text x="469" y="536">5</text><text x="551" y="536">6</text>
+        <text x="387" y="580">7</text><text x="469" y="580">8</text><text x="551" y="580">9</text>
+        <text x="469" y="624">0</text>
+        <text x="387" y="624" fill="#666" font-size="12">⌫</text>
+      </g>
+      <rect x="513" y="600" width="76" height="38" rx="5" fill="#111"/>
+      <text x="551" y="624" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">완료</text>
+    </g>
+    <text x="470" y="686" font-size="13" fill="#888" text-anchor="middle">② 7자리가 차면 자동으로 다음 단계</text>
+  </g>
+
+  <!-- ===== 프레임 3: 인증번호까지 쌓인 상태 ===== -->
+  <g>
+    <rect x="640" y="30" width="270" height="620" rx="20" fill="#fff" stroke="#ddd" stroke-width="2"/>
+    <clipPath id="v3"><rect x="642" y="32" width="266" height="616" rx="18"/></clipPath>
+    <g clip-path="url(#v3)">
+      <text x="662" y="80" font-size="17" font-weight="700" fill="#111">안전한 예약 조회를 위해</text>
+      <text x="662" y="104" font-size="17" font-weight="700" fill="#111">본인 확인이 필요해요</text>
+      <!-- 인증 번호 (active, 맨 위) -->
+      <text x="662" y="140" font-size="12" font-weight="500" fill="#111">인증 번호</text>
+      <rect x="662" y="150" width="156" height="44" rx="6" fill="#fff" stroke="#000"/>
+      <text x="674" y="177" font-size="14" fill="#111">4829</text>
+      <text x="794" y="177" font-size="13" fill="#111" text-anchor="end">4:32</text>
+      <rect x="824" y="150" width="64" height="44" rx="6" fill="#efefef"/>
+      <text x="856" y="177" font-size="12" fill="#111" text-anchor="middle">재전송</text>
+      <!-- 휴대폰 번호 -->
+      <text x="662" y="220" font-size="12" font-weight="500" fill="#111">휴대폰 번호</text>
+      <rect x="662" y="230" width="226" height="44" rx="6" fill="#fff" stroke="#ccc"/>
+      <text x="674" y="257" font-size="13" fill="#111">SKT ›  01012345678</text>
+      <!-- 주민등록번호 -->
+      <text x="662" y="300" font-size="12" font-weight="500" fill="#111">주민등록번호</text>
+      <rect x="662" y="310" width="226" height="44" rx="6" fill="#fff" stroke="#ccc"/>
+      <text x="674" y="337" font-size="13" fill="#111">990101</text>
+      <g fill="#000">
+        <circle cx="760" cy="332" r="4.5"/><circle cx="774" cy="332" r="4.5"/><circle cx="788" cy="332" r="4.5"/><circle cx="802" cy="332" r="4.5"/><circle cx="816" cy="332" r="4.5"/><circle cx="830" cy="332" r="4.5"/><circle cx="844" cy="332" r="4.5"/>
+      </g>
+      <!-- 이름 -->
+      <text x="662" y="380" font-size="12" font-weight="500" fill="#111">이름</text>
+      <rect x="662" y="390" width="226" height="44" rx="6" fill="#fff" stroke="#ccc"/>
+      <text x="674" y="417" font-size="13" fill="#111">홍길동</text>
+      <!-- CTA -->
+      <rect x="642" y="416" width="0" height="0"/>
+      <rect x="642" y="458" width="266" height="42" fill="#000"/>
+      <text x="775" y="484" font-size="12.5" font-weight="700" fill="#fff" text-anchor="middle">확인</text>
+      <!-- 숫자 키패드 (축약) -->
+      <rect x="642" y="500" width="266" height="148" fill="#d3d6db"/>
+      <g fill="#fff">
+        <rect x="654" y="510" width="76" height="30" rx="5"/><rect x="736" y="510" width="76" height="30" rx="5"/><rect x="818" y="510" width="76" height="30" rx="5"/>
+        <rect x="654" y="546" width="76" height="30" rx="5"/><rect x="736" y="546" width="76" height="30" rx="5"/><rect x="818" y="546" width="76" height="30" rx="5"/>
+        <rect x="654" y="582" width="76" height="30" rx="5"/><rect x="736" y="582" width="76" height="30" rx="5"/><rect x="818" y="582" width="76" height="30" rx="5"/>
+        <rect x="736" y="618" width="76" height="30" rx="5"/>
+      </g>
+      <g font-size="13" fill="#111" text-anchor="middle">
+        <text x="692" y="530">1</text><text x="774" y="530">2</text><text x="856" y="530">3</text>
+        <text x="692" y="566">4</text><text x="774" y="566">5</text><text x="856" y="566">6</text>
+        <text x="692" y="602">7</text><text x="774" y="602">8</text><text x="856" y="602">9</text>
+        <text x="774" y="638">0</text>
+      </g>
+    </g>
+    <text x="775" y="686" font-size="13" fill="#888" text-anchor="middle">③ 6자리가 차면 자동 검증 — 버튼 없이 완료</text>
+  </g>
+</svg>

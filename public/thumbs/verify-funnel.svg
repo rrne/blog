@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400" font-family="system-ui, -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif">
+  <rect width="1000" height="400" fill="#fafafa"/>
+
+  <text x="40" y="44" font-size="14" font-weight="700" fill="#888">개선 전 — 화면 4개를 통과해야 인증이 끝난다</text>
+
+  <!-- ① 안내 -->
+  <g>
+    <rect x="40" y="64" width="150" height="270" rx="14" fill="#fff" stroke="#ddd" stroke-width="1.5"/>
+    <rect x="40" y="64" width="150" height="100" rx="14" fill="#e0f3ff"/>
+    <rect x="40" y="130" width="150" height="34" fill="#fff"/>
+    <circle cx="115" cy="112" r="20" fill="#fff" stroke="#bfe3f8"/>
+    <text x="115" y="118" font-size="14" text-anchor="middle" fill="#4aa3d8">✓</text>
+    <text x="55" y="192" font-size="11" font-weight="700" fill="#222">안전한 예약 조회를 위해</text>
+    <text x="55" y="208" font-size="11" font-weight="700" fill="#222">본인 확인이 필요해요</text>
+    <text x="55" y="230" font-size="9" fill="#888">예약 확인과 성인 인증을 위해</text>
+    <text x="55" y="243" font-size="9" fill="#888">본인인증이 필요합니다.</text>
+    <rect x="55" y="284" width="57" height="30" rx="6" fill="#111"/>
+    <text x="83" y="303" font-size="9" fill="#fff" text-anchor="middle">내국인</text>
+    <rect x="118" y="284" width="57" height="30" rx="6" fill="#111"/>
+    <text x="146" y="303" font-size="9" fill="#fff" text-anchor="middle">외국인</text>
+    <text x="115" y="360" font-size="11" text-anchor="middle" fill="#888">① 안내·구분</text>
+  </g>
+  <text x="204" y="205" font-size="16" fill="#bbb">→</text>
+
+  <!-- ② 방식 선택 -->
+  <g>
+    <rect x="228" y="64" width="150" height="270" rx="14" fill="#fff" stroke="#ddd" stroke-width="1.5"/>
+    <text x="243" y="102" font-size="12" font-weight="700" fill="#222">본인 인증</text>
+    <text x="243" y="118" font-size="12" font-weight="700" fill="#222">방식 선택</text>
+    <rect x="243" y="140" width="120" height="36" rx="6" fill="#fff" stroke="#ccc"/>
+    <text x="253" y="162" font-size="10" fill="#222">문자(SMS) 인증하기</text>
+    <rect x="243" y="184" width="120" height="36" rx="6" fill="#fff" stroke="#ccc"/>
+    <text x="253" y="206" font-size="10" fill="#222">PASS 인증하기</text>
+    <rect x="243" y="228" width="120" height="36" rx="6" fill="#fff" stroke="#ccc"/>
+    <text x="253" y="250" font-size="10" fill="#222">여권 인증하기</text>
+    <text x="303" y="360" font-size="11" text-anchor="middle" fill="#888">② 방식 선택</text>
+  </g>
+  <text x="392" y="205" font-size="16" fill="#bbb">→</text>
+
+  <!-- ③ 정보 입력 -->
+  <g>
+    <rect x="416" y="64" width="150" height="270" rx="14" fill="#fff" stroke="#ddd" stroke-width="1.5"/>
+    <text x="431" y="100" font-size="12" font-weight="700" fill="#222">본인 인증</text>
+    <text x="431" y="116" font-size="9" fill="#888">본인인증 정보를 입력해주세요.</text>
+    <rect x="431" y="130" width="120" height="26" rx="5" fill="#fff" stroke="#ccc"/>
+    <text x="439" y="147" font-size="9" fill="#aaa">이름을 입력하세요</text>
+    <rect x="431" y="162" width="120" height="26" rx="5" fill="#fff" stroke="#ccc"/>
+    <text x="439" y="179" font-size="9" fill="#aaa">주민등록번호 7자리</text>
+    <rect x="431" y="194" width="120" height="26" rx="5" fill="#fff" stroke="#ccc"/>
+    <text x="439" y="211" font-size="9" fill="#aaa">통신사를 선택하세요</text>
+    <rect x="431" y="226" width="120" height="26" rx="5" fill="#fff" stroke="#ccc"/>
+    <text x="439" y="243" font-size="9" fill="#aaa">휴대폰번호를 입력하세요</text>
+    <rect x="431" y="284" width="120" height="30" rx="6" fill="#111"/>
+    <text x="491" y="303" font-size="9" fill="#fff" text-anchor="middle">인증번호 발송</text>
+    <text x="491" y="360" font-size="11" text-anchor="middle" fill="#888">③ 정보 입력</text>
+  </g>
+  <text x="580" y="205" font-size="16" fill="#bbb">→</text>
+
+  <!-- ④ 인증번호 -->
+  <g>
+    <rect x="604" y="64" width="150" height="270" rx="14" fill="#fff" stroke="#ddd" stroke-width="1.5"/>
+    <text x="619" y="100" font-size="12" font-weight="700" fill="#222">인증번호 입력</text>
+    <rect x="619" y="120" width="120" height="30" rx="5" fill="#fff" stroke="#ccc"/>
+    <text x="627" y="139" font-size="10" fill="#aaa">인증번호 6자리</text>
+    <text x="723" y="139" font-size="9" fill="#222">4:58</text>
+    <rect x="619" y="284" width="120" height="30" rx="6" fill="#111"/>
+    <text x="679" y="303" font-size="9" fill="#fff" text-anchor="middle">확인</text>
+    <text x="679" y="360" font-size="11" text-anchor="middle" fill="#888">④ 인증번호</text>
+  </g>
+
+  <!-- 구분선 -->
+  <line x1="790" y1="52" x2="790" y2="368" stroke="#e2e2e2" stroke-dasharray="5 5"/>
+
+  <!-- 개선 후 -->
+  <text x="820" y="44" font-size="14" font-weight="700" fill="#0b8f88">개선 후 — 화면 1개</text>
+  <g>
+    <rect x="820" y="64" width="150" height="270" rx="14" fill="#fff" stroke="#0b8f88" stroke-width="2"/>
+    <text x="835" y="96" font-size="10.5" font-weight="700" fill="#222">안전한 예약 조회를 위해</text>
+    <text x="835" y="110" font-size="10.5" font-weight="700" fill="#222">본인 확인이 필요해요</text>
+    <text x="835" y="136" font-size="8.5" fill="#555">인증 번호</text>
+    <rect x="835" y="142" width="120" height="24" rx="5" fill="#fff" stroke="#000"/>
+    <text x="843" y="158" font-size="9" fill="#222">482913</text>
+    <text x="928" y="158" font-size="8" fill="#666">4:32</text>
+    <text x="835" y="182" font-size="8.5" fill="#555">휴대폰 번호</text>
+    <rect x="835" y="188" width="120" height="24" rx="5" fill="#fff" stroke="#ccc"/>
+    <text x="843" y="204" font-size="9" fill="#222">SKT ▾  01012345678</text>
+    <text x="835" y="228" font-size="8.5" fill="#555">주민등록번호</text>
+    <rect x="835" y="234" width="120" height="24" rx="5" fill="#fff" stroke="#ccc"/>
+    <text x="843" y="250" font-size="9" fill="#222">990101 — ●●●●●●●</text>
+    <text x="835" y="274" font-size="8.5" fill="#555">이름</text>
+    <rect x="835" y="280" width="120" height="24" rx="5" fill="#fff" stroke="#ccc"/>
+    <text x="843" y="296" font-size="9" fill="#222">홍길동</text>
+    <rect x="820" y="310" width="150" height="24" fill="#111"/>
+    <text x="895" y="326" font-size="9" fill="#fff" text-anchor="middle">확인</text>
+    <text x="895" y="360" font-size="11" text-anchor="middle" fill="#0b8f88">입력이 위로 쌓인다</text>
+  </g>
+</svg>

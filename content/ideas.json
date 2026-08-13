@@ -78,9 +78,27 @@
       "title": "AI에게 부탁하는 건 규칙이 아니다",
       "angle": "advisory 주입은 100% 무시된다 — 주간 유지보수 태스크가 9일간 0회 실행된 사건과 Stop hook 'decision: block'으로 강제한 해법(26줄 스크립트 전문). one-shot 플래그로 무한 루프 방지, '세션 중 간섭 제로, 종료 시 1회 강제' 설계. 넛지 vs 훅의 트레이드오프(발동률 90% vs 100%, 판단력 100% vs 0%).",
       "score": 9,
-      "status": "queued",
+      "status": "drafted",
       "sensitivity": "medium",
-      "notes": "AI 시리즈 5편. 근거: changelog 690~723, 74~119줄, dream-gate-stop.sh 실물, HISTORY.md 넛지/훅 비교표. 발행일 2026-06 예정."
+      "notes": "AI 시리즈 5편. 근거: changelog 690~723, 74~119줄, dream-gate-stop.sh 실물, HISTORY.md 넛지/훅 비교표. 발행일 2026-06-17 확정. 스크립트 경로 익명화(my-project). epoch/ISO 버그(74~119줄)를 결말 섹션으로 사용."
+    },
+    {
+      "id": "promotion-page-builder",
+      "title": "프로모션 페이지, 코드에서 데이터로",
+      "angle": "이력서 성과 글. 월 1~3건 프로모션을 매번 새 페이지로 개발(2~3주, 전담 1명)하던 것을 server-driven UI로 전환 — 어드민 폼 → contents JSON(pass-through) → /event/[slug] 단일 라우트 조합 렌더링. 요소 타입 7종 닫힌 목록, handleId 섹션 연결, 색상만 개방한 디자인 시스템. 결과: 런칭당 개발 공수 0, 3 man day 절감.",
+      "score": 10,
+      "status": "drafted",
+      "sensitivity": "medium",
+      "notes": "근거: 클라이언트 event/[slug].tsx·ContentRender.tsx, 어드민 promotion/editor.tsx·ComponentCard.tsx, 백엔드 Promotion.kt(JSON 통짜 컬럼 전환 이력). 하드코딩 잔재 15파일 약 7,000줄 실측. 브랜드·지점명 익명화. 목업 SVG 2장(/thumbs/promo-builder-app.svg, promo-builder-admin.svg). 발행일 2025-09-16(시스템 구축 2025-06~07 직후). 대표 이미지 /thumbs/marketing.jpg."
+    },
+    {
+      "id": "verify-reverse-form",
+      "title": "숙박엔 성인인증이 필요한데, CX 문의가 이것 때문에 많다면?",
+      "angle": "이력서 성과 글. 예약마다 반복되는 성인인증 4퍼널(안내→방식선택→정보입력→인증번호)을 토스 스타일 역방향 입력 폼 한 화면으로 재설계. step/revealed 상태 + JSX 역순 렌더, enterKeyHint·자동 진행·visualViewport 키보드 동기화·주민번호 마스킹. 결과: 배포 후 일주일 CX 본인인증 문의 약 50% 감소.",
+      "score": 10,
+      "status": "drafted",
+      "sensitivity": "medium",
+      "notes": "근거: reservation/[reservationNo]/verify.tsx(역순 스택 실물), RrnInput/PhoneInput, 개선 전 버전은 git 8229d4ed7^ 확인(안내 화면+auth/method 분기). 작업 시기 2026-03-27~04-08(STA-1608). 발행일 2026-05-28. 목업 SVG 2장(/thumbs/verify-funnel.svg, verify-reverse-form.svg). 대표 이미지 /thumbs/input.png. 브랜드명·인증기관명 익명화."
     },
     {
       "id": "same-route-navigation-noop",

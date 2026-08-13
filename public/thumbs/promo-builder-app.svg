@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 810" font-family="system-ui, -apple-system, 'Segoe UI', 'Malgun Gothic', sans-serif">
+  <rect width="900" height="810" fill="#fafafa"/>
+
+  <!-- ===== 폰 1: 요소 조합 (히어로/탭/이미지/버튼/폴딩) ===== -->
+  <g>
+    <rect x="70" y="30" width="330" height="700" rx="24" fill="#fff" stroke="#ddd" stroke-width="2"/>
+    <clipPath id="p1"><rect x="72" y="32" width="326" height="696" rx="22"/></clipPath>
+    <g clip-path="url(#p1)">
+      <!-- 헤더 (sticky, 64px) -->
+      <rect x="72" y="32" width="326" height="56" fill="#fff"/>
+      <line x1="72" y1="88" x2="398" y2="88" stroke="#f0f0f0"/>
+      <text x="92" y="68" font-size="20" fill="#222">‹</text>
+      <text x="235" y="66" font-size="15" font-weight="600" fill="#222" text-anchor="middle">여름 시즌 특가</text>
+      <text x="352" y="66" font-size="14" fill="#222">⌂</text>
+      <text x="376" y="66" font-size="13" fill="#222">↗</text>
+      <!-- 히어로 통이미지 -->
+      <rect x="72" y="88" width="326" height="200" fill="#86cecb"/>
+      <rect x="72" y="88" width="326" height="200" fill="url(#heroShade)"/>
+      <text x="235" y="165" font-size="34" font-weight="800" fill="#fff" text-anchor="middle" letter-spacing="2">SUMMER</text>
+      <text x="235" y="203" font-size="34" font-weight="800" fill="#fff" text-anchor="middle" letter-spacing="6">SALE</text>
+      <text x="235" y="238" font-size="13" fill="#eafffd" text-anchor="middle">최대 40% + 회원 전용 쿠폰팩</text>
+      <!-- TAB (sticky 60px, JSON 색상값) -->
+      <rect x="72" y="288" width="108.6" height="60" fill="#86cecb"/>
+      <text x="126" y="323" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">혜택 1</text>
+      <rect x="180.6" y="288" width="108.6" height="60" fill="#000"/>
+      <text x="235" y="323" font-size="14" fill="#fff" text-anchor="middle">혜택 2</text>
+      <rect x="289.2" y="288" width="108.8" height="60" fill="#000"/>
+      <text x="343" y="323" font-size="14" fill="#fff" text-anchor="middle">객실 보기</text>
+      <!-- IMAGE 섹션 (통이미지) -->
+      <rect x="72" y="348" width="326" height="210" fill="#f7f3ee"/>
+      <text x="235" y="388" font-size="13" fill="#8c7b66" text-anchor="middle">혜택 1 · 회원 전용</text>
+      <rect x="115" y="404" width="240" height="110" rx="12" fill="#fff" stroke="#e0d5c5"/>
+      <line x1="295" y1="404" x2="295" y2="514" stroke="#e0d5c5" stroke-dasharray="4 4"/>
+      <text x="205" y="452" font-size="20" font-weight="800" fill="#f2321b" text-anchor="middle">3만원 쿠폰팩</text>
+      <text x="205" y="478" font-size="11" fill="#999" text-anchor="middle">1만원 × 3장 · 8월 체크인</text>
+      <text x="325" y="466" font-size="11" fill="#c0b39e" text-anchor="middle">COUPON</text>
+      <!-- BUTTON (이미지 버튼) -->
+      <rect x="92" y="578" width="286" height="50" rx="10" fill="#1f1f1f"/>
+      <text x="235" y="608" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">쿠폰팩 한 번에 받기</text>
+      <!-- FOLDING (유의사항 아코디언) -->
+      <line x1="72" y1="658" x2="398" y2="658" stroke="#f5f5f5"/>
+      <text x="92" y="692" font-size="14" font-weight="700" fill="#222">유의 사항</text>
+      <text x="372" y="692" font-size="11" fill="#555">⌄</text>
+      <line x1="72" y1="708" x2="398" y2="708" stroke="#efefef"/>
+    </g>
+  </g>
+
+  <!-- ===== 폰 2: 객실 모아보기 + 플로팅 CTA ===== -->
+  <g>
+    <rect x="500" y="30" width="330" height="700" rx="24" fill="#fff" stroke="#ddd" stroke-width="2"/>
+    <clipPath id="p2"><rect x="502" y="32" width="326" height="696" rx="22"/></clipPath>
+    <g clip-path="url(#p2)">
+      <!-- 헤더 -->
+      <rect x="502" y="32" width="326" height="56" fill="#fff"/>
+      <line x1="502" y1="88" x2="828" y2="88" stroke="#f0f0f0"/>
+      <text x="522" y="68" font-size="20" fill="#222">‹</text>
+      <text x="665" y="66" font-size="15" font-weight="600" fill="#222" text-anchor="middle">여름 시즌 특가</text>
+      <text x="782" y="66" font-size="14" fill="#222">⌂</text>
+      <text x="806" y="66" font-size="13" fill="#222">↗</text>
+      <!-- 회색 구분선 (GrayWrapper 10px) -->
+      <rect x="502" y="88" width="326" height="10" fill="#f8f8f8" stroke="#efefef"/>
+      <!-- 날짜/인원 바 -->
+      <rect x="522" y="116" width="220" height="40" rx="8" fill="#fff" stroke="#e5e5e5"/>
+      <text x="534" y="141" font-size="13" fill="#555">▦</text>
+      <text x="554" y="141" font-size="13" font-weight="500" fill="#000">08. 22 금  —  08. 23 토</text>
+      <rect x="750" y="116" width="58" height="40" rx="8" fill="#fff" stroke="#e5e5e5"/>
+      <text x="764" y="141" font-size="13" fill="#555">👤</text>
+      <text x="788" y="141" font-size="13" font-weight="500" fill="#000">2</text>
+      <!-- 지역 탭 (Tab LIST) -->
+      <text x="522" y="196" font-size="14" font-weight="700" fill="#000">서울</text>
+      <line x1="522" y1="206" x2="550" y2="206" stroke="#000" stroke-width="2"/>
+      <text x="572" y="196" font-size="14" fill="#ccc">부산</text>
+      <text x="622" y="196" font-size="14" fill="#ccc">제주</text>
+      <text x="672" y="196" font-size="14" fill="#ccc">강릉</text>
+      <line x1="502" y1="216" x2="828" y2="216" stroke="#f5f5f5"/>
+      <!-- 객실 카드 2열 그리드 -->
+      <!-- 카드 1 -->
+      <rect x="522" y="236" width="140" height="96" rx="8" fill="#e9e4dc"/>
+      <circle cx="562" cy="270" r="16" fill="#f3efe8"/>
+      <rect x="522" y="300" width="140" height="32" fill="#d8d2c6"/>
+      <text x="522" y="352" font-size="11" fill="#888">서울 · 을지로</text>
+      <text x="522" y="370" font-size="13" font-weight="600" fill="#222">디럭스 더블</text>
+      <text x="522" y="390" font-size="14" font-weight="800" fill="#f2321b">32%</text>
+      <text x="558" y="390" font-size="14" font-weight="700" fill="#000">108,000원</text>
+      <!-- 카드 2 -->
+      <rect x="674" y="236" width="140" height="96" rx="8" fill="#dde5e4"/>
+      <circle cx="778" cy="266" r="14" fill="#eef4f3"/>
+      <rect x="674" y="300" width="140" height="32" fill="#c9d4d2"/>
+      <text x="674" y="352" font-size="11" fill="#888">서울 · 성수</text>
+      <text x="674" y="370" font-size="13" font-weight="600" fill="#222">스위트 트윈</text>
+      <text x="674" y="390" font-size="14" font-weight="800" fill="#f2321b">27%</text>
+      <text x="710" y="390" font-size="14" font-weight="700" fill="#000">139,000원</text>
+      <!-- 카드 3 -->
+      <rect x="522" y="412" width="140" height="96" rx="8" fill="#e4e0ea"/>
+      <circle cx="556" cy="444" r="15" fill="#f0edf5"/>
+      <rect x="522" y="476" width="140" height="32" fill="#cfc9dc"/>
+      <text x="522" y="528" font-size="11" fill="#888">서울 · 종로</text>
+      <text x="522" y="546" font-size="13" font-weight="600" fill="#222">패밀리 트리플</text>
+      <text x="522" y="566" font-size="14" font-weight="800" fill="#f2321b">40%</text>
+      <text x="558" y="566" font-size="14" font-weight="700" fill="#000">126,000원</text>
+      <!-- 카드 4 (예약 마감) -->
+      <rect x="674" y="412" width="140" height="96" rx="8" fill="#e6e6e6"/>
+      <circle cx="744" cy="450" r="15" fill="#f0f0f0"/>
+      <rect x="674" y="476" width="140" height="32" fill="#d4d4d4"/>
+      <text x="674" y="528" font-size="11" fill="#888">서울 · 명동</text>
+      <text x="674" y="546" font-size="13" font-weight="600" fill="#888">코너 스위트</text>
+      <text x="674" y="566" font-size="14" font-weight="700" fill="#888">예약 마감</text>
+      <!-- FLOATING CTA (fixed bottom, backgroundColor 필드) -->
+      <rect x="502" y="662" width="326" height="66" fill="#000"/>
+      <rect x="522" y="674" width="286" height="42" rx="8" fill="#86cecb"/>
+      <text x="665" y="700" font-size="14" font-weight="700" fill="#003b38" text-anchor="middle">지금 예약하고 최대 40% 할인</text>
+    </g>
+  </g>
+
+  <defs>
+    <linearGradient id="heroShade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5eb3af" stop-opacity="0"/>
+      <stop offset="1" stop-color="#4a9c98" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 캡션 -->
+  <text x="235" y="768" font-size="13" fill="#888" text-anchor="middle">이미지 · 탭 · 버튼 · 접기/펼치기 요소의 조합</text>
+  <text x="665" y="768" font-size="13" fill="#888" text-anchor="middle">객실 모아보기 요소와 하단 고정 CTA</text>
+</svg>
