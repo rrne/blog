@@ -141,7 +141,7 @@
       "title": "달력이 6주인 달에만 깨진다",
       "angle": "달력 UI의 행 수 가변(4~6주) 엣지케이스. 그라데이션·높이가 6주에서만 무너진 사례.",
       "score": 7,
-      "status": "queued",
+      "status": "drafting",
       "sensitivity": "medium",
       "notes": "2025-07 실작업. 익명화 필요(medium)."
     },
